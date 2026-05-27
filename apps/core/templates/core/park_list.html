@@ -1,0 +1,46 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<section class="list-layout">
+  <aside class="filters-panel">
+    <p class="eyebrow">Filtros</p>
+    <h3>Tipo de hospedaje</h3>
+    <label><input type="radio" name="type" checked> Todos</label>
+    <label><input type="radio" name="type"> Caba&ntilde;a</label>
+    <label><input type="radio" name="type"> Camping</label>
+    <h3>Capacidad</h3>
+    <label><input type="radio" name="capacity" checked> Cualquiera</label>
+    <label><input type="radio" name="capacity"> Hasta 2 personas</label>
+    <label><input type="radio" name="capacity"> Hasta 4 personas</label>
+    <label><input type="radio" name="capacity"> Hasta 6 personas</label>
+    <h3>Rango de precio</h3>
+    <div class="price-range">
+      <input value="0" aria-label="Precio m&iacute;nimo">
+      <input value="2000" aria-label="Precio m&aacute;ximo">
+    </div>
+    <div class="filters-summary"><span>Filtros activos &middot; 0</span><a href="#">Limpiar</a></div>
+  </aside>
+
+  <section class="park-results">
+    <label class="search-input search-input--full">
+      <i class="ph ph-magnifying-glass"></i>
+      <input type="search" placeholder="Buscar por nombre de parque, hospedaje o amenidad...">
+    </label>
+
+    <div class="list-toolbar">
+      <p class="muted">{{ parks|length }} parques &middot; ordenados por relevancia</p>
+      <select class="select sort-select">
+        <option>Ordenar: relevancia</option>
+        <option>Precio menor a mayor</option>
+        <option>Calificaci&oacute;n</option>
+      </select>
+    </div>
+
+    <div class="grid grid--2">
+      {% for park in parks %}
+        {% include "core/partials/park_card.html" with card_variant="list" %}
+      {% endfor %}
+    </div>
+  </section>
+</section>
+{% endblock %}

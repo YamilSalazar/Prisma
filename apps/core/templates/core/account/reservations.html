@@ -1,0 +1,134 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<section class="section reservations-page">
+  <p class="eyebrow">Mi cuenta</p>
+  <h1 class="page-title">Mis reservaciones</h1>
+
+  <div class="reservation-tabs" role="tablist" aria-label="Reservaciones">
+    <button class="is-active" type="button" role="tab" aria-selected="true" data-reservation-tab="active">Activas <span>(2)</span></button>
+    <button type="button" role="tab" aria-selected="false" data-reservation-tab="history">Historial <span>(3)</span></button>
+  </div>
+
+  <div class="reservation-panel is-active" data-reservation-panel="active">
+    <div class="reservation-grid">
+      <article class="card reservation-card reservation-card--full">
+        <div class="photo-placeholder reservation-card__photo"><span>Foto &middot; Mirador de las Estrellas</span></div>
+        <div class="reservation-card__body">
+          <div class="reservation-card__head">
+            <div>
+              <h2>Mirador de las Estrellas</h2>
+              <p>Caba&ntilde;a &middot; 2 adultos</p>
+            </div>
+            <span class="reservation-status reservation-status--active"><i></i> Activa</span>
+          </div>
+          <div class="reservation-card__meta">
+            <p><span>Fechas</span><strong>14 &mdash; 16 Jun 2026</strong></p>
+            <p><span>Folio</span><strong>FIL-2026-08471</strong></p>
+          </div>
+          <div class="reservation-card__footer">
+            <strong class="reservation-price">$3,456</strong>
+            <div class="reservation-actions">
+              <a class="button button--secondary" href="#"><i class="ph ph-download-simple"></i> PDF</a>
+              <button class="reservation-cancel" type="button">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card reservation-card reservation-card--full">
+        <div class="photo-placeholder reservation-card__photo"><span>Foto &middot; Caba&ntilde;as del Bosque</span></div>
+        <div class="reservation-card__body">
+          <div class="reservation-card__head">
+            <div>
+              <h2>Caba&ntilde;as del Bosque</h2>
+              <p>Caba&ntilde;a &middot; 4 adultos</p>
+            </div>
+            <span class="reservation-status reservation-status--active"><i></i> Activa</span>
+          </div>
+          <div class="reservation-card__meta">
+            <p><span>Fechas</span><strong>23 &mdash; 25 Jul 2026</strong></p>
+            <p><span>Folio</span><strong>FIL-2026-09112</strong></p>
+          </div>
+          <div class="reservation-card__footer">
+            <strong class="reservation-price">$3,750</strong>
+            <div class="reservation-actions">
+              <a class="button button--secondary" href="#"><i class="ph ph-download-simple"></i> PDF</a>
+              <button class="reservation-cancel" type="button">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="reservation-panel" data-reservation-panel="history" hidden>
+    <div class="reservation-grid">
+      <article class="card reservation-card reservation-card--full">
+        <div class="photo-placeholder reservation-card__photo"><span>Foto &middot; Camping R&iacute;o Verde</span></div>
+        <div class="reservation-card__body">
+          <div class="reservation-card__head">
+            <div>
+              <h2>Camping R&iacute;o Verde</h2>
+              <p>Camping &middot; 6 personas</p>
+            </div>
+            <span class="reservation-status reservation-status--completed"><i></i> Completada</span>
+          </div>
+          <div class="reservation-card__meta">
+            <p><span>Fechas</span><strong>08 &mdash; 09 Ago 2025</strong></p>
+            <p><span>Folio</span><strong>FIL-2025-04210</strong></p>
+          </div>
+          <div class="reservation-card__footer">
+            <strong class="reservation-price reservation-price--muted">$1,360</strong>
+            <div class="reservation-actions">
+              <button class="button button--secondary" type="button"><i class="ph ph-star"></i> Calificar parque</button>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card reservation-card reservation-card--full is-muted">
+        <div class="photo-placeholder reservation-card__photo"><span>Foto &middot; Refugio Luci&eacute;rnaga</span></div>
+        <div class="reservation-card__body">
+          <div class="reservation-card__head">
+            <div>
+              <h2>Refugio Luci&eacute;rnaga</h2>
+              <p>Caba&ntilde;a &middot; 2 personas</p>
+            </div>
+            <span class="reservation-status reservation-status--cancelled"><i></i> Cancelada</span>
+          </div>
+          <div class="reservation-card__meta">
+            <p><span>Fechas</span><strong>17 &mdash; 19 Jul 2025</strong></p>
+            <p><span>Folio</span><strong>FIL-2025-03877</strong></p>
+          </div>
+          <div class="reservation-card__footer">
+            <strong class="reservation-price reservation-price--muted">$4,740</strong>
+            <em>Sin acciones</em>
+          </div>
+        </div>
+      </article>
+
+      <article class="card reservation-card reservation-card--full">
+        <div class="photo-placeholder reservation-card__photo"><span>Foto &middot; Caba&ntilde;as del Bosque</span></div>
+        <div class="reservation-card__body">
+          <div class="reservation-card__head">
+            <div>
+              <h2>Caba&ntilde;as del Bosque</h2>
+              <p>Caba&ntilde;a &middot; 4 personas</p>
+            </div>
+            <span class="reservation-status reservation-status--completed"><i></i> Completada</span>
+          </div>
+          <div class="reservation-card__meta">
+            <p><span>Fechas</span><strong>04 &mdash; 06 Jun 2025</strong></p>
+            <p><span>Folio</span><strong>FIL-2025-02118</strong></p>
+          </div>
+          <div class="reservation-card__footer">
+            <strong class="reservation-price reservation-price--muted">$3,750</strong>
+            <span class="reservation-rated"><span>&starf;&starf;&starf;&starf;&starf;</span> Calificado</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+{% endblock %}

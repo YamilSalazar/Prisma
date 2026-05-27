@@ -1,0 +1,31 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+{% include "core/partials/step_indicator.html" with step=4 %}
+<section class="confirmation-wrap">
+  <article class="card confirmation-card">
+    <div class="confirmation-card__icon"><i class="ph ph-check"></i></div>
+    <h1>&iexcl;Reservaci&oacute;n confirmada!</h1>
+    <p class="confirmation-card__lead">Te enviamos los detalles a <strong>tucorreo@ejemplo.com</strong>.</p>
+
+    <div class="reservation-folio">
+      <span>Folio de reservaci&oacute;n</span>
+      <strong>FIL-2026-08471</strong>
+    </div>
+
+    <div class="confirmation-details">
+      <p><span>Parque</span><strong>Mirador de las Estrellas</strong></p>
+      <p><span>Hospedaje</span><strong>Caba&ntilde;a &middot; 2 personas</strong></p>
+      <p><span>Entrada</span><strong>S&aacute;b 14 Jun 2026 &middot; 15:00</strong></p>
+      <p><span>Salida</span><strong>Lun 16 Jun 2026 &middot; 12:00</strong></p>
+      <p><span>Total pagado</span><strong>$3,456 MXN</strong></p>
+      <p><span>M&eacute;todo</span><strong>Visa &bull;&bull;&bull;&bull; 4821</strong></p>
+    </div>
+
+    <div class="confirmation-actions">
+      <a class="button button--secondary" href="#"><i class="ph ph-download-simple"></i> Comprobante</a>
+      <a class="button button--primary" href="{% url 'core:reservations' %}">Mis reservaciones</a>
+    </div>
+  </article>
+</section>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<section class="filters-bar">
+  <span class="filters-bar__label"><i class="ph ph-funnel"></i>Filtros</span>
+  <select class="select"><option>Hospedaje: todos</option><option>Cabaña</option><option>Camping</option></select>
+  <select class="select"><option>Capacidad: todas</option><option>Hasta 2 pers</option><option>Hasta 4 pers</option></select>
+  <select class="select"><option>Precio: cualquiera</option><option>Hasta $800</option><option>$800 — $1,400</option></select>
+  <span class="filters-bar__count">{{ parks|length }} parques · {{ parks|length }} visibles en el mapa</span>
+</section>
+
+<section class="map-frame">
+  <div class="map-grid">
+    <span class="map-label map-label--left">Parque nacional</span>
+    <span class="map-label map-label--right">Bosque mesófilo</span>
+    <span class="map-label map-label--bottom">Río Verde</span>
+    {% for park in parks %}
+      <a class="map-pin map-pin--{{ forloop.counter }}" href="{% url 'core:park_detail' park.slug %}">
+        <span>${{ park.price }}</span>
+        <i class="ph ph-map-pin"></i>
+      </a>
+    {% endfor %}
+    <div class="map-zoom"><button>+</button><button>−</button></div>
+    <div class="compass"><strong>N</strong><span>↑</span></div>
+  </div>
+</section>
+{% endblock %}
+

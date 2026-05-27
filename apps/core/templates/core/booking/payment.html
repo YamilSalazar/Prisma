@@ -1,0 +1,68 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+{% include "core/partials/step_indicator.html" with step=3 %}
+<section class="checkout-layout checkout-layout--payment">
+  <form class="card payment-card">
+    <header class="payment-card__head">
+      <div>
+        <p class="eyebrow"><i class="ph ph-lock-simple"></i> Pago seguro &middot; SSL</p>
+        <h1>Datos de tarjeta</h1>
+      </div>
+      <span class="seal"><i class="ph ph-shield-check"></i> Oficial</span>
+    </header>
+
+    <div class="card-brand-list" aria-label="Tarjetas aceptadas">
+      <span>Visa</span>
+      <span>Mastercard</span>
+      <span>Amex</span>
+    </div>
+
+    <label class="field payment-field">N&uacute;mero de tarjeta
+      <span class="payment-input"><i class="ph ph-credit-card"></i><input inputmode="numeric" placeholder="0000 0000 0000 0000"></span>
+    </label>
+
+    <div class="form-grid payment-grid">
+      <label class="field payment-field">Vencimiento (MM/AA)
+        <span class="payment-input"><input inputmode="numeric" placeholder="04/29"></span>
+      </label>
+      <label class="field payment-field">CVV
+        <span class="payment-input"><i class="ph ph-lock-simple"></i><input inputmode="numeric" placeholder="&bull;&bull;&bull;"></span>
+      </label>
+    </div>
+
+    <label class="field payment-field">Nombre del titular
+      <span class="payment-input"><input placeholder="Como aparece en la tarjeta"></span>
+    </label>
+
+    <div class="secure-note">
+      <i class="ph ph-shield-check"></i>
+      <span>Tus datos viajan cifrados. No almacenamos el n&uacute;mero de tarjeta &mdash; solo los &uacute;ltimos 4 d&iacute;gitos para tu recibo.</span>
+    </div>
+
+    <a class="button button--primary button--block" href="{% url 'core:booking_confirmation' %}">Confirmar y pagar $3,456 MXN</a>
+    <a class="checkout-edit-link" href="{% url 'core:booking_summary' %}"><i class="ph ph-arrow-left"></i> Volver al resumen</a>
+  </form>
+
+  <aside class="card checkout-total checkout-total--payment">
+    <p class="eyebrow">Resumen</p>
+    <header>
+      <h2>Mirador de las Estrellas</h2>
+      <p>Caba&ntilde;a &middot; 2 personas</p>
+      <p>S&aacute;b 14 &mdash; Lun 16 Jun 2026</p>
+      <p>2 noches</p>
+    </header>
+
+    <div class="checkout-total__lines">
+      <p><span>Subtotal</span><strong>$2,840</strong></p>
+      <p><span>Servicio</span><strong>$140</strong></p>
+      <p><span>Impuestos</span><strong>$476</strong></p>
+    </div>
+
+    <div class="checkout-total__grand">
+      <span>Total</span>
+      <strong>$3,456</strong>
+    </div>
+  </aside>
+</section>
+{% endblock %}

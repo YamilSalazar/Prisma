@@ -1,0 +1,39 @@
+﻿{% extends "core/base.html" %}
+
+{% block content %}
+<section class="centered-panel">
+  <form class="card form-card form-card--register">
+    <p class="eyebrow">Crear cuenta &middot; Visitantes</p>
+    <h1>Registrarse</h1>
+
+    <div class="form-grid auth-name-grid">
+      <label class="field">Nombre
+        <input placeholder="Mar&iacute;a Fernanda">
+      </label>
+      <label class="field">Apellidos
+        <input placeholder="Gonz&aacute;lez Ruiz">
+      </label>
+    </div>
+
+    <label class="field auth-field">Correo electr&oacute;nico
+      <span class="auth-input">
+        <i class="ph ph-envelope-simple" aria-hidden="true"></i>
+        <input type="email" placeholder="tucorreo@ejemplo.com">
+      </span>
+    </label>
+
+    <label class="field auth-field">Contrase&ntilde;a
+      <span class="auth-input auth-input--password">
+        <input id="register-password" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;">
+        <button type="button" data-toggle-password="#register-password" aria-label="Mostrar contrase&ntilde;a">
+          <i class="ph ph-eye" aria-hidden="true"></i>
+        </button>
+      </span>
+      <small>M&iacute;nimo 8 caracteres, una may&uacute;scula y un n&uacute;mero</small>
+    </label>
+
+    <a class="button button--primary button--block" href="{% url 'core:home' %}">Crear cuenta</a>
+    <p class="form-note">&iquest;Ya tienes cuenta? <a href="{% url 'core:login' %}">Iniciar sesi&oacute;n &rarr;</a></p>
+  </form>
+</section>
+{% endblock %}

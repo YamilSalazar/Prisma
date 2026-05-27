@@ -1,0 +1,17 @@
+<div class="steps steps--timeline">
+  <a class="step {% if step == 1 %}is-active{% elif step > 1 %}is-done{% endif %}" href="{% url 'core:booking_details' %}">
+    <span>{% if step > 1 %}<i class="ph ph-check"></i>{% else %}1{% endif %}</span><strong>Datos</strong>
+  </a>
+  <i></i>
+  <a class="step {% if step == 2 %}is-active{% elif step > 2 %}is-done{% endif %}" href="{% url 'core:booking_summary' %}">
+    <span>{% if step > 2 %}<i class="ph ph-check"></i>{% else %}2{% endif %}</span><strong>Resumen</strong>
+  </a>
+  <i></i>
+  <a class="step {% if step == 3 %}is-active{% elif step > 3 %}is-done{% endif %}" href="{% url 'core:booking_payment' %}">
+    <span>{% if step > 3 %}<i class="ph ph-check"></i>{% else %}3{% endif %}</span><strong>Pago</strong>
+  </a>
+  <i></i>
+  <a class="step {% if step == 4 %}is-done{% endif %}" href="{% url 'core:booking_confirmation' %}">
+    <span>{% if step >= 4 %}<i class="ph ph-check"></i>{% else %}4{% endif %}</span><strong>Confirmaci&oacute;n</strong>
+  </a>
+</div>

@@ -1,0 +1,41 @@
+<article class="card park-card {% if card_variant == 'featured' %}park-card--featured{% else %}park-card--list{% endif %}">
+  <a class="park-card__photo photo-placeholder" href="{% url 'core:park_detail' park.slug %}">
+    {% if card_variant != 'featured' %}
+      <span class="badge park-card__badge">{{ park.type }}</span>
+    {% endif %}
+    <span>Foto &middot; {{ park.name }}</span>
+  </a>
+
+  <div class="park-card__body">
+    <div class="park-card__head">
+      <h3>{{ park.name }}</h3>
+      {% if card_variant != 'featured' %}<span class="rating"><span class="rating__star">&#9733;</span> {{ park.rating }}</span>{% endif %}
+    </div>
+
+    {% if card_variant == 'featured' %}
+      <p>{{ park.type }} &middot; {{ park.capacity }}</p>
+    {% endif %}
+
+    <div class="chips park-card__chips">
+      {% for amenity in park.amenity_items|slice:":3" %}
+        <span class="chip">
+          <i class="ph {{ amenity.icon }}"></i>
+          {{ amenity.label }}
+        </span>
+      {% endfor %}
+      {% if card_variant != 'featured' and park.amenities|length > 3 %}
+        <span class="chip">+{{ park.amenities|length|add:"-3" }}</span>
+      {% endif %}
+    </div>
+
+    <div class="park-card__bottom">
+      <div class="park-card__price">
+        <strong>${{ park.price }}</strong>
+        <span>/ noche</span>
+      </div>
+      {% if card_variant != 'featured' %}
+        <span class="park-card__availability">Disponible esta semana</span>
+      {% endif %}
+    </div>
+  </div>
+</article>

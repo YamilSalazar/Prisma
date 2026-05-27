@@ -1,0 +1,44 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<section class="hero">
+  <div class="fireflies" aria-hidden="true">
+    <span style="left:10%;top:30%;--s:5px;--d:7.6s;--delay:.2s;--x:14px;--y:-10px"></span>
+    <span style="left:18%;top:72%;--s:4px;--d:8.4s;--delay:1.4s;--x:-12px;--y:8px"></span>
+    <span style="left:31%;top:24%;--s:5px;--d:7.9s;--delay:2.1s;--x:-13px;--y:-8px"></span>
+    <span style="left:64%;top:28%;--s:5px;--d:8.1s;--delay:.7s;--x:-14px;--y:10px"></span>
+    <span style="left:78%;top:42%;--s:4px;--d:8.8s;--delay:1.9s;--x:12px;--y:-9px"></span>
+    <span style="left:90%;top:70%;--s:5px;--d:7.4s;--delay:2.8s;--x:-10px;--y:-12px"></span>
+  </div>
+  <div class="hero__content">
+    <p class="eyebrow">Edición 2026 · Sitio oficial</p>
+    <h1>Festival Internacional<br>de las <strong>Luciérnagas</strong> 2026</h1>
+    <div class="hero__chips">
+      <span class="info-chip"><i class="ph ph-calendar-blank"></i>12 Jun — 18 Ago</span>
+      <span class="info-chip"><i class="ph ph-tree-evergreen"></i>6 parques</span>
+      <span class="info-chip"><i class="ph ph-moon-stars"></i>2 — 5 noches</span>
+      <span class="info-chip"><i class="ph ph-clock"></i>19:30 — 23:00</span>
+      <span class="seal"><i class="ph ph-shield-check"></i>Oficial</span>
+    </div>
+    <a class="button button--primary hero__button" href="{% url 'core:map' %}">
+      <i class="ph ph-map-pin"></i> Ver mapa
+    </a>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section__header">
+    <div>
+      <p class="eyebrow">Hospedajes destacados</p>
+      <h2>Tres opciones que <strong>se llenan primero</strong></h2>
+    </div>
+    <a class="button button--secondary" href="{% url 'core:park_list' %}">Ver todos →</a>
+  </div>
+  <div class="grid grid--3">
+    {% for park in featured_parks %}
+      {% include "core/partials/park_card.html" with card_variant="featured" %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
+

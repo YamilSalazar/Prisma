@@ -1,0 +1,67 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+{% include "core/partials/step_indicator.html" with step=2 %}
+<section class="checkout-layout checkout-layout--summary">
+  <div class="checkout-main">
+    <article class="card reservation-summary-card">
+      <p class="eyebrow">Tu reservaci&oacute;n</p>
+      <h1>Revisa los datos antes de pagar</h1>
+      <div class="summary-grid">
+        <p><span>Parque</span><strong>Mirador de las Estrellas</strong></p>
+        <p><span>Hospedaje</span><strong>Caba&ntilde;a &middot; 2 personas</strong></p>
+        <p><span>Entrada</span><strong>S&aacute;bado 14 Junio 2026 &middot; 15:00</strong></p>
+        <p><span>Salida</span><strong>Lunes 16 Junio 2026 &middot; 12:00</strong></p>
+        <p><span>Noches</span><strong>2 noches</strong></p>
+        <p><span>Hu&eacute;spedes</span><strong>2 adultos</strong></p>
+      </div>
+    </article>
+
+    <article class="card accordion-card cost-breakdown-card" data-accordion>
+      <button class="accordion-card__head" type="button" aria-expanded="true">
+        <span class="accordion-card__title"><i class="ph ph-currency-circle-dollar"></i> Desglose del costo</span>
+        <i class="ph ph-caret-up accordion-card__caret"></i>
+      </button>
+      <div class="accordion-card__body cost-lines">
+        <p><span>$1,420 &times; 2 noches</span><strong>$2,840</strong></p>
+        <p><span>Servicio de plataforma</span><strong>$140</strong></p>
+        <p><span>Impuestos y hospedaje (16%)</span><strong>$476</strong></p>
+        <p class="cost-lines__total"><span>Total</span><strong>$3,456 MXN</strong></p>
+      </div>
+    </article>
+
+    <article class="card accordion-card policy-card" data-accordion>
+      <button class="accordion-card__head" type="button" aria-expanded="false">
+        <span class="accordion-card__title"><i class="ph ph-shield-warning"></i> Pol&iacute;tica de cancelaci&oacute;n</span>
+        <i class="ph ph-caret-down accordion-card__caret"></i>
+      </button>
+      <div class="accordion-card__body policy-card__body" hidden>
+        <p>Cancelaci&oacute;n gratuita hasta 7 d&iacute;as antes de la fecha. Entre 6 y 3 d&iacute;as: reembolso del 50%.</p>
+        <p>Menos de 72 horas o no presentarse: sin reembolso. Modificaciones de fecha sujetas a disponibilidad.</p>
+      </div>
+    </article>
+  </div>
+
+  <aside class="card checkout-total checkout-total--summary">
+    <header>
+      <h2>Mirador de las Estrellas</h2>
+      <p>14 &mdash; 16 Junio 2026 &middot; 2 personas</p>
+    </header>
+
+    <div class="checkout-total__lines">
+      <p><span>Subtotal</span><strong>$2,840</strong></p>
+      <p><span>Servicio</span><strong>$140</strong></p>
+      <p><span>Impuestos</span><strong>$476</strong></p>
+    </div>
+
+    <div class="checkout-total__grand">
+      <span>Total</span>
+      <strong>$3,456</strong>
+      <small>MXN &middot; impuestos incluidos</small>
+    </div>
+
+    <a class="button button--primary button--block" href="{% url 'core:booking_payment' %}"><i class="ph ph-lock-simple"></i> Ir a pagar</a>
+    <a class="checkout-edit-link" href="{% url 'core:booking_details' %}"><i class="ph ph-arrow-left"></i> Modificar datos</a>
+  </aside>
+</section>
+{% endblock %}

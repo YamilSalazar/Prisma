@@ -1,0 +1,30 @@
+﻿{% extends "core/base.html" %}
+
+{% block content %}
+<section class="centered-panel">
+  <form class="card form-card form-card--auth form-card--login">
+    <p class="eyebrow">Acceso &middot; Visitantes</p>
+    <h1>Iniciar sesi&oacute;n</h1>
+
+    <label class="field auth-field">Correo electr&oacute;nico
+      <span class="auth-input">
+        <i class="ph ph-envelope-simple" aria-hidden="true"></i>
+        <input type="email" placeholder="tucorreo@ejemplo.com">
+      </span>
+    </label>
+
+    <label class="field auth-field">Contrase&ntilde;a
+      <span class="auth-input auth-input--password">
+        <input id="login-password" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;">
+        <button type="button" data-toggle-password="#login-password" aria-label="Mostrar contrase&ntilde;a">
+          <i class="ph ph-eye" aria-hidden="true"></i>
+        </button>
+      </span>
+    </label>
+
+    <a class="form-link" href="{% url 'core:password_reset' %}">&iquest;Olvidaste tu contrase&ntilde;a?</a>
+    <a class="button button--primary button--block" href="{% url 'core:home' %}">Iniciar sesi&oacute;n</a>
+    <p class="form-note">&iquest;No tienes cuenta? <a href="{% url 'core:register' %}">Crear cuenta &rarr;</a></p>
+  </form>
+</section>
+{% endblock %}

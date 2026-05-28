@@ -116,3 +116,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# Auth redirects
+LOGIN_URL = 'core:login'
+LOGIN_REDIRECT_URL = 'core:home'
+LOGOUT_REDIRECT_URL = 'core:home'
+AUTH_USER_MODEL = "core.Usuario"
+
+# Localization
+LANGUAGE_CODE = 'es-mx'
+TIME_ZONE = 'America/Mexico_City'

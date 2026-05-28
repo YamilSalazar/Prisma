@@ -2,20 +2,42 @@
 
 {% block content %}
 <section class="centered-panel">
-  <form class="card form-card form-card--auth form-card--login">
+  <form method="POST" class="card form-card form-card--auth form-card--login">
+    {% csrf_token %}
+
     <p class="eyebrow">Acceso &middot; Visitantes</p>
     <h1>Iniciar sesi&oacute;n</h1>
+
+    {% if messages %}
+      <div class="form-errors">
+        {% for message in messages %}
+          <p>{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
 
     <label class="field auth-field">Correo electr&oacute;nico
       <span class="auth-input">
         <i class="ph ph-envelope-simple" aria-hidden="true"></i>
-        <input type="email" placeholder="tucorreo@ejemplo.com">
+        <input 
+          type="email" 
+          name="email"
+          placeholder="tucorreo@ejemplo.com"
+          value="{{ request.POST.email|default:'' }}"
+          required
+        >
       </span>
     </label>
 
     <label class="field auth-field">Contrase&ntilde;a
       <span class="auth-input auth-input--password">
-        <input id="login-password" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;">
+        <input 
+          id="login-password" 
+          type="password" 
+          name="password"
+          placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
+          required
+        >
         <button type="button" data-toggle-password="#login-password" aria-label="Mostrar contrase&ntilde;a">
           <i class="ph ph-eye" aria-hidden="true"></i>
         </button>
@@ -23,7 +45,11 @@
     </label>
 
     <a class="form-link" href="{% url 'core:password_reset' %}">&iquest;Olvidaste tu contrase&ntilde;a?</a>
-    <a class="button button--primary button--block" href="{% url 'core:home' %}">Iniciar sesi&oacute;n</a>
+
+    <button type="submit" class="button button--primary button--block">
+      Iniciar sesi&oacute;n
+    </button>
+
     <p class="form-note">&iquest;No tienes cuenta? <a href="{% url 'core:register' %}">Crear cuenta &rarr;</a></p>
   </form>
 </section>

@@ -20,4 +20,5 @@ urlpatterns = [
     path("mis-reservaciones/", views.reservations, name="reservations"),
     path("mi-cuenta/", views.account, name="account"),
     path("cambiar-password/", views.change_password, name="change_password"),
+    path("logout/", views.logout_view, name="logout"),
 ]

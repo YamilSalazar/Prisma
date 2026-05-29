@@ -108,6 +108,7 @@ button, input, select { font: inherit; }
   font-weight: 800;
   letter-spacing: .14em;
   text-transform: uppercase;
+  transition: all 0.4s ease-in-out;
 }
 
 .button--primary {
@@ -115,7 +116,12 @@ button, input, select { font: inherit; }
   color: #1a1208;
 }
 
-.button--primary:hover { background: var(--gold-2); }
+.button--primary:hover {
+  background: var(--gold-2);
+  box-shadow: 0 0 14px rgba(255, 213, 79, 0.4), 
+              0 0 24px rgba(255, 179, 0, 0.3), 
+              0 0 36px rgba(255, 179, 0, 0.2);
+}
 
 .button--secondary {
   background: transparent;
@@ -125,6 +131,9 @@ button, input, select { font: inherit; }
 .button--secondary:hover {
   border-color: var(--gold);
   color: var(--gold);
+  box-shadow: 0 0 10px rgba(255, 213, 79, 0.3),
+              inset 0 0 10px rgba(255, 179, 0, 0.2);
+  text-shadow: 0 0 8px rgba(255, 213, 79, 0.6);
 }
 
 .button--block { width: 100%; }
@@ -480,6 +489,15 @@ button, input, select { font: inherit; }
   background: var(--deep);
   color: var(--muted);
   font-size: 12px;
+}
+
+.footer a {
+  transition: all 0.4s ease-in-out;
+}
+
+.footer a:hover {
+  color: #ffd54f;
+  text-shadow: 0 0 8px rgba(255, 213, 79, 0.8), 0 0 16px rgba(255, 179, 0, 0.5);
 }
 
 .footer__copy {

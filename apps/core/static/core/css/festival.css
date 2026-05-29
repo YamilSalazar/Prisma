@@ -207,7 +207,7 @@ button, input, select { font: inherit; }
 .ff-back .ff-glow {
   width: 2px;
   height: 2px;
-  color: #f0df63;
+  color: #e6a832; /* Ámbar profundo */
   opacity: 0.3;
   filter: blur(2px) saturate(1.2);
 }
@@ -215,7 +215,7 @@ button, input, select { font: inherit; }
 .ff-mid .ff-glow {
   width: 4px;
   height: 4px;
-  color: #f0df63;
+  color: #fbd341; /* Dorado cálido */
   opacity: 0.6;
   filter: blur(0.5px) saturate(1.2);
 }
@@ -223,7 +223,7 @@ button, input, select { font: inherit; }
 .ff-front .ff-glow {
   width: 6px;
   height: 6px;
-  color: #ccff00;
+  color: #ffe666; /* Amarillo incandescente */
   opacity: 0.8;
   filter: saturate(1.5);
 }

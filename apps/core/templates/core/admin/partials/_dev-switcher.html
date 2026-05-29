@@ -1,0 +1,22 @@
+{% comment %}
+  Partial: _dev-switcher.html
+  Barra de navegación de prototipo — muestra las pantallas disponibles.
+  En producción, este componente se reemplaza por el router real.
+  Usa `active_section` del contexto para marcar el tab activo.
+{% endcomment %}
+
+<div class="dev-switcher">
+  <div class="dev-switcher__brand">
+    <i class="ph ph-lightning"></i>
+    FILA Admin
+  </div>
+  <button onclick="showScreen('panel')"         {% if active_section == 'panel' %}class="is-active"{% endif %} id="tab-panel">Panel de control</button>
+  <button onclick="showScreen('parques')"        {% if active_section == 'parques' %}class="is-active"{% endif %} id="tab-parques">Listado de parques</button>
+  <button onclick="showScreen('agregar')"        {% if active_section == 'agregar' %}class="is-active"{% endif %} id="tab-agregar">Agregar parque</button>
+  <button onclick="showScreen('editar')"         {% if active_section == 'editar' %}class="is-active"{% endif %} id="tab-editar">Editar parque</button>
+  <button onclick="showScreen('eliminar')"       {% if active_section == 'eliminar' %}class="is-active"{% endif %} id="tab-eliminar">Eliminar parque</button>
+  <button onclick="showScreen('reservaciones')"  {% if active_section == 'reservaciones' %}class="is-active"{% endif %} id="tab-reservaciones">Gestión de reservaciones</button>
+  <button onclick="showScreen('detalle')"        {% if active_section == 'detalle' %}class="is-active"{% endif %} id="tab-detalle">Detalle de reservación</button>
+  <button onclick="showScreen('disponibilidad')" {% if active_section == 'disponibilidad' %}class="is-active"{% endif %} id="tab-disponibilidad">Disponibilidad</button>
+  <button onclick="showScreen('contacto')"       {% if active_section == 'contacto' %}class="is-active"{% endif %} id="tab-contacto">Contacto</button>
+</div>

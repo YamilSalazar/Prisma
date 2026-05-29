@@ -1,0 +1,113 @@
+    <main class="admin-main">
+      <div class="admin-page-header">
+        <div>
+          <p class="eyebrow">Administración</p>
+          <h1>Parques oficiales</h1>
+        </div>
+        <div class="admin-page-actions">
+          <button class="button button--primary" onclick="showScreen('agregar')"><i class="ph ph-plus"></i> Agregar parque</button>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <div class="toolbar__search">
+          <i class="ph ph-magnifying-glass"></i>
+          <input type="text" placeholder="Buscar parque…">
+        </div>
+        <select class="admin-select">
+          <option>Estado ↕</option>
+          <option>Activo</option>
+          <option>Inactivo</option>
+        </select>
+        <select class="admin-select">
+          <option>Capacidad ↕</option>
+          <option>Mayor a menor</option>
+          <option>Menor a mayor</option>
+        </select>
+        <div class="toolbar__spacer"></div>
+        <span class="toolbar__count">5 parques</span>
+      </div>
+
+      <div class="card" style="padding:0;overflow:hidden">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Capacidad</th>
+              <th>Estado</th>
+              <th>Última edición</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Parque Cerro Pelón</td>
+              <td><span style="color:var(--cream)">38/46</span> <span class="text-muted">ocupados / total</span></td>
+              <td><span class="status-pill status-pill--active"><i></i> Activo</span></td>
+              <td class="text-muted">10/jul · 14:22</td>
+              <td>
+                <div style="display:flex;gap:8px">
+                  <button class="button button--secondary button--sm" onclick="showScreen('editar')">Editar</button>
+                  <button class="button button--danger button--sm" onclick="showScreen('eliminar')">Eliminar</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Parque El Rosario</td>
+              <td><span style="color:var(--cream)">52/80</span> <span class="text-muted">ocupados / total</span></td>
+              <td><span class="status-pill status-pill--active"><i></i> Activo</span></td>
+              <td class="text-muted">10/jul · 14:22</td>
+              <td>
+                <div style="display:flex;gap:8px">
+                  <button class="button button--secondary button--sm" onclick="showScreen('editar')">Editar</button>
+                  <button class="button button--danger button--sm" onclick="showScreen('eliminar')">Eliminar</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Parque La Mosa</td>
+              <td><span style="color:var(--cream)">0/24</span> <span class="text-muted">ocupados / total</span></td>
+              <td><span class="status-pill status-pill--inactive"><i></i> Inactivo</span></td>
+              <td class="text-muted">10/jul · 14:22</td>
+              <td>
+                <div style="display:flex;gap:8px">
+                  <button class="button button--secondary button--sm" onclick="showScreen('editar')">Editar</button>
+                  <button class="button button--danger button--sm" onclick="showScreen('eliminar')">Eliminar</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Parque Sierra Chincua</td>
+              <td><span style="color:var(--cream)">21/45</span> <span class="text-muted">ocupados / total</span></td>
+              <td><span class="status-pill status-pill--active"><i></i> Activo</span></td>
+              <td class="text-muted">10/jul · 14:22</td>
+              <td>
+                <div style="display:flex;gap:8px">
+                  <button class="button button--secondary button--sm" onclick="showScreen('editar')">Editar</button>
+                  <button class="button button--danger button--sm" onclick="showScreen('eliminar')">Eliminar</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>Parque Piedra Herrada</td>
+              <td><span style="color:var(--cream)">17/30</span> <span class="text-muted">ocupados / total</span></td>
+              <td><span class="status-pill status-pill--active"><i></i> Activo</span></td>
+              <td class="text-muted">10/jul · 14:22</td>
+              <td>
+                <div style="display:flex;gap:8px">
+                  <button class="button button--secondary button--sm" onclick="showScreen('editar')">Editar</button>
+                  <button class="button button--danger button--sm" onclick="showScreen('eliminar')">Eliminar</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <button><i class="ph ph-caret-left"></i></button>
+        <button class="is-active">1</button>
+        <button>2</button>
+        <button><i class="ph ph-caret-right"></i></button>
+      </div>
+    </main>

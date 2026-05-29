@@ -1,0 +1,38 @@
+{% comment %}
+  Partial: _admin-scripts.html
+  Scripts de comportamiento del panel admin.
+  Incluir al final del <body>, después de todas las pantallas.
+{% endcomment %}
+
+<script>
+  function showScreen(name) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('is-active'));
+    document.querySelectorAll('.dev-switcher button').forEach(b => b.classList.remove('is-active'));
+    document.getElementById('screen-' + name).classList.add('is-active');
+    const tab = document.getElementById('tab-' + name);
+    if (tab) tab.classList.add('is-active');
+    window.scrollTo(0, 0);
+  }
+
+  function openModal(day) {
+    document.getElementById('modal-date-label').textContent = day + ' / 07 / 2026';
+    document.getElementById('modal-disponibilidad').classList.add('is-open');
+  }
+
+  function closeModal() {
+    document.getElementById('modal-disponibilidad').classList.remove('is-open');
+  }
+
+  // Close modal on backdrop click
+  document.getElementById('modal-disponibilidad').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // Sidebar nav sync across all screens
+  document.querySelectorAll('.sidebar__link').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.closest('.sidebar').querySelectorAll('.sidebar__link').forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+    });
+  });
+</script>

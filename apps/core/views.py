@@ -177,3 +177,81 @@ def account(request):
 
 def change_password(request):
     return render(request, "core/account/change_password.html", _context("account"))
+
+# ──────────────────────────────────────────────────────────────────
+# Admin views
+# Protegidas con @staff_member_required: sólo usuarios con is_staff=True
+# pueden acceder. En caso contrario redirigen a /login/?next=<url>.
+# ──────────────────────────────────────────────────────────────────
+
+from django.contrib.admin.views.decorators import staff_member_required
+
+
+def _admin_context(active_section="panel", **extra):
+    """Contexto base para todas las vistas del panel admin."""
+    context = {
+        "active_section": active_section,
+        "parks": PARKS,
+    }
+    context.update(extra)
+    return context
+
+
+@staff_member_required(login_url="/login/")
+def admin_panel(request):
+    return render(request, "core/admin/admin-prisma.html", _admin_context("panel"))
+
+
+@staff_member_required(login_url="/login/")
+def admin_parques(request):
+    return render(request, "core/admin/admin-prisma.html", _admin_context("parques"))
+
+
+@staff_member_required(login_url="/login/")
+def admin_agregar_parque(request):
+    return render(request, "core/admin/admin-prisma.html", _admin_context("agregar"))
+
+
+@staff_member_required(login_url="/login/")
+def admin_editar_parque(request, slug):
+    park = next((p for p in PARKS if p["slug"] == slug), None)
+    return render(
+        request,
+        "core/admin/admin-prisma.html",
+        _admin_context("editar", selected_park=park),
+    )
+
+
+@staff_member_required(login_url="/login/")
+def admin_eliminar_parque(request, slug):
+    park = next((p for p in PARKS if p["slug"] == slug), None)
+    return render(
+        request,
+        "core/admin/admin-prisma.html",
+        _admin_context("eliminar", selected_park=park),
+    )
+
+
+@staff_member_required(login_url="/login/")
+def admin_reservaciones(request):
+    return render(request, "core/admin/admin-prisma.html", _admin_context("reservaciones"))
+
+
+@staff_member_required(login_url="/login/")
+def admin_detalle_reservacion(request, folio):
+    return render(
+        request,
+        "core/admin/admin-prisma.html",
+        _admin_context("detalle", folio=folio),
+    )
+
+
+@staff_member_required(login_url="/login/")
+def admin_disponibilidad(request):
+    return render(request, "core/admin/admin-prisma.html", _admin_context("disponibilidad"))
+
+
+@staff_member_required(login_url="/login/")
+def admin_contacto(request):
+    return render(request, "core/admin/admin-prisma.html", _admin_context("contacto"))
+

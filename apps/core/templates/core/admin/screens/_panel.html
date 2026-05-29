@@ -1,0 +1,102 @@
+    <main class="admin-main">
+      <div class="admin-page-header">
+        <div>
+          <p class="eyebrow">Festival Internacional de las Luciérnagas</p>
+          <h1>Panel de control</h1>
+        </div>
+      </div>
+
+      <!-- stat cards -->
+      <div class="stat-grid">
+        <div class="stat-card">
+          <p class="stat-card__label">Reservas activas</p>
+          <p class="stat-card__value">248</p>
+          <p class="stat-card__sub">↑ 12 vs. semana anterior</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-card__label">Ocupación promedio</p>
+          <p class="stat-card__value">62%</p>
+          <p class="stat-card__sub">Meta del festival: 75%</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-card__label">Parques activos</p>
+          <p class="stat-card__value">4 <span style="font-size:22px;color:var(--muted);font-weight:300">/ 5</span></p>
+          <p class="stat-card__sub">1 en mantenimiento</p>
+        </div>
+        <div class="stat-card">
+          <p class="stat-card__label">Ingresos totales</p>
+          <p class="stat-card__value"><strong>$1.4M</strong></p>
+          <p class="stat-card__sub">MXN · temporada actual</p>
+        </div>
+      </div>
+
+      <!-- alert -->
+      <div class="admin-alert">
+        <i class="ph ph-warning"></i>
+        <p><strong>Disponibilidad baja</strong> — Parque El Rosario: quedan <strong>8 lugares</strong> disponibles para el fin de semana del 18 – 20 jul.</p>
+        <button class="button button--secondary button--sm" style="margin-left:auto;white-space:nowrap">Revisar</button>
+      </div>
+
+      <!-- recent reservations -->
+      <div class="section-label">
+        <h2>Últimas reservaciones</h2>
+        <button class="button button--ghost" onclick="showScreen('reservaciones')">Ver todas →</button>
+      </div>
+
+      <div class="card" style="padding:0;overflow:hidden">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Folio</th>
+              <th>Cliente</th>
+              <th>Parque</th>
+              <th>Fecha</th>
+              <th>Total</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#FL-238104</td>
+              <td>María Hernández</td>
+              <td><span class="text-muted">Cerro Pelón</span></td>
+              <td>14/07</td>
+              <td>$3,200</td>
+              <td><span class="status-pill status-pill--active"><i></i> Activa</span></td>
+            </tr>
+            <tr>
+              <td>#FL-238101</td>
+              <td>Daniel Ortega</td>
+              <td><span class="text-muted">El Rosario</span></td>
+              <td>14/07</td>
+              <td>$1,100</td>
+              <td><span class="status-pill status-pill--active"><i></i> Activa</span></td>
+            </tr>
+            <tr>
+              <td>#FL-238099</td>
+              <td>L. Pérez</td>
+              <td><span class="text-muted">Sierra Chincua</span></td>
+              <td>13/07</td>
+              <td>$2,600</td>
+              <td><span class="status-pill status-pill--cancelled"><i></i> Cancelada</span></td>
+            </tr>
+            <tr>
+              <td>#FL-238094</td>
+              <td>Andrés Méndez</td>
+              <td><span class="text-muted">Piedra Herrada</span></td>
+              <td>13/07</td>
+              <td>$4,800</td>
+              <td><span class="status-pill status-pill--active"><i></i> Activa</span></td>
+            </tr>
+            <tr>
+              <td>#FL-238088</td>
+              <td>Sofía Reyes</td>
+              <td><span class="text-muted">Cerro Pelón</span></td>
+              <td>12/07</td>
+              <td>$1,600</td>
+              <td><span class="status-pill status-pill--done"><i></i> Completa</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>

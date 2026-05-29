@@ -1,0 +1,83 @@
+    <main class="admin-main">
+      <button class="back-link" onclick="showScreen('parques')"><i class="ph ph-arrow-left"></i> Volver al listado de parques</button>
+
+      <div class="admin-page-header">
+        <div>
+          <p class="eyebrow">Parques</p>
+          <h1>Agregar parque</h1>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="form-section-title">Información general</h3>
+
+        <div class="field-group">
+          <div class="field">
+            <label>Nombre del parque</label>
+            <input type="text" placeholder="Ej. Parque Torre Alta">
+          </div>
+        </div>
+
+        <div class="field-group">
+          <div class="field">
+            <label>Dirección</label>
+            <input type="text" placeholder="Calle, número, municipio, estado">
+          </div>
+        </div>
+
+        <div class="field-group field-group--2">
+          <div class="field">
+            <label>Horario de apertura</label>
+            <input type="text" placeholder="Ej. 06:00">
+          </div>
+          <div class="field">
+            <label>Horario de cierre</label>
+            <input type="text" placeholder="Ej. 22:00">
+          </div>
+        </div>
+
+        <hr class="divider">
+        <h3 class="form-section-title">Servicios disponibles</h3>
+        <p style="margin:0 0 14px;color:var(--muted);font-size:13px">Selecciona todos los que aplican.</p>
+
+        <div class="checkbox-grid" style="margin-bottom:24px">
+          <label class="checkbox-item"><input type="checkbox" checked> Estacionamiento</label>
+          <label class="checkbox-item"><input type="checkbox"> Sanitarios</label>
+          <label class="checkbox-item"><input type="checkbox"> Luz eléctrica</label>
+          <label class="checkbox-item"><input type="checkbox" checked> Agua potable</label>
+          <label class="checkbox-item"><input type="checkbox"> Fogatas</label>
+          <label class="checkbox-item"><input type="checkbox"> Guía de campo</label>
+          <label class="checkbox-item"><input type="checkbox"> Renta de equipo</label>
+          <label class="checkbox-item"><input type="checkbox"> Comedor / Kiosco</label>
+          <label class="checkbox-item"><input type="checkbox"> Acceso wheelchair</label>
+        </div>
+
+        <hr class="divider">
+        <h3 class="form-section-title">Capacidad</h3>
+
+        <div class="field-group field-group--2">
+          <div class="field">
+            <label>Lugares individuales (cab.)</label>
+            <input type="number" placeholder="0" min="0">
+          </div>
+          <div class="field">
+            <label>Zonas de camping (tiendas)</label>
+            <input type="number" placeholder="0" min="0">
+          </div>
+        </div>
+
+        <hr class="divider">
+        <h3 class="form-section-title">Imagen principal</h3>
+
+        <div class="drop-zone" style="margin-bottom:0">
+          <i class="ph ph-upload-simple"></i>
+          <p>Arrastra o sube una imagen del parque</p>
+          <p style="font-size:11px;color:var(--muted);margin:0">JPG, PNG · máx. 5 MB</p>
+        </div>
+
+        <div class="form-actions">
+          <button class="button button--secondary" onclick="showScreen('parques')">Cancelar</button>
+          <button class="button button--primary" onclick="showScreen('parques')"><i class="ph ph-floppy-disk"></i> Guardar parque</button>
+        </div>
+      </div>
+    </main>

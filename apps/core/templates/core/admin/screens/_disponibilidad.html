@@ -1,0 +1,128 @@
+    <main class="admin-main">
+      <div class="admin-page-header">
+        <div>
+          <p class="eyebrow">Administración</p>
+          <h1>Gestión de disponibilidad</h1>
+        </div>
+      </div>
+
+      <!-- controls row -->
+      <div class="calendar-admin-header">
+        <div class="field" style="margin:0">
+          <select class="admin-select" style="min-width:220px">
+            <option>Parque Cerro Pelón</option>
+            <option>Parque El Rosario</option>
+            <option>Parque Sierra Chincua</option>
+            <option>Parque Piedra Herrada</option>
+          </select>
+        </div>
+        <div class="calendar-month-nav">
+          <button><i class="ph ph-caret-left"></i></button>
+          <strong>Julio 2026</strong>
+          <button><i class="ph ph-caret-right"></i></button>
+        </div>
+      </div>
+
+      <!-- calendar grid -->
+      <div class="cal-grid">
+        <!-- day labels -->
+        <div class="cal-day-label">Lu</div>
+        <div class="cal-day-label">Ma</div>
+        <div class="cal-day-label">Mi</div>
+        <div class="cal-day-label">Ju</div>
+        <div class="cal-day-label">Vi</div>
+        <div class="cal-day-label">Sá</div>
+        <div class="cal-day-label">Do</div>
+
+        <!-- week 1: starts Wed Jul 1 -->
+        <div class="cal-cell cal-cell--empty"></div>
+        <div class="cal-cell cal-cell--empty"></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('1')"><div class="cal-cell__date">1</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('2')"><div class="cal-cell__date">2</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('3')"><div class="cal-cell__date">3</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--full" onclick="openModal('4')"><div class="cal-cell__date">4</div><div class="cal-cell__status">Lleno</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('5')"><div class="cal-cell__date">5</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+
+        <!-- week 2 -->
+        <div class="cal-cell cal-cell--available" onclick="openModal('6')"><div class="cal-cell__date">6</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('7')"><div class="cal-cell__date">7</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--low" onclick="openModal('8')"><div class="cal-cell__date">8</div><div class="cal-cell__status">Baja</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--low" onclick="openModal('9')"><div class="cal-cell__date">9</div><div class="cal-cell__status">Baja</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('10')"><div class="cal-cell__date">10</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('11')"><div class="cal-cell__date">11</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('12')"><div class="cal-cell__date">12</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+
+        <!-- week 3 -->
+        <div class="cal-cell cal-cell--available" onclick="openModal('13')"><div class="cal-cell__date">13</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('14')"><div class="cal-cell__date">14</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('15')"><div class="cal-cell__date">15</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--low cal-cell--selected" onclick="openModal('16')"><div class="cal-cell__date">16</div><div class="cal-cell__status">Baja</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('17')"><div class="cal-cell__date">17</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--blocked" onclick="openModal('18')"><div class="cal-cell__date">18</div><div class="cal-cell__status">Bloqueado</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--blocked" onclick="openModal('19')"><div class="cal-cell__date">19</div><div class="cal-cell__status">Bloqueado</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+
+        <!-- week 4 -->
+        <div class="cal-cell cal-cell--full" onclick="openModal('20')"><div class="cal-cell__date">20</div><div class="cal-cell__status">Lleno</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('21')"><div class="cal-cell__date">21</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('22')"><div class="cal-cell__date">22</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--low" onclick="openModal('23')"><div class="cal-cell__date">23</div><div class="cal-cell__status">Baja</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('24')"><div class="cal-cell__date">24</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('25')"><div class="cal-cell__date">25</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--low" onclick="openModal('26')"><div class="cal-cell__date">26</div><div class="cal-cell__status">Baja</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+
+        <!-- week 5 -->
+        <div class="cal-cell cal-cell--available" onclick="openModal('27')"><div class="cal-cell__date">27</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('28')"><div class="cal-cell__date">28</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('29')"><div class="cal-cell__date">29</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('30')"><div class="cal-cell__date">30</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--available" onclick="openModal('31')"><div class="cal-cell__date">31</div><div class="cal-cell__status">Disponible</div><i class="ph ph-pencil-simple cal-cell__edit"></i></div>
+        <div class="cal-cell cal-cell--empty"></div>
+        <div class="cal-cell cal-cell--empty"></div>
+      </div>
+
+      <div class="cal-legend">
+        <span><span class="legend-dot legend-dot--available"></span>Disponible</span>
+        <span><span class="legend-dot legend-dot--low"></span>Disponibilidad baja</span>
+        <span><span class="legend-dot legend-dot--full"></span>Lleno</span>
+        <span><span class="legend-dot legend-dot--blocked"></span>Bloqueado (mantenimiento)</span>
+      </div>
+
+      <div class="cal-footer-note">
+        <i class="ph ph-info"></i>
+        El bloqueo afecta sólo al parque seleccionado para la fecha elegida. No cancela reservaciones existentes.
+      </div>
+    </main>
+  </div>
+
+  <!-- modal cambio disponibilidad -->
+  <div class="modal-backdrop" id="modal-disponibilidad">
+    <div class="modal">
+      <p style="margin:0 0 4px;color:var(--gold);font-size:10.5px;font-weight:700;letter-spacing:.22em;text-transform:uppercase">Parque Cerro Pelón</p>
+      <p class="modal-date" id="modal-date-label">14 / 07 / 2026</p>
+
+      <div class="field-group field-group--2" style="margin-bottom:14px">
+        <div class="field">
+          <label>Capacidad de cabañas</label>
+          <input type="number" value="12" style="min-height:44px;padding:0 14px;border:1px solid var(--line-strong);background:var(--deep-2);color:var(--cream);border-radius:2px">
+        </div>
+        <div class="field">
+          <label>Zonas de camping</label>
+          <input type="number" value="24" style="min-height:44px;padding:0 14px;border:1px solid var(--line-strong);background:var(--deep-2);color:var(--cream);border-radius:2px">
+        </div>
+      </div>
+
+      <div class="modal-avail-info">
+        Reservadas: <strong>8 cab. · 13 zonas</strong> &nbsp;·&nbsp; Disponibles: <strong>4 cab. · 11 zonas</strong>
+      </div>
+
+      <label class="modal-checkbox">
+        <input type="checkbox"> Desactivar parque este día
+        <span style="margin-left:auto;color:var(--muted);font-size:12px">Bloqueo por mantenimiento</span>
+      </label>
+
+      <div class="modal-actions">
+        <button class="button button--secondary" onclick="closeModal()">Cancelar</button>
+        <button class="button button--primary" onclick="closeModal()"><i class="ph ph-floppy-disk"></i> Guardar</button>
+      </div>
+    </div>
+  </div>

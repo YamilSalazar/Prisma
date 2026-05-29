@@ -1,0 +1,39 @@
+{% comment %}
+  Partial: _sidebar.html
+  Variables:
+    - active_section: string — 'panel' | 'parques' | 'reservaciones' | 'disponibilidad' | 'contacto'
+{% endcomment %}
+
+<aside class="sidebar">
+  <div class="sidebar__brand">
+    <div class="sidebar__brand-icon"><i class="ph ph-lightning"></i></div>
+    <div class="sidebar__brand-text">
+      <strong>FILA · Admin</strong>
+      <span>Panel de control</span>
+    </div>
+  </div>
+  <p class="sidebar__section-label">Módulos</p>
+  <nav class="sidebar__nav">
+    <button class="sidebar__link {% if active_section == 'panel' %}is-active{% endif %}" onclick="showScreen('panel')">
+      <i class="ph ph-squares-four"></i> Panel
+    </button>
+    <button class="sidebar__link {% if active_section == 'parques' %}is-active{% endif %}" onclick="showScreen('parques')">
+      <i class="ph ph-tree"></i> Parques
+    </button>
+    <button class="sidebar__link {% if active_section == 'reservaciones' %}is-active{% endif %}" onclick="showScreen('reservaciones')">
+      <i class="ph ph-ticket"></i> Reservaciones
+    </button>
+    <button class="sidebar__link {% if active_section == 'disponibilidad' %}is-active{% endif %}" onclick="showScreen('disponibilidad')">
+      <i class="ph ph-calendar-dots"></i> Disponibilidad
+    </button>
+    <button class="sidebar__link {% if active_section == 'contacto' %}is-active{% endif %}" onclick="showScreen('contacto')">
+      <i class="ph ph-envelope"></i> Contacto
+    </button>
+  </nav>
+  <div class="sidebar__spacer"></div>
+  <div class="sidebar__user">
+    <strong>administrador</strong>
+    <span>admin@fila.mx</span>
+  </div>
+  <button class="sidebar__logout"><i class="ph ph-sign-out"></i> Cerrar sesión</button>
+</aside>

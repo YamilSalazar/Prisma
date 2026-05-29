@@ -1,21 +1,21 @@
     /* ── Design tokens (same as festival.css) ────────────────── */
     :root {
-      --night:  #0f1a0d;
-      --deep:   #1a3320;
+      --night: #0f1a0d;
+      --deep: #1a3320;
       --deep-2: #142a19;
-      --gold:   #c8975a;
+      --gold: #c8975a;
       --gold-2: #d9aa6e;
       --terracota: #b8552a;
-      --cream:  #f0ede5;
-      --muted:  #8a9a8c;
-      --line:        rgba(240,237,229,.08);
-      --line-strong: rgba(240,237,229,.14);
+      --cream: #f0ede5;
+      --muted: #8a9a8c;
+      --line: rgba(240, 237, 229, 0.08);
+      --line-strong: rgba(240, 237, 229, 0.14);
       /* admin extras */
       --sidebar-w: 220px;
       --topbar-h:  56px;
-      --green:  #2f7d49;
-      --red:    #c6483a;
-      --amber:  #b8862a;
+      --green:  #396E45;
+      --red:    #C0392B;
+      --amber:  #F1B73C;
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -33,58 +33,6 @@
     a { color: inherit; text-decoration: none; }
     button, input, select, textarea { font: inherit; }
     input, select, textarea { outline: 0; }
-
-    /* ── Screen switcher (dev nav) ───────────────────────────── */
-    .dev-switcher {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      gap: 0;
-      height: var(--topbar-h);
-      background: #0a1008;
-      border-bottom: 1px solid var(--line-strong);
-      padding: 0 16px;
-      overflow-x: auto;
-    }
-
-    .dev-switcher__brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-right: 20px;
-      color: var(--gold);
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .dev-switcher__brand i { font-size: 18px; }
-
-    .dev-switcher button {
-      height: var(--topbar-h);
-      padding: 0 14px;
-      border: 0;
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      white-space: nowrap;
-      border-bottom: 2px solid transparent;
-      transition: color .12s, border-color .12s;
-    }
-
-    .dev-switcher button:hover { color: var(--cream); }
-    .dev-switcher button.is-active {
-      color: var(--cream);
-      border-bottom-color: var(--gold);
-    }
 
     /* ── Screen wrapper ──────────────────────────────────────── */
     .screen { display: none; padding-top: var(--topbar-h); min-height: 100vh; }
@@ -460,7 +408,7 @@
     }
 
     .status-pill--active  { color: #4f9560; background: rgba(47,125,73,.12); border: 1px solid rgba(47,125,73,.22); }
-    .status-pill--done    { color: #6faad4; background: rgba(111,170,212,.10); border: 1px solid rgba(111,170,212,.2); }
+    .status-pill--done    { color: var(--muted); background: rgba(138,154,140,.08); border: 1px solid var(--line-strong); }
     .status-pill--cancelled { color: var(--red); background: rgba(198,72,58,.1); border: 1px solid rgba(198,72,58,.22); }
     .status-pill--inactive { color: var(--muted); background: rgba(138,154,140,.08); border: 1px solid var(--line-strong); }
     .status-pill--low { color: var(--amber); background: rgba(184,134,42,.1); border: 1px solid rgba(184,134,42,.24); }
@@ -1184,3 +1132,8 @@
     }
 
     .reservations-count-row strong { color: var(--cream); font-size: 14px; }
+
+    .sidebar__brand-logo {
+      width: 90px;
+      height: auto;
+    }

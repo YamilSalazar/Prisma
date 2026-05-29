@@ -1,3 +1,5 @@
+{% load static %}
+
 {% comment %}
   Partial: _sidebar.html
   Variables:
@@ -6,10 +8,15 @@
 
 <aside class="sidebar">
   <div class="sidebar__brand">
-    <div class="sidebar__brand-icon"><i class="ph ph-lightning"></i></div>
+    <img
+      class="sidebar__brand-logo"
+      src="{% static 'core/assets/logo-fila.png' %}"
+      alt="Festival Internacional de las Luciérnagas"
+    >
     <div class="sidebar__brand-text">
-      <strong>FILA · Admin</strong>
-      <span>Panel de control</span>
+      <strong>Luciérnagas</strong>
+      <span>Administrador</span>
+      <span>Prisma · FILA 2026</span>
     </div>
   </div>
   <p class="sidebar__section-label">Módulos</p>

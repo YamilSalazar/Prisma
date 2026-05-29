@@ -38,4 +38,5 @@ urlpatterns = [
     path("fila-admin/reservaciones/<str:folio>/", views.admin_detalle_reservacion, name="admin_detalle_reservacion"),
     path("fila-admin/disponibilidad/", views.admin_disponibilidad, name="admin_disponibilidad"),
     path("fila-admin/contacto/", views.admin_contacto, name="admin_contacto"),
+    path("logout/", views.logout_view, name="logout"),
 ]

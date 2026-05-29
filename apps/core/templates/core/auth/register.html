@@ -2,29 +2,59 @@
 
 {% block content %}
 <section class="centered-panel">
-  <form class="card form-card form-card--register">
+  <form method="POST" class="card form-card form-card--register">
+    {% csrf_token %}
+
     <p class="eyebrow">Crear cuenta &middot; Visitantes</p>
     <h1>Registrarse</h1>
 
+    {% if form.errors %}
+      <div class="form-errors">
+        {% for field in form %}
+          {% for error in field.errors %}
+            <p>{{ field.label }}: {{ error }}</p>
+          {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+          <p>{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
     <div class="form-grid auth-name-grid">
       <label class="field">Nombre
-        <input placeholder="Mar&iacute;a Fernanda">
+        <input type="text" name="first_name" placeholder="María Fernanda" value="{{ form.first_name.value|default:'' }}" required>
       </label>
+
       <label class="field">Apellidos
-        <input placeholder="Gonz&aacute;lez Ruiz">
+        <input type="text" name="last_name" placeholder="González Ruiz" value="{{ form.last_name.value|default:'' }}" required>
       </label>
     </div>
 
     <label class="field auth-field">Correo electr&oacute;nico
       <span class="auth-input">
         <i class="ph ph-envelope-simple" aria-hidden="true"></i>
-        <input type="email" placeholder="tucorreo@ejemplo.com">
+        <input type="email" name="email" placeholder="tucorreo@ejemplo.com" value="{{ form.email.value|default:'' }}" required>
       </span>
+    </label>
+
+    <label class="field auth-field">Tel&eacute;fono
+      <span class="auth-input">
+        <i class="ph ph-phone" aria-hidden="true"></i>
+        <input type="text" name="telefono" placeholder="55 1234 5678" value="{{ form.telefono.value|default:'' }}">
+      </span>
+    </label>
+
+    <label class="field auth-field">Idioma preferido
+      <select name="idioma" required>
+        <option value="es" {% if form.idioma.value == "es" or not form.idioma.value %}selected{% endif %}>Español</option>
+        <option value="en" {% if form.idioma.value == "en" %}selected{% endif %}>English</option>
+      </select>
     </label>
 
     <label class="field auth-field">Contrase&ntilde;a
       <span class="auth-input auth-input--password">
-        <input id="register-password" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;">
+        <input id="register-password" type="password" name="password1" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" required>
         <button type="button" data-toggle-password="#register-password" aria-label="Mostrar contrase&ntilde;a">
           <i class="ph ph-eye" aria-hidden="true"></i>
         </button>
@@ -32,7 +62,19 @@
       <small>M&iacute;nimo 8 caracteres, una may&uacute;scula y un n&uacute;mero</small>
     </label>
 
-    <a class="button button--primary button--block" href="{% url 'core:home' %}">Crear cuenta</a>
+    <label class="field auth-field">Confirmar contrase&ntilde;a
+      <span class="auth-input auth-input--password">
+        <input id="register-password2" type="password" name="password2" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" required>
+        <button type="button" data-toggle-password="#register-password2" aria-label="Mostrar contrase&ntilde;a">
+          <i class="ph ph-eye" aria-hidden="true"></i>
+        </button>
+      </span>
+    </label>
+
+    <button type="submit" class="button button--primary button--block">
+      Crear cuenta
+    </button>
+
     <p class="form-note">&iquest;Ya tienes cuenta? <a href="{% url 'core:login' %}">Iniciar sesi&oacute;n &rarr;</a></p>
   </form>
 </section>

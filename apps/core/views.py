@@ -1,4 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect 
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout 
+
+from .forms import RegisterForm 
 
 
 PARKS = [
@@ -140,12 +144,76 @@ def park_detail(request, slug):
 
 
 def login_view(request):
-    return render(request, "core/auth/login.html", _context("login"))
+
+    if request.method == "POST":
+
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+
+        user = authenticate(
+            request,
+            username=email,
+            password=password
+        )
+
+        if user is not None:
+
+            login(request, user)
+
+            messages.success(
+                request,
+                "Inicio de sesión exitoso."
+            )
+            
+            if user.is_staff:
+                    return redirect('/fila-admin/')
+
+            return redirect("core:home")
+
+        messages.error(
+            request,
+            "Correo o contraseña incorrectos."
+        )
+
+    return render(
+        request,
+        "core/auth/login.html",
+        _context("login")
+    )
 
 
 def register(request):
-    return render(request, "core/auth/register.html", _context("register"))
 
+    if request.method == "POST":
+
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            messages.success(
+                request,
+                "Cuenta creada correctamente."
+            )
+
+            return redirect("core:login")
+
+    else:
+        form = RegisterForm()
+
+    return render(
+        request,
+        "core/auth/register.html",
+        _context(
+            "register",
+            form=form
+        )
+    )
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, "Sesión cerrada correctamente.")
+    return redirect("core:home")
 
 def password_reset(request):
     return render(request, "core/auth/password_reset.html", _context("password_reset"))

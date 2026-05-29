@@ -135,6 +135,7 @@ button, input, select { font: inherit; }
   margin: -48px -40px 0;
   border-bottom: 1px solid var(--line);
   overflow: hidden;
+  background: radial-gradient(circle at 50% 100%, var(--deep-2) 0%, var(--night) 75%);
 }
 
 .hero__content {
@@ -173,27 +174,58 @@ button, input, select { font: inherit; }
 .fireflies {
   position: absolute;
   inset: 0;
-  opacity: .72;
   pointer-events: none;
   z-index: 0;
+  overflow: hidden;
 }
 
-.fireflies span {
-  --s: 5px;
-  --d: 8s;
-  --delay: 0s;
-  --x: 12px;
-  --y: -10px;
+.ff-group {
   position: absolute;
-  width: var(--s);
-  height: var(--s);
-  border-radius: 50%;
-  background: #f0df63;
-  box-shadow: 0 0 8px rgba(240, 223, 99, .58), 0 0 14px rgba(203, 235, 83, .22);
-  opacity: 0;
-  filter: saturate(1.2);
-  animation: firefly-glow var(--d) ease-in-out infinite;
+  inset: 0;
+}
+
+.ff-x {
+  position: absolute;
+  animation: ff-move-x var(--dx) ease-in-out infinite alternate;
   animation-delay: var(--delay);
+}
+
+.ff-y {
+  animation: ff-move-y var(--dy) ease-in-out infinite alternate;
+  animation-delay: var(--delay);
+}
+
+.ff-glow {
+  border-radius: 50%;
+  background: currentColor;
+  filter: saturate(1.2);
+  animation: ff-blink var(--db) ease-in-out infinite alternate;
+  animation-delay: var(--delay);
+}
+
+/* Capas de Profundidad */
+.ff-back .ff-glow {
+  width: 2px;
+  height: 2px;
+  color: #f0df63;
+  opacity: 0.3;
+  filter: blur(2px) saturate(1.2);
+}
+
+.ff-mid .ff-glow {
+  width: 4px;
+  height: 4px;
+  color: #f0df63;
+  opacity: 0.6;
+  filter: blur(0.5px) saturate(1.2);
+}
+
+.ff-front .ff-glow {
+  width: 6px;
+  height: 6px;
+  color: #ccff00;
+  opacity: 0.8;
+  filter: saturate(1.5);
 }
 
 .hero__content {
@@ -201,30 +233,34 @@ button, input, select { font: inherit; }
   z-index: 1;
 }
 
-@keyframes firefly-glow {
-  0%, 100% {
-    opacity: 0;
-    transform: translate3d(0, 0, 0) scale(.55);
+@keyframes ff-move-x {
+  from { transform: translateX(calc(var(--rx) * -1px)); }
+  to { transform: translateX(calc(var(--rx) * 1px)); }
+}
+
+@keyframes ff-move-y {
+  from { transform: translateY(calc(var(--ry) * -1px)); }
+  to { transform: translateY(calc(var(--ry) * 1px)); }
+}
+
+@keyframes ff-blink {
+  0% { 
+    opacity: 0.1; 
+    transform: scale(0.6);
+    box-shadow: 0 0 2px currentColor;
   }
-  18% {
-    opacity: .5;
-    transform: translate3d(calc(var(--x) * .35), calc(var(--y) * .35), 0) scale(.95);
-  }
-  42% {
-    opacity: .16;
-    transform: translate3d(calc(var(--x) * .7), calc(var(--y) * .7), 0) scale(.72);
-  }
-  64% {
-    opacity: .6;
-    transform: translate3d(var(--x), var(--y), 0) scale(1);
+  100% { 
+    opacity: 1; 
+    transform: scale(1.1);
+    box-shadow: 0 0 12px currentColor, 0 0 20px currentColor;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fireflies span {
-    animation: none;
-    opacity: .34;
+  .ff-x, .ff-y, .ff-glow {
+    animation: none !important;
   }
+  .ff-glow { opacity: 0.4; }
 }
 
 .eyebrow {
@@ -1141,11 +1177,11 @@ button, input, select { font: inherit; }
 }
 
 @media (max-width: 768px) {
-  .fireflies {
-    opacity: .5;
+  .ff-group.ff-back,
+  .ff-group.ff-front {
+    display: none;
   }
-
-  .fireflies span:nth-child(n+5) {
+  .ff-mid .ff-x:nth-child(n+6) {
     display: none;
   }
 }

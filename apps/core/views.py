@@ -156,6 +156,7 @@ def map_view(request):
 
     # CSS inyectado para que los estilos existan dentro del iframe de Folium
     custom_css = """
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
     .firefly-pin {
@@ -218,9 +219,24 @@ def map_view(request):
         </div>
         """
         
+        # Mini-tarjeta de detalles para el Tooltip al pasar el cursor
+        tooltip_html = f"""
+        <div style="font-family: 'Montserrat', sans-serif; padding: 4px; min-width: 170px;">
+            <div style="font-weight: 800; font-size: 14px; color: #1a3320; margin-bottom: 6px;">{park['name']}</div>
+            <div style="font-size: 12px; color: #444; line-height: 1.5;">
+                <span style="color: #c8975a; font-weight: bold;"><i class="ph-fill ph-star"></i> {park['rating']}</span> 
+                <span style="color: #888;">({park['reviews']} reseñas)</span><br>
+                <b>{park['type']}</b> • {park['capacity']}<br>
+                <div style="margin-top: 4px; font-size: 10px; color: #666; display: flex; align-items: flex-start; gap: 4px;">
+                    <i class="ph ph-map-trifold" style="font-size: 14px; margin-top: 1px;"></i> <span>{park['address']}</span>
+                </div>
+            </div>
+        </div>
+        """
+        
         folium.Marker(
             location=[park["lat"], park["lng"]],
-            tooltip=park["name"],
+            tooltip=tooltip_html,
             icon=DivIcon(html=marker_html)
         ).add_to(m)
 

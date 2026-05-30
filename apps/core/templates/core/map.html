@@ -10,18 +10,8 @@
 </section>
 
 <section class="map-frame">
-  <div class="map-grid">
-    <span class="map-label map-label--left">Parque nacional</span>
-    <span class="map-label map-label--right">Bosque mesófilo</span>
-    <span class="map-label map-label--bottom">Río Verde</span>
-    {% for park in parks %}
-      <a class="map-pin map-pin--{{ forloop.counter }}" href="{% url 'core:park_detail' park.slug %}">
-        <span>${{ park.price }}</span>
-        <i class="ph ph-map-pin"></i>
-      </a>
-    {% endfor %}
-    <div class="map-zoom"><button>+</button><button>−</button></div>
-    <div class="compass"><strong>N</strong><span>↑</span></div>
+  <div class="map-grid" style="padding: 0; background: none;">
+    {{ map_html|safe }}
   </div>
 </section>
 {% endblock %}

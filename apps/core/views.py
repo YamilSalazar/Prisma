@@ -3,70 +3,82 @@ from django.shortcuts import render
 
 PARKS = [
     {
-        "slug": "cabanas-del-bosque",
-        "name": "Cabañas del Bosque",
+        "slug": "santuario-piedra-canteada",
+        "name": "Santuario Piedra Canteada",
         "type": "Cabaña",
-        "price": 1250,
+        "price": 1850,
         "capacity": "4 pers",
-        "rating": 4.8,
-        "reviews": 124,
-        "amenities": ["Chimenea", "Baño privado", "Estacionamiento", "Wi-Fi"],
-        "address": "Km 12 Carretera Sierra Norte",
+        "rating": 4.9,
+        "reviews": 342,
+        "amenities": ["Chimenea", "Baño privado", "Estacionamiento", "Restaurante"],
+        "address": "Camino a San Felipe Hidalgo Km 4.5, Nanacamilpa",
+        "lat": 19.462312,
+        "lng": -98.568421,
     },
     {
-        "slug": "camping-rio-verde",
-        "name": "Camping Río Verde",
+        "slug": "canto-del-bosque",
+        "name": "Canto del Bosque",
         "type": "Camping",
-        "price": 680,
+        "price": 750,
         "capacity": "6 pers",
-        "rating": 4.5,
-        "reviews": 87,
-        "amenities": ["Fogata", "Baños comunes", "Estacionamiento"],
-        "address": "Ribera del Río Verde s/n",
+        "rating": 4.7,
+        "reviews": 215,
+        "amenities": ["Fogata", "Baños comunes", "Estacionamiento", "Guía certificado"],
+        "address": "San Felipe Hidalgo s/n, Nanacamilpa, Tlaxcala",
+        "lat": 19.458045,
+        "lng": -98.542012,
     },
     {
-        "slug": "mirador-de-las-estrellas",
-        "name": "Mirador de las Estrellas",
+        "slug": "santuario-el-salto",
+        "name": "Santuario El Salto",
         "type": "Cabaña",
         "price": 1420,
         "capacity": "2 pers",
-        "rating": 4.9,
-        "reviews": 156,
+        "rating": 4.8,
+        "reviews": 128,
         "amenities": ["Vista panorámica", "Baño privado", "Desayuno"],
-        "address": "Cima Bosque Mesófilo, Lote 4",
+        "address": "Zona Boscosa San Felipe Hidalgo, Lote 12",
+        "lat": 19.481234,
+        "lng": -98.529876,
     },
     {
-        "slug": "cabana-ceiba-alta",
-        "name": "Cabaña Ceiba Alta",
+        "slug": "bosque-magico",
+        "name": "Bosque Mágico",
         "type": "Cabaña",
-        "price": 980,
+        "price": 1200,
         "capacity": "4 pers",
         "rating": 4.6,
         "reviews": 92,
         "amenities": ["Cocineta", "Terraza", "Baño privado"],
-        "address": "Predio La Ceiba, Sendero Sur",
+        "address": "Camino Forestal Nanacamilpa, Sendero 4",
+        "lat": 19.445089,
+        "lng": -98.551045,
     },
     {
-        "slug": "refugio-luciernaga",
-        "name": "Refugio Luciérnaga",
+        "slug": "santuario-las-minas",
+        "name": "Santuario Las Minas",
         "type": "Cabaña",
         "price": 1580,
         "capacity": "6 pers",
         "rating": 4.7,
-        "reviews": 78,
-        "amenities": ["Chimenea", "Cocina equipada", "Jardín", "Wi-Fi"],
-        "address": "Sierra Norte, acceso por Pinos",
+        "reviews": 156,
+        "amenities": ["Chimenea", "Cocina equipada", "Jardín", "Senderismo"],
+        "address": "Antigua Zona Minera, San Felipe Hidalgo",
+        "lat": 19.492567,
+        "lng": -98.538012,
     },
     {
-        "slug": "camping-del-arroyo",
-        "name": "Camping del Arroyo",
+        "slug": "rancho-el-ciervo",
+        "name": "Santuario Rancho El Ciervo",
         "type": "Camping",
         "price": 540,
         "capacity": "4 pers",
-        "rating": 4.3,
-        "reviews": 64,
-        "amenities": ["Asadores", "Baños comunes"],
-        "address": "Ribera del Arroyo, Lote 2",
+        "rating": 4.5,
+        "reviews": 84,
+        "amenities": ["Asadores", "Baños comunes", "Área recreativa"],
+        "address": "Km 8 Carretera Nanacamilpa-Mazapa",
+        "lat": 19.470512,
+        "lng": -98.555567,
     },
 ]
 
@@ -126,8 +138,96 @@ def home(request):
     return render(request, "core/home.html", _context("home"))
 
 
+import folium
+from django.urls import reverse
+from folium.features import DivIcon
+
 def map_view(request):
-    return render(request, "core/map.html", _context("map", hide_footer=True))
+    # Calcular centro promedio (Nanacamilpa)
+    center_lat = sum(p["lat"] for p in PARKS) / len(PARKS)
+    center_lng = sum(p["lng"] for p in PARKS) / len(PARKS)
+
+    # Crear mapa con estilo oscuro (CartoDB dark_matter)
+    m = folium.Map(
+        location=[center_lat, center_lng],
+        zoom_start=13,
+        tiles="CartoDB dark_matter"
+    )
+
+    # CSS inyectado para que los estilos existan dentro del iframe de Folium
+    custom_css = """
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+    .firefly-pin {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        font-family: 'Montserrat', sans-serif;
+        margin-top: -35px; 
+        margin-left: -30px;
+        width: 60px;
+    }
+    .firefly-price {
+        background-color: #142a19;
+        color: #ffd54f;
+        border: 1px solid #ffd54f;
+        padding: 4px 6px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: bold;
+        margin-bottom: 6px;
+        box-shadow: 0 0 10px rgba(255, 213, 79, 0.4);
+        transition: all 0.3s ease;
+    }
+    .firefly-orb {
+        width: 14px;
+        height: 14px;
+        background-color: #ffe666;
+        border-radius: 50%;
+        box-shadow: 0 0 15px #fbd341, 0 0 30px #e6a832;
+        animation: pulse 1.5s infinite alternate;
+        transition: all 0.3s ease;
+    }
+    .firefly-pin:hover .firefly-price {
+        background-color: #ffd54f;
+        color: #142a19;
+        box-shadow: 0 0 20px rgba(255, 213, 79, 0.8);
+    }
+    .firefly-pin:hover .firefly-orb {
+        box-shadow: 0 0 25px #ffe666, 0 0 45px #fbd341;
+        transform: scale(1.3);
+    }
+    @keyframes pulse {
+        0% { transform: scale(0.85); opacity: 0.8; box-shadow: 0 0 8px #fbd341; }
+        100% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 18px #ffe666, 0 0 25px #fbd341; }
+    }
+    </style>
+    """
+    m.get_root().html.add_child(folium.Element(custom_css))
+
+    # Agregar marcadores interactivos bioluminiscentes
+    for park in PARKS:
+        park_url = reverse("core:park_detail", args=[park["slug"]])
+        
+        # HTML personalizado del pin con la nueva estética de luciérnaga
+        marker_html = f"""
+        <div onclick="window.parent.location.href='{park_url}'" class="firefly-pin">
+            <div class="firefly-price">${park['price']}</div>
+            <div class="firefly-orb"></div>
+        </div>
+        """
+        
+        folium.Marker(
+            location=[park["lat"], park["lng"]],
+            tooltip=park["name"],
+            icon=DivIcon(html=marker_html)
+        ).add_to(m)
+
+    # Obtener representación HTML del mapa
+    map_html = m._repr_html_()
+
+    return render(request, "core/map.html", _context("map", hide_footer=True, map_html=map_html))
 
 
 def park_list(request):

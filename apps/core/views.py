@@ -159,6 +159,20 @@ def map_view(request):
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+    
+    /* Estilos Bioluminiscentes para el Tooltip Nativo de Folium */
+    .leaflet-tooltip {
+        background-color: #0f1a0d !important;
+        border: 1px solid #c8975a !important;
+        box-shadow: 0 8px 24px rgba(15, 26, 13, 0.9), 0 0 14px rgba(255, 213, 79, 0.25), inset 0 0 12px rgba(200, 151, 90, 0.15) !important;
+        color: #f0ede5 !important;
+        border-radius: 4px !important;
+        padding: 0 !important;
+    }
+    .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before {
+        display: none !important;
+    }
+    
     .firefly-pin {
         display: flex;
         flex-direction: column;
@@ -221,13 +235,13 @@ def map_view(request):
         
         # Mini-tarjeta de detalles para el Tooltip al pasar el cursor
         tooltip_html = f"""
-        <div style="font-family: 'Montserrat', sans-serif; padding: 4px; min-width: 170px;">
-            <div style="font-weight: 800; font-size: 14px; color: #1a3320; margin-bottom: 6px;">{park['name']}</div>
-            <div style="font-size: 12px; color: #444; line-height: 1.5;">
+        <div style="font-family: 'Montserrat', sans-serif; padding: 6px 8px; min-width: 170px;">
+            <div style="font-weight: 800; font-size: 14px; color: #f0ede5; margin-bottom: 6px;">{park['name']}</div>
+            <div style="font-size: 12px; color: rgba(240, 237, 229, 0.8); line-height: 1.5;">
                 <span style="color: #c8975a; font-weight: bold;"><i class="ph-fill ph-star"></i> {park['rating']}</span> 
-                <span style="color: #888;">({park['reviews']} reseñas)</span><br>
+                <span style="color: #8a9a8c;">({park['reviews']} reseñas)</span><br>
                 <b>{park['type']}</b> • {park['capacity']}<br>
-                <div style="margin-top: 4px; font-size: 10px; color: #666; display: flex; align-items: flex-start; gap: 4px;">
+                <div style="margin-top: 4px; font-size: 10px; color: #8a9a8c; display: flex; align-items: flex-start; gap: 4px;">
                     <i class="ph ph-map-trifold" style="font-size: 14px; margin-top: 1px;"></i> <span>{park['address']}</span>
                 </div>
             </div>

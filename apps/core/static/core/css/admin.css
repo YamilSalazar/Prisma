@@ -1,4 +1,4 @@
-    /* ── Design tokens (same as festival.css) ────────────────── */
+/* ── Design tokens (same as festival.css) ────────────────── */
     :root {
       --night: #0f1a0d;
       --deep: #1a3320;
@@ -60,11 +60,12 @@
     .sidebar__brand {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
-      gap: 8px;
-      padding: 20px 18px 16px;
+      align-items: center;
+      gap: 10px;
+      padding: 24px 18px 16px;
       border-bottom: 1px solid var(--line);
       margin-bottom: 16px;
+      text-align: center;
     }
 
     .sidebar__brand-icon {
@@ -80,6 +81,7 @@
     .sidebar__brand-text {
       display: grid;
       gap: 2px;
+      text-align: center;
     }
 
     .sidebar__brand-text strong {
@@ -181,11 +183,11 @@
       transition: color .1s, border-color .1s;
     }
 
-    .sidebar__logout:hover { color: var(--red); border-color: var(--red); }
+    .sidebar__logout:hover { color: var(--amber); border-color: var(--amber); }
 
     /* ── Admin main content ──────────────────────────────────── */
     .admin-main {
-      padding: 24px 40px 56px;
+      padding: 0 40px 56px;
       min-width: 0;
     }
 
@@ -803,20 +805,20 @@
     }
 
     .cal-day-label {
-      padding: 9px 6px;
+      padding: 11px 6px;
       text-align: center;
       color: var(--muted);
-      font-size: 10.5px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: .14em;
+      letter-spacing: .18em;
       text-transform: uppercase;
       background: var(--deep-2);
       border-bottom: 1px solid var(--line);
     }
 
     .cal-cell {
-      padding: 10px 12px;
-      min-height: 90px;
+      padding: 12px 14px;
+      min-height: 110px;
       border-right: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
       cursor: pointer;
@@ -837,7 +839,7 @@
     .cal-cell--empty:nth-child(7n) { background: rgba(10,16,8,.30); }
 
     .cal-cell__date {
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 700;
       color: var(--cream);
       line-height: 1;
@@ -858,16 +860,16 @@
     .cal-cell:hover .cal-cell__edit { opacity: 1; }
 
     /* Colores de estado — fondo y número del mismo tono */
-    .cal-cell--available { background: rgba(47,90,55,.18); }
+    .cal-cell--available { background: rgba(47,90,55,.28); }
     .cal-cell--available .cal-cell__date { color: #7ec490; }
 
-    .cal-cell--low { background: rgba(184,134,42,.12); }
+    .cal-cell--low { background: rgba(184,134,42,.18); }
     .cal-cell--low .cal-cell__date { color: #f1b73c; }
 
-    .cal-cell--full { background: rgba(192,57,43,.12); }
+    .cal-cell--full { background: rgba(192,57,43,.18); }
     .cal-cell--full .cal-cell__date { color: #c0392b; }
 
-    .cal-cell--blocked { background: rgba(20,28,20,.55); }
+    .cal-cell--blocked { background: rgba(20,28,20,.65); }
     .cal-cell--blocked .cal-cell__date { color: #6a7a6c; }
 
     .cal-cell--selected {
@@ -999,8 +1001,8 @@
       transition: border-color .1s;
     }
 
-    .modal-checkbox input { width: 16px; height: 16px; accent-color: var(--red); min-height: unset; padding: 0; border: 0; background: transparent; }
-    .modal-checkbox:hover { border-color: var(--red); }
+    .modal-checkbox input { width: 16px; height: 16px; accent-color: var(--amber); min-height: unset; padding: 0; border: 0; background: transparent; }
+    .modal-checkbox:hover { border-color: var(--amber); }
 
     .modal-actions {
       display: flex;
@@ -1146,6 +1148,8 @@
     .reservations-count-row strong { color: var(--cream); font-size: 14px; }
 
     .sidebar__brand-logo {
-      width: 72px;
+      width: 100px;
       height: auto;
+      display: block;
+      margin: 0 auto;
     }

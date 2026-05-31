@@ -14,8 +14,7 @@
       alt="Festival Internacional de las Luciérnagas"
     >
     <div class="sidebar__brand-text">
-      <strong>Luciérnagas</strong>
-      <span>Administrador</span>
+      <strong>Administrador</strong>
       <span>Prisma · FILA 2026</span>
     </div>
   </div>
@@ -39,8 +38,8 @@
   </nav>
   <div class="sidebar__spacer"></div>
   <div class="sidebar__user">
-    <strong>administrador</strong>
-    <span>admin@fila.mx</span>
+    <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+    <span>{{ request.user.email }}</span>
   </div>
-  <button class="sidebar__logout"><i class="ph ph-sign-out"></i> Cerrar sesión</button>
+  <a href="{% url 'core:logout' %}" class="sidebar__logout"><i class="ph ph-sign-out"></i> Cerrar sesión</a>
 </aside>

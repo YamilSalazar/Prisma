@@ -5,12 +5,24 @@
 {% endcomment %}
 
 <script>
+  // Mapa de nombre de sección → índice del botón en el sidebar (orden del nav)
+  const SECTION_INDEX = { panel: 0, parques: 1, reservaciones: 2, disponibilidad: 3, contacto: 4 };
+
   function showScreen(name) {
+    // 1. Cambiar pantalla visible
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('is-active'));
-    document.querySelectorAll('.dev-switcher button').forEach(b => b.classList.remove('is-active'));
     document.getElementById('screen-' + name).classList.add('is-active');
     const tab = document.getElementById('tab-' + name);
     if (tab) tab.classList.add('is-active');
+
+    // 2. Sincronizar is-active en TODOS los sidebars del DOM
+    document.querySelectorAll('.sidebar').forEach(sidebar => {
+      const links = sidebar.querySelectorAll('.sidebar__link');
+      links.forEach(b => b.classList.remove('is-active'));
+      const idx = SECTION_INDEX[name];
+      if (idx !== undefined && links[idx]) links[idx].classList.add('is-active');
+    });
+
     window.scrollTo(0, 0);
   }
 
@@ -23,16 +35,8 @@
     document.getElementById('modal-disponibilidad').classList.remove('is-open');
   }
 
-  // Close modal on backdrop click
+  // Cerrar modal al click en backdrop
   document.getElementById('modal-disponibilidad').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
-  });
-
-  // Sidebar nav sync across all screens
-  document.querySelectorAll('.sidebar__link').forEach(btn => {
-    btn.addEventListener('click', () => {
-      btn.closest('.sidebar').querySelectorAll('.sidebar__link').forEach(b => b.classList.remove('is-active'));
-      btn.classList.add('is-active');
-    });
   });
 </script>

@@ -16,6 +16,8 @@ urlpatterns = [
     path("login/", views.login_view, name="login"),
     path("registro/", views.register, name="register"),
     path("recuperar/", views.password_reset, name="password_reset"),
+    path("recuperar/enviado/", views.password_reset_sent, name="password_reset_sent"),
+    path("recuperar/nueva/", views.password_reset_confirm, name="password_reset_confirm"),
 
     # ── Flujo de reservación ──────────────────────────────────────
     path("reservacion/datos/", views.booking_details, name="booking_details"),

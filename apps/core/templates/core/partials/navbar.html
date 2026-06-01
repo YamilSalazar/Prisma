@@ -7,7 +7,7 @@
   <nav class="nav__links" aria-label="Principal">
     <a class="nav__link {% if active == 'home' %}is-active{% endif %}" href="{% url 'core:home' %}">Inicio</a>
     <a class="nav__link {% if active == 'map' %}is-active{% endif %}" href="{% url 'core:map' %}">Mapa</a>
-    <a class="nav__link {% if active == 'park_list' %}is-active{% endif %}" href="{% url 'core:park_list' %}">Lista</a>
+    <a class="nav__link {% if active == 'park_list' %}is-active{% endif %}" href="{% url 'core:park_list' %}">Parques</a>
   </nav>
 
   <div class="nav__spacer"></div>
@@ -21,7 +21,6 @@
   {% if request.user.is_authenticated %}
     <a class="nav__link nav__link--account {% if active == 'reservations' %}is-active{% endif %}" href="{% url 'core:reservations' %}">Mis reservaciones</a>
     <a class="nav__link nav__link--account {% if active == 'account' %}is-active{% endif %}" href="{% url 'core:account' %}">Mi cuenta</a>
-    <a class="button button--secondary" href="{% url 'core:logout' %}">Cerrar sesión</a>
   {% else %}
     <a class="button button--secondary" href="{% url 'core:login' %}">Iniciar sesión</a>
     <a class="button button--primary" href="{% url 'core:register' %}">Registrarse</a>

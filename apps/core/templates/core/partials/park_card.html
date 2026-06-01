@@ -1,9 +1,15 @@
+{% load static %}
 <article class="card park-card {% if card_variant == 'featured' %}park-card--featured{% else %}park-card--list{% endif %}">
   <a class="park-card__photo photo-placeholder" href="{% url 'core:park_detail' park.slug %}">
-    {% if card_variant != 'featured' %}
-      <span class="badge park-card__badge">{{ park.type }}</span>
+    {% if park.images %}
+      <img src="{% static park.images|first %}" alt="{{ park.name }}" class="park-card__img">
+    {% else %}
+      <span>Foto &middot; {{ park.name }}</span>
     {% endif %}
-    <span>Foto &middot; {{ park.name }}</span>
+    
+    {% if card_variant != 'featured' %}
+      <span class="badge park-card__badge" style="z-index: 2;">{{ park.type }}</span>
+    {% endif %}
   </a>
 
   <div class="park-card__body">

@@ -135,4 +135,95 @@
     </section>
   </aside>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Lógica del Contador de Personas
+    const counterBtnMinus = document.querySelector('.mini-counter button:first-child');
+    const counterBtnPlus = document.querySelector('.mini-counter button:last-child');
+    const counterValue = document.querySelector('.mini-counter strong');
+    
+    let count = parseInt(counterValue.textContent);
+    
+    counterBtnMinus.addEventListener('click', () => {
+        if (count > 1) {
+            count--;
+            counterValue.textContent = count;
+        }
+    });
+    
+    counterBtnPlus.addEventListener('click', () => {
+        if (count < 6) {
+            count++;
+            counterValue.textContent = count;
+        }
+    });
+
+    // 2. Lógica de Selección de Hospedaje (Radio Cards)
+    const radioCards = document.querySelectorAll('.radio-card:not(.is-disabled)');
+    radioCards.forEach(card => {
+        card.addEventListener('click', () => {
+            radioCards.forEach(c => c.classList.remove('is-selected'));
+            card.classList.add('is-selected');
+        });
+    });
+
+    // 3. Simulación de Galería
+    const galleryCount = document.querySelector('.gallery-controls span');
+    const galleryPrev = document.querySelector('.gallery-controls button[aria-label="Foto anterior"]');
+    const galleryNext = document.querySelector('.gallery-controls button[aria-label="Foto siguiente"]');
+    const galleryPlaceholder = document.querySelector('.photo-placeholder--gallery');
+    
+    let currentPhoto = 1;
+    const totalPhotos = 5;
+    
+    const updateGallery = () => {
+        galleryCount.textContent = `${currentPhoto} / ${totalPhotos}`;
+        // Micro-animación de destello bioluminiscente al cambiar foto
+        galleryPlaceholder.style.transition = 'opacity 0.2s ease-out';
+        galleryPlaceholder.style.opacity = '0.4';
+        setTimeout(() => {
+            galleryPlaceholder.style.opacity = '1';
+        }, 200);
+    };
+
+    galleryPrev.addEventListener('click', () => {
+        currentPhoto = currentPhoto > 1 ? currentPhoto - 1 : totalPhotos;
+        updateGallery();
+    });
+    
+    galleryNext.addEventListener('click', () => {
+        currentPhoto = currentPhoto < totalPhotos ? currentPhoto + 1 : 1;
+        updateGallery();
+    });
+
+    // 4. Simulación de Zoom en Mini-mapa
+    const zoomIn = document.querySelector('.mini-map__zoom button:first-child');
+    const zoomOut = document.querySelector('.mini-map__zoom button:last-child');
+    const pins = document.querySelectorAll('.mini-pin');
+    
+    let zoomLevel = 1;
+    
+    const updateZoom = () => {
+        pins.forEach(pin => {
+            pin.style.transition = 'transform 0.3s ease-out';
+            pin.style.transform = `scale(${zoomLevel})`;
+        });
+    };
+
+    zoomIn.addEventListener('click', () => {
+        if (zoomLevel < 1.5) {
+            zoomLevel += 0.1;
+            updateZoom();
+        }
+    });
+
+    zoomOut.addEventListener('click', () => {
+        if (zoomLevel > 0.8) {
+            zoomLevel -= 0.1;
+            updateZoom();
+        }
+    });
+});
+</script>
 {% endblock %}

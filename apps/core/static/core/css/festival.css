@@ -724,8 +724,6 @@ button, input, select { font: inherit; }
 }
 
 .booking-card {
-  position: sticky;
-  top: 24px;
   align-self: start;
 }
 

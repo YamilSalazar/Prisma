@@ -10,6 +10,9 @@
   --success: #396E45;
   --error: #C0392B;
   --warning: #F1B73C;
+  --firefly-dim: #e6a832;
+  --firefly-mid: #fbd341;
+  --firefly-bright: #ffe666;
   --line: rgba(240, 237, 229, 0.08);
   --line-strong: rgba(240, 237, 229, 0.14);
 }
@@ -121,9 +124,8 @@ button, input, select { font: inherit; }
 
 .button--primary:hover {
   background: var(--gold-2);
-  box-shadow: 0 0 14px rgba(255, 213, 79, 0.4), 
-              0 0 24px rgba(255, 179, 0, 0.3), 
-              0 0 36px rgba(255, 179, 0, 0.2);
+  box-shadow: 0 8px 18px rgba(200, 151, 90, .18),
+              0 0 0 1px rgba(200, 151, 90, .24);
 }
 
 .button--secondary {
@@ -134,9 +136,7 @@ button, input, select { font: inherit; }
 .button--secondary:hover {
   border-color: var(--gold);
   color: var(--gold);
-  box-shadow: 0 0 10px rgba(255, 213, 79, 0.3),
-              inset 0 0 10px rgba(255, 179, 0, 0.2);
-  text-shadow: 0 0 8px rgba(255, 213, 79, 0.6);
+  box-shadow: 0 0 0 1px rgba(200, 151, 90, .18);
 }
 
 .button--block { width: 100%; }
@@ -219,7 +219,7 @@ button, input, select { font: inherit; }
 .ff-back .ff-glow {
   width: 2px;
   height: 2px;
-  color: #e6a832; /* Ámbar profundo */
+  color: var(--firefly-dim);
   --ff-min-opacity: .08;
   --ff-max-opacity: .45;
   --ff-shadow-low: 0 0 1px currentColor;
@@ -231,7 +231,7 @@ button, input, select { font: inherit; }
 .ff-mid .ff-glow {
   width: 4px;
   height: 4px;
-  color: #fbd341; /* Dorado cálido */
+  color: var(--firefly-mid);
   --ff-min-opacity: .12;
   --ff-max-opacity: .65;
   --ff-shadow-low: 0 0 2px currentColor;
@@ -243,7 +243,7 @@ button, input, select { font: inherit; }
 .ff-front .ff-glow {
   width: 6px;
   height: 6px;
-  color: #ffe666; /* Amarillo incandescente */
+  color: var(--firefly-bright);
   --ff-min-opacity: .16;
   --ff-max-opacity: .75;
   --ff-shadow-low: 0 0 2px currentColor;

@@ -9,9 +9,9 @@
     <h1>Iniciar sesi&oacute;n</h1>
 
     {% if messages %}
-      <div class="form-errors">
+      <div class="form-messages">
         {% for message in messages %}
-          <p>{{ message }}</p>
+          <p class="form-message form-message--{{ message.tags|default:'info' }}">{{ message }}</p>
         {% endfor %}
       </div>
     {% endif %}

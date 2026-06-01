@@ -146,16 +146,26 @@ import folium
 from django.urls import reverse
 from folium.features import DivIcon
 
+# CSS inyectado para que los estilos existan dentro del iframe de Folium
 FOLIUM_CUSTOM_CSS = """
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
 
+.leaflet-container::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 400;
+    background: transparent;
+    pointer-events: none;
+}
+ 
 /* Estilos Bioluminiscentes para el Tooltip Nativo de Folium */
 .leaflet-tooltip {
     background-color: #0f1a0d !important;
     border: 1px solid #c8975a !important;
-    box-shadow: 0 8px 24px rgba(15, 26, 13, 0.9), 0 0 14px rgba(255, 213, 79, 0.25), inset 0 0 12px rgba(200, 151, 90, 0.15) !important;
+    box-shadow: 0 6px 18px rgba(15, 26, 13, 0.72), 0 0 10px rgba(200, 151, 90, 0.18) !important;
     color: #f0ede5 !important;
     border-radius: 4px !important;
     padding: 0 !important;
@@ -163,51 +173,34 @@ FOLIUM_CUSTOM_CSS = """
 .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before {
     display: none !important;
 }
-
-.firefly-pin {
+ 
+.fp-pin {
     display: flex;
     flex-direction: column;
     align-items: center;
     cursor: pointer;
     font-family: 'Montserrat', sans-serif;
-    margin-top: -35px; 
-    margin-left: -30px;
-    width: 60px;
+    margin-top: -66px;
+    margin-left: -18px;
+    width: 36px;
+    transition: transform 0.2s ease;
 }
-.firefly-price {
-    background-color: #142a19;
-    color: #ffd54f;
-    border: 1px solid #ffd54f;
-    padding: 4px 6px;
+.fp-pin:hover { transform: translateY(-2px) scale(1.08); }
+.fp-price {
+    background-color: rgba(15, 26, 13, 0.9);
+    color: #d9aa6e;
+    border: 1px solid rgba(200, 151, 90, 0.45);
+    padding: 2px 6px;
     border-radius: 4px;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: bold;
-    margin-bottom: 6px;
-    box-shadow: 0 0 10px rgba(255, 213, 79, 0.4);
-    transition: all 0.3s ease;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
 }
-.firefly-orb {
-    width: 14px;
-    height: 14px;
-    background-color: #ffe666;
-    border-radius: 50%;
-    box-shadow: 0 0 15px #fbd341, 0 0 30px #e6a832;
-    animation: pulse 1.5s infinite alternate;
-    transition: all 0.3s ease;
-}
-.firefly-pin:hover .firefly-price {
-    background-color: #ffd54f;
-    color: #142a19;
-    box-shadow: 0 0 20px rgba(255, 213, 79, 0.8);
-}
-.firefly-pin:hover .firefly-orb {
-    box-shadow: 0 0 25px #ffe666, 0 0 45px #fbd341;
-    transform: scale(1.3);
-}
-@keyframes pulse {
-    0% { transform: scale(0.85); opacity: 0.8; box-shadow: 0 0 8px #fbd341; }
-    100% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 18px #ffe666, 0 0 25px #fbd341; }
-}
+.fp-pin svg path { fill: #B8552A; transition: fill 0.2s ease; }
+.fp-pin:hover .fp-price { background-color: #c8975a; color: #0f1a0d; }
+.fp-pin:hover svg path { fill: #d96838; }
 </style>
 """
 
@@ -219,11 +212,18 @@ def map_view(request):
     # Crear mapa con estilo oscuro (CartoDB dark_matter)
     m = folium.Map(
         location=[center_lat, center_lng],
-        zoom_start=13,
-        tiles="CartoDB dark_matter"
+        zoom_start=14,
+        tiles="OpenStreetMap",
+        width="100%",
+        height="100%",
+        min_zoom=12,
     )
+    bounds = [
+        [min(p["lat"] for p in PARKS), min(p["lng"] for p in PARKS)],
+        [max(p["lat"] for p in PARKS), max(p["lng"] for p in PARKS)],
+    ]
+    m.fit_bounds(bounds, padding=(48, 48))
 
-    # Inyectar estilos desde la constante global
     m.get_root().html.add_child(folium.Element(FOLIUM_CUSTOM_CSS))
 
     # Agregar marcadores interactivos bioluminiscentes
@@ -232,22 +232,27 @@ def map_view(request):
         
         # HTML personalizado del pin con la nueva estética de luciérnaga
         marker_html = f"""
-        <div onclick="window.parent.location.href='{park_url}'" class="firefly-pin">
-            <div class="firefly-price">${park['price']}</div>
-            <div class="firefly-orb"></div>
+        <div onclick="window.parent.location.href='{park_url}'" class="fp-pin">
+            <div class="fp-price">${park['price']}</div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="42"
+                 style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.32))">
+                <path fill-rule="evenodd"
+                      stroke="#0F1A0D" stroke-width="1.0" stroke-linejoin="round"
+                      d="M12,2C8.13,2 5,5.13 5,9c0,5.25 7,13 7,13s7-7.75 7-13C19,5.13 15.87,2 12,2Z M9.5,9a2.5,2.5 0 1,0 5,0a2.5,2.5 0 1,0-5,0Z"/>
+            </svg>
         </div>
         """
         
         # Mini-tarjeta de detalles para el Tooltip al pasar el cursor
         tooltip_html = f"""
-        <div style="font-family: 'Montserrat', sans-serif; padding: 6px 8px; min-width: 170px;">
-            <div style="font-weight: 800; font-size: 14px; color: #f0ede5; margin-bottom: 6px;">{park['name']}</div>
-            <div style="font-size: 12px; color: rgba(240, 237, 229, 0.8); line-height: 1.5;">
+        <div style="font-family: 'Montserrat', sans-serif; padding: 6px 8px; min-width: 220px; max-width: 280px;">
+            <div style="font-weight: 800; font-size: 13px; color: #f0ede5; margin-bottom: 5px;">{park['name']}</div>
+            <div style="font-size: 11px; color: rgba(240, 237, 229, 0.8); line-height: 1.45;">
                 <span style="color: #c8975a; font-weight: bold;"><i class="ph-fill ph-star"></i> {park['rating']}</span> 
                 <span style="color: #8a9a8c;">({park['reviews']} reseñas)</span><br>
-                <b>{park['type']}</b> • {park['capacity']}<br>
+                <b>{park['type']}</b> • <i class="ph ph-person" style="color:#f0ede5; font-size:13px; vertical-align:middle;"></i> {park['capacity'].split()[0]}<br>
                 <div style="margin-top: 4px; font-size: 10px; color: #8a9a8c; display: flex; align-items: flex-start; gap: 4px;">
-                    <i class="ph ph-map-trifold" style="font-size: 14px; margin-top: 1px;"></i> <span>{park['address']}</span>
+                    <i class="ph ph-map-trifold" style="font-size: 12px; margin-top: 1px; flex: 0 0 auto;"></i> <span style="white-space: normal;">{park['address']}</span>
                 </div>
             </div>
         </div>
@@ -262,7 +267,7 @@ def map_view(request):
     # Obtener representación HTML del mapa
     map_html = m._repr_html_()
 
-    return render(request, "core/map.html", _context("map", hide_footer=True, map_html=map_html))
+    return render(request, "core/map.html", _context("map", map_html=map_html, hide_footer=True, full_bleed=True))
 
 
 def park_list(request):
@@ -276,7 +281,7 @@ def park_detail(request, slug):
     m = folium.Map(
         location=[park["lat"], park["lng"]],
         zoom_start=15,
-        tiles="CartoDB dark_matter",
+        tiles="OpenStreetMap",
         zoom_control=True
     )
 
@@ -285,9 +290,14 @@ def park_detail(request, slug):
 
     # Marcador único para el detalle (sin redirección clic ya que estamos en la página)
     marker_html = f"""
-    <div class="firefly-pin">
-        <div class="firefly-price">${park['price']}</div>
-        <div class="firefly-orb"></div>
+    <div class="fp-pin" style="cursor: default;">
+        <div class="fp-price">${park['price']}</div>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="42"
+             style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.32))">
+            <path fill-rule="evenodd"
+                  stroke="#0F1A0D" stroke-width="1.0" stroke-linejoin="round"
+                  d="M12,2C8.13,2 5,5.13 5,9c0,5.25 7,13 7,13s7-7.75 7-13C19,5.13 15.87,2 12,2Z M9.5,9a2.5,2.5 0 1,0 5,0a2.5,2.5 0 1,0-5,0Z"/>
+        </svg>
     </div>
     """
     

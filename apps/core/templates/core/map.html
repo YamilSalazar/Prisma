@@ -1,7 +1,7 @@
 {% extends "core/base.html" %}
 
 {% block content %}
-<section class="filters-bar">
+<section class="filters-bar filters-bar--map">
   <span class="filters-bar__label"><i class="ph ph-funnel"></i>Filtros</span>
   <select class="select"><option>Hospedaje: todos</option><option>Cabaña</option><option>Camping</option></select>
   <select class="select"><option>Capacidad: todas</option><option>Hasta 2 pers</option><option>Hasta 4 pers</option></select>
@@ -9,8 +9,8 @@
   <span class="filters-bar__count">{{ parks|length }} parques · {{ parks|length }} visibles en el mapa</span>
 </section>
 
-<section class="map-frame">
-  <div class="map-grid" style="padding: 0; background: none;">
+<section class="map-frame map-frame--interactive">
+  <div class="map-grid map-grid--interactive" style="padding: 0; background: none;">
     {{ map_html|safe }}
   </div>
 </section>

@@ -570,6 +570,14 @@ button, input, select { font: inherit; }
   padding: 24px;
 }
 
+.filters-bar--map {
+  padding: 18px 40px;
+}
+
+.map-frame--interactive {
+  padding: 18px 40px 28px;
+}
+
 .map-grid {
   position: relative;
   height: 620px;
@@ -580,6 +588,16 @@ button, input, select { font: inherit; }
     linear-gradient(var(--line) 1px, transparent 1px),
     linear-gradient(90deg, var(--line) 1px, transparent 1px);
   background-size: 110px 110px;
+}
+
+.map-grid--interactive {
+  height: clamp(420px, calc(100vh - 250px), 620px);
+}
+
+.map-grid--interactive iframe {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
 }
 
 .map-label {

@@ -154,8 +154,10 @@ def map_view(request):
     # Crear mapa con estilo oscuro (CartoDB dark_matter)
     m = folium.Map(
         location=[center_lat, center_lng],
-        zoom_start=13,
-        tiles="CartoDB dark_matter"
+        zoom_start=14,
+        tiles="OpenStreetMap",
+        width="100%",
+        height="100%",
     )
 
     # CSS inyectado para que los estilos existan dentro del iframe de Folium
@@ -163,7 +165,19 @@ def map_view(request):
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
-    
+
+    .leaflet-tile {
+        filter: brightness(0.78) contrast(1.12) saturate(0.68);
+    }
+    .leaflet-container::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 400;
+        background: transparent;
+        pointer-events: none;
+    }
+     
     /* Estilos Bioluminiscentes para el Tooltip Nativo de Folium */
     .leaflet-tooltip {
         background-color: #0f1a0d !important;
@@ -176,7 +190,36 @@ def map_view(request):
     .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before {
         display: none !important;
     }
-    
+     
+    .map-compass {
+        position: absolute;
+        left: 22px;
+        bottom: 22px;
+        z-index: 999;
+        width: 72px;
+        height: 72px;
+        display: grid;
+        place-items: center;
+        align-content: center;
+        gap: 3px;
+        background: #0f1a0d;
+        border: 1px solid rgba(240, 237, 229, 0.14);
+        color: #8a9a8c;
+        font-family: 'Montserrat', sans-serif;
+        pointer-events: none;
+    }
+    .map-compass strong {
+        color: #c8975a;
+        font-size: 14px;
+        line-height: 1;
+        letter-spacing: .12em;
+    }
+    .map-compass span {
+        color: #8a9a8c;
+        font-size: 19px;
+        line-height: 1;
+    }
+
     .firefly-pin {
         display: flex;
         flex-direction: column;
@@ -188,40 +231,41 @@ def map_view(request):
         width: 60px;
     }
     .firefly-price {
-        background-color: #142a19;
-        color: #ffd54f;
-        border: 1px solid #ffd54f;
-        padding: 4px 6px;
+        background-color: rgba(15, 26, 13, 0.9);
+        color: #d9aa6e;
+        border: 1px solid #c8975a;
+        padding: 3px 5px;
         border-radius: 4px;
-        font-size: 11px;
+        font-size: 10px;
         font-weight: bold;
-        margin-bottom: 6px;
-        box-shadow: 0 0 10px rgba(255, 213, 79, 0.4);
+        margin-bottom: 5px;
+        box-shadow: 0 0 6px rgba(200, 151, 90, 0.28);
         transition: all 0.3s ease;
     }
     .firefly-orb {
-        width: 14px;
-        height: 14px;
+        width: 12px;
+        height: 12px;
         background-color: #ffe666;
         border-radius: 50%;
-        box-shadow: 0 0 15px #fbd341, 0 0 30px #e6a832;
+        box-shadow: 0 0 10px #fbd341, 0 0 18px #e6a832;
         animation: pulse 1.5s infinite alternate;
         transition: all 0.3s ease;
     }
     .firefly-pin:hover .firefly-price {
-        background-color: #ffd54f;
+        background-color: #c8975a;
         color: #142a19;
-        box-shadow: 0 0 20px rgba(255, 213, 79, 0.8);
+        box-shadow: 0 0 10px rgba(200, 151, 90, 0.36);
     }
     .firefly-pin:hover .firefly-orb {
-        box-shadow: 0 0 25px #ffe666, 0 0 45px #fbd341;
-        transform: scale(1.3);
+        box-shadow: 0 0 16px #ffe666, 0 0 26px #fbd341;
+        transform: scale(1.12);
     }
     @keyframes pulse {
-        0% { transform: scale(0.85); opacity: 0.8; box-shadow: 0 0 8px #fbd341; }
-        100% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 18px #ffe666, 0 0 25px #fbd341; }
+        0% { transform: scale(0.85); opacity: 0.78; box-shadow: 0 0 6px #fbd341; }
+        100% { transform: scale(1.08); opacity: 0.95; box-shadow: 0 0 12px #ffe666, 0 0 18px #fbd341; }
     }
     </style>
+    <div class="map-compass" aria-hidden="true"><strong>N</strong><span>↑</span></div>
     """
     m.get_root().html.add_child(folium.Element(custom_css))
 
@@ -261,7 +305,7 @@ def map_view(request):
     # Obtener representación HTML del mapa
     map_html = m._repr_html_()
 
-    return render(request, "core/map.html", _context("map", hide_footer=True, map_html=map_html))
+    return render(request, "core/map.html", _context("map", map_html=map_html, hide_footer=True))
 
 
 def park_list(request):

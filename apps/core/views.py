@@ -159,6 +159,11 @@ def map_view(request):
         width="100%",
         height="100%",
     )
+    bounds = [
+        [min(p["lat"] for p in PARKS), min(p["lng"] for p in PARKS)],
+        [max(p["lat"] for p in PARKS), max(p["lng"] for p in PARKS)],
+    ]
+    m.fit_bounds(bounds, padding=(48, 48))
 
     # CSS inyectado para que los estilos existan dentro del iframe de Folium
     custom_css = """
@@ -220,50 +225,33 @@ def map_view(request):
         line-height: 1;
     }
 
-    .firefly-pin {
+    .fp-pin {
         display: flex;
         flex-direction: column;
         align-items: center;
         cursor: pointer;
         font-family: 'Montserrat', sans-serif;
-        margin-top: -35px; 
-        margin-left: -30px;
-        width: 60px;
+        margin-top: -66px;
+        margin-left: -18px;
+        width: 36px;
+        transition: transform 0.2s ease;
     }
-    .firefly-price {
+    .fp-pin:hover { transform: translateY(-3px) scale(1.15); }
+    .fp-price {
         background-color: rgba(15, 26, 13, 0.9);
         color: #d9aa6e;
-        border: 1px solid #c8975a;
-        padding: 3px 5px;
+        border: 1px solid rgba(200, 151, 90, 0.45);
+        padding: 2px 6px;
         border-radius: 4px;
         font-size: 10px;
         font-weight: bold;
-        margin-bottom: 5px;
-        box-shadow: 0 0 6px rgba(200, 151, 90, 0.28);
-        transition: all 0.3s ease;
+        margin-bottom: 4px;
+        white-space: nowrap;
+        transition: all 0.2s ease;
     }
-    .firefly-orb {
-        width: 12px;
-        height: 12px;
-        background-color: #ffe666;
-        border-radius: 50%;
-        box-shadow: 0 0 10px #fbd341, 0 0 18px #e6a832;
-        animation: pulse 1.5s infinite alternate;
-        transition: all 0.3s ease;
-    }
-    .firefly-pin:hover .firefly-price {
-        background-color: #c8975a;
-        color: #142a19;
-        box-shadow: 0 0 10px rgba(200, 151, 90, 0.36);
-    }
-    .firefly-pin:hover .firefly-orb {
-        box-shadow: 0 0 16px #ffe666, 0 0 26px #fbd341;
-        transform: scale(1.12);
-    }
-    @keyframes pulse {
-        0% { transform: scale(0.85); opacity: 0.78; box-shadow: 0 0 6px #fbd341; }
-        100% { transform: scale(1.08); opacity: 0.95; box-shadow: 0 0 12px #ffe666, 0 0 18px #fbd341; }
-    }
+    .fp-pin svg path { fill: #B8552A; transition: fill 0.2s ease; }
+    .fp-pin:hover .fp-price { background-color: #c8975a; color: #0f1a0d; }
+    .fp-pin:hover svg path { fill: #d96838; }
     </style>
     <div class="map-compass" aria-hidden="true"><strong>N</strong><span>↑</span></div>
     """
@@ -275,9 +263,14 @@ def map_view(request):
         
         # HTML personalizado del pin con la nueva estética de luciérnaga
         marker_html = f"""
-        <div onclick="window.parent.location.href='{park_url}'" class="firefly-pin">
-            <div class="firefly-price">${park['price']}</div>
-            <div class="firefly-orb"></div>
+        <div onclick="window.parent.location.href='{park_url}'" class="fp-pin">
+            <div class="fp-price">${park['price']}</div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="42"
+                 style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.32))">
+                <path fill-rule="evenodd"
+                      stroke="#0F1A0D" stroke-width="1.0" stroke-linejoin="round"
+                      d="M12,2C8.13,2 5,5.13 5,9c0,5.25 7,13 7,13s7-7.75 7-13C19,5.13 15.87,2 12,2Z M9.5,9a2.5,2.5 0 1,0 5,0a2.5,2.5 0 1,0-5,0Z"/>
+            </svg>
         </div>
         """
         
@@ -288,7 +281,7 @@ def map_view(request):
             <div style="font-size: 12px; color: rgba(240, 237, 229, 0.8); line-height: 1.5;">
                 <span style="color: #c8975a; font-weight: bold;"><i class="ph-fill ph-star"></i> {park['rating']}</span> 
                 <span style="color: #8a9a8c;">({park['reviews']} reseñas)</span><br>
-                <b>{park['type']}</b> • {park['capacity']}<br>
+                <b>{park['type']}</b> • <i class="ph ph-person" style="color:#f0ede5; font-size:13px; vertical-align:middle;"></i> {park['capacity'].split()[0]}<br>
                 <div style="margin-top: 4px; font-size: 10px; color: #8a9a8c; display: flex; align-items: flex-start; gap: 4px;">
                     <i class="ph ph-map-trifold" style="font-size: 14px; margin-top: 1px;"></i> <span>{park['address']}</span>
                 </div>

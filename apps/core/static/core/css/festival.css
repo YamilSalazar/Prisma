@@ -144,7 +144,7 @@ button, input, select { font: inherit; }
   margin: -48px -40px 0;
   border-bottom: 1px solid var(--line);
   overflow: hidden;
-  background: radial-gradient(circle at 50% 100%, var(--deep-2) 0%, var(--night) 75%);
+  background: var(--night);
 }
 
 .hero__content {
@@ -195,12 +195,12 @@ button, input, select { font: inherit; }
 
 .ff-x {
   position: absolute;
-  animation: ff-move-x var(--dx) ease-in-out infinite alternate;
+  animation: ff-move-x calc(var(--dx) * 1.7) ease-in-out infinite alternate;
   animation-delay: var(--delay);
 }
 
 .ff-y {
-  animation: ff-move-y var(--dy) ease-in-out infinite alternate;
+  animation: ff-move-y calc(var(--dy) * 1.7) ease-in-out infinite alternate;
   animation-delay: var(--delay);
 }
 
@@ -208,7 +208,7 @@ button, input, select { font: inherit; }
   border-radius: 50%;
   background: currentColor;
   filter: saturate(1.2);
-  animation: ff-blink var(--db) ease-in-out infinite alternate;
+  animation: ff-blink calc(var(--db) * 1.35) ease-in-out infinite alternate;
   animation-delay: var(--delay);
 }
 
@@ -217,7 +217,11 @@ button, input, select { font: inherit; }
   width: 2px;
   height: 2px;
   color: #e6a832; /* Ámbar profundo */
-  opacity: 0.3;
+  --ff-min-opacity: .08;
+  --ff-max-opacity: .45;
+  --ff-shadow-low: 0 0 1px currentColor;
+  --ff-shadow-high: 0 0 5px currentColor, 0 0 8px currentColor;
+  opacity: var(--ff-max-opacity);
   filter: blur(2px) saturate(1.2);
 }
 
@@ -225,7 +229,11 @@ button, input, select { font: inherit; }
   width: 4px;
   height: 4px;
   color: #fbd341; /* Dorado cálido */
-  opacity: 0.6;
+  --ff-min-opacity: .12;
+  --ff-max-opacity: .65;
+  --ff-shadow-low: 0 0 2px currentColor;
+  --ff-shadow-high: 0 0 8px currentColor, 0 0 14px currentColor;
+  opacity: var(--ff-max-opacity);
   filter: blur(0.5px) saturate(1.2);
 }
 
@@ -233,7 +241,11 @@ button, input, select { font: inherit; }
   width: 6px;
   height: 6px;
   color: #ffe666; /* Amarillo incandescente */
-  opacity: 0.8;
+  --ff-min-opacity: .16;
+  --ff-max-opacity: .85;
+  --ff-shadow-low: 0 0 2px currentColor;
+  --ff-shadow-high: 0 0 10px currentColor, 0 0 18px currentColor;
+  opacity: var(--ff-max-opacity);
   filter: saturate(1.5);
 }
 
@@ -254,14 +266,14 @@ button, input, select { font: inherit; }
 
 @keyframes ff-blink {
   0% { 
-    opacity: 0.1; 
+    opacity: var(--ff-min-opacity, .1); 
     transform: scale(0.6);
-    box-shadow: 0 0 2px currentColor;
+    box-shadow: var(--ff-shadow-low, 0 0 2px currentColor);
   }
   100% { 
-    opacity: 1; 
-    transform: scale(1.1);
-    box-shadow: 0 0 12px currentColor, 0 0 20px currentColor;
+    opacity: var(--ff-max-opacity, .75); 
+    transform: scale(1);
+    box-shadow: var(--ff-shadow-high, 0 0 8px currentColor, 0 0 14px currentColor);
   }
 }
 

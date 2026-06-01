@@ -118,20 +118,12 @@
     <p class="fine-print">No se cobra hasta confirmar el pago</p>
 
     <section class="booking-location">
-      <p class="eyebrow">Ubicaci&oacute;n</p>
-      <div class="mini-map">
-        <span class="mini-map__label mini-map__label--left">Parque nacional</span>
-        <span class="mini-map__label mini-map__label--right">Bosque mes&oacute;filo</span>
-        <span class="mini-map__label mini-map__label--bottom">R&iacute;o Verde</span>
-        <i class="ph ph-map-pin mini-pin mini-pin--1"></i>
-        <i class="ph ph-map-pin mini-pin mini-pin--2"></i>
-        <i class="ph ph-map-pin mini-pin mini-pin--3"></i>
-        <i class="ph ph-map-pin mini-pin mini-pin--4"></i>
-        <div class="map-zoom mini-map__zoom"><button>+</button><button>&minus;</button></div>
-        <div class="compass mini-map__compass"><strong>N</strong><span>&uarr;</span></div>
-      </div>
-      <p class="location-line"><i class="ph ph-map-trifold"></i>{{ selected_park.address }}</p>
-      <a class="text-link" href="{% url 'core:map' %}">Ver en el mapa <i class="ph ph-arrow-right"></i></a>
+    <p class="eyebrow">Ubicación</p>
+    <div class="mini-map" style="padding: 0; background: none; border-color: var(--line-strong);">
+      {{ map_html|safe }}
+    </div>
+    <p class="location-line"><i class="ph ph-map-trifold"></i>{{ selected_park.address }}</p>
+    <a class="text-link" href="{% url 'core:map' %}">Ver en el mapa <i class="ph ph-arrow-right"></i></a>
     </section>
   </aside>
 </section>
@@ -195,34 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
     galleryNext.addEventListener('click', () => {
         currentPhoto = currentPhoto < totalPhotos ? currentPhoto + 1 : 1;
         updateGallery();
-    });
-
-    // 4. Simulación de Zoom en Mini-mapa
-    const zoomIn = document.querySelector('.mini-map__zoom button:first-child');
-    const zoomOut = document.querySelector('.mini-map__zoom button:last-child');
-    const pins = document.querySelectorAll('.mini-pin');
-    
-    let zoomLevel = 1;
-    
-    const updateZoom = () => {
-        pins.forEach(pin => {
-            pin.style.transition = 'transform 0.3s ease-out';
-            pin.style.transform = `scale(${zoomLevel})`;
-        });
-    };
-
-    zoomIn.addEventListener('click', () => {
-        if (zoomLevel < 1.5) {
-            zoomLevel += 0.1;
-            updateZoom();
-        }
-    });
-
-    zoomOut.addEventListener('click', () => {
-        if (zoomLevel > 0.8) {
-            zoomLevel -= 0.1;
-            updateZoom();
-        }
     });
 });
 </script>

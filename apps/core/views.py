@@ -146,6 +146,71 @@ import folium
 from django.urls import reverse
 from folium.features import DivIcon
 
+FOLIUM_CUSTOM_CSS = """
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+/* Estilos Bioluminiscentes para el Tooltip Nativo de Folium */
+.leaflet-tooltip {
+    background-color: #0f1a0d !important;
+    border: 1px solid #c8975a !important;
+    box-shadow: 0 8px 24px rgba(15, 26, 13, 0.9), 0 0 14px rgba(255, 213, 79, 0.25), inset 0 0 12px rgba(200, 151, 90, 0.15) !important;
+    color: #f0ede5 !important;
+    border-radius: 4px !important;
+    padding: 0 !important;
+}
+.leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before {
+    display: none !important;
+}
+
+.firefly-pin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    margin-top: -35px; 
+    margin-left: -30px;
+    width: 60px;
+}
+.firefly-price {
+    background-color: #142a19;
+    color: #ffd54f;
+    border: 1px solid #ffd54f;
+    padding: 4px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    box-shadow: 0 0 10px rgba(255, 213, 79, 0.4);
+    transition: all 0.3s ease;
+}
+.firefly-orb {
+    width: 14px;
+    height: 14px;
+    background-color: #ffe666;
+    border-radius: 50%;
+    box-shadow: 0 0 15px #fbd341, 0 0 30px #e6a832;
+    animation: pulse 1.5s infinite alternate;
+    transition: all 0.3s ease;
+}
+.firefly-pin:hover .firefly-price {
+    background-color: #ffd54f;
+    color: #142a19;
+    box-shadow: 0 0 20px rgba(255, 213, 79, 0.8);
+}
+.firefly-pin:hover .firefly-orb {
+    box-shadow: 0 0 25px #ffe666, 0 0 45px #fbd341;
+    transform: scale(1.3);
+}
+@keyframes pulse {
+    0% { transform: scale(0.85); opacity: 0.8; box-shadow: 0 0 8px #fbd341; }
+    100% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 18px #ffe666, 0 0 25px #fbd341; }
+}
+</style>
+"""
+
 def map_view(request):
     # Calcular centro promedio (Nanacamilpa)
     center_lat = sum(p["lat"] for p in PARKS) / len(PARKS)
@@ -158,72 +223,8 @@ def map_view(request):
         tiles="CartoDB dark_matter"
     )
 
-    # CSS inyectado para que los estilos existan dentro del iframe de Folium
-    custom_css = """
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
-    
-    /* Estilos Bioluminiscentes para el Tooltip Nativo de Folium */
-    .leaflet-tooltip {
-        background-color: #0f1a0d !important;
-        border: 1px solid #c8975a !important;
-        box-shadow: 0 8px 24px rgba(15, 26, 13, 0.9), 0 0 14px rgba(255, 213, 79, 0.25), inset 0 0 12px rgba(200, 151, 90, 0.15) !important;
-        color: #f0ede5 !important;
-        border-radius: 4px !important;
-        padding: 0 !important;
-    }
-    .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before {
-        display: none !important;
-    }
-    
-    .firefly-pin {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        cursor: pointer;
-        font-family: 'Montserrat', sans-serif;
-        margin-top: -35px; 
-        margin-left: -30px;
-        width: 60px;
-    }
-    .firefly-price {
-        background-color: #142a19;
-        color: #ffd54f;
-        border: 1px solid #ffd54f;
-        padding: 4px 6px;
-        border-radius: 4px;
-        font-size: 11px;
-        font-weight: bold;
-        margin-bottom: 6px;
-        box-shadow: 0 0 10px rgba(255, 213, 79, 0.4);
-        transition: all 0.3s ease;
-    }
-    .firefly-orb {
-        width: 14px;
-        height: 14px;
-        background-color: #ffe666;
-        border-radius: 50%;
-        box-shadow: 0 0 15px #fbd341, 0 0 30px #e6a832;
-        animation: pulse 1.5s infinite alternate;
-        transition: all 0.3s ease;
-    }
-    .firefly-pin:hover .firefly-price {
-        background-color: #ffd54f;
-        color: #142a19;
-        box-shadow: 0 0 20px rgba(255, 213, 79, 0.8);
-    }
-    .firefly-pin:hover .firefly-orb {
-        box-shadow: 0 0 25px #ffe666, 0 0 45px #fbd341;
-        transform: scale(1.3);
-    }
-    @keyframes pulse {
-        0% { transform: scale(0.85); opacity: 0.8; box-shadow: 0 0 8px #fbd341; }
-        100% { transform: scale(1.15); opacity: 1; box-shadow: 0 0 18px #ffe666, 0 0 25px #fbd341; }
-    }
-    </style>
-    """
-    m.get_root().html.add_child(folium.Element(custom_css))
+    # Inyectar estilos desde la constante global
+    m.get_root().html.add_child(folium.Element(FOLIUM_CUSTOM_CSS))
 
     # Agregar marcadores interactivos bioluminiscentes
     for park in PARKS:
@@ -270,7 +271,35 @@ def park_list(request):
 
 def park_detail(request, slug):
     park = next((item for item in PARKS if item["slug"] == slug), PARKS[2])
-    return render(request, "core/park_detail.html", _context("park_list", selected_park=park))
+    
+    # Crear mini-mapa centrado en este parque específico
+    m = folium.Map(
+        location=[park["lat"], park["lng"]],
+        zoom_start=15,
+        tiles="CartoDB dark_matter",
+        zoom_control=True
+    )
+
+    # Inyectar estilos bioluminiscentes
+    m.get_root().html.add_child(folium.Element(FOLIUM_CUSTOM_CSS))
+
+    # Marcador único para el detalle (sin redirección clic ya que estamos en la página)
+    marker_html = f"""
+    <div class="firefly-pin">
+        <div class="firefly-price">${park['price']}</div>
+        <div class="firefly-orb"></div>
+    </div>
+    """
+    
+    folium.Marker(
+        location=[park["lat"], park["lng"]],
+        tooltip=park["name"],
+        icon=DivIcon(html=marker_html)
+    ).add_to(m)
+
+    map_html = m._repr_html_()
+
+    return render(request, "core/park_detail.html", _context("park_list", selected_park=park, map_html=map_html))
 
 
 def login_view(request):

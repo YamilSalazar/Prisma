@@ -1545,6 +1545,12 @@ button, input, select { font: inherit; }
   color: var(--muted);
 }
 
+.reviews-summary span b,
+.review-item h3 small {
+  color: var(--gold);
+  letter-spacing: 2px;
+}
+
 .review-list {
   display: grid;
   gap: 24px;

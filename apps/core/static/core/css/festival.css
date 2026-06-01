@@ -242,9 +242,9 @@ button, input, select { font: inherit; }
   height: 6px;
   color: #ffe666; /* Amarillo incandescente */
   --ff-min-opacity: .16;
-  --ff-max-opacity: .85;
+  --ff-max-opacity: .75;
   --ff-shadow-low: 0 0 2px currentColor;
-  --ff-shadow-high: 0 0 10px currentColor, 0 0 18px currentColor;
+  --ff-shadow-high: 0 0 8px currentColor, 0 0 14px currentColor;
   opacity: var(--ff-max-opacity);
   filter: saturate(1.5);
 }
@@ -481,7 +481,7 @@ button, input, select { font: inherit; }
 }
 
 .info-chip {
-  background: rgba(20, 42, 25, .7);
+  background: var(--deep-2);
   color: var(--cream);
   font-weight: 700;
 }

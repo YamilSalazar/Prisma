@@ -135,19 +135,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const counterBtnPlus = document.querySelector('.mini-counter button:last-child');
     const counterValue = document.querySelector('.mini-counter strong');
     
+    // Obtener límite dinámico de Django
+    const maxCount = parseInt("{{ selected_park.capacity.split.0 }}") || 2;
     let count = parseInt(counterValue.textContent);
+    
+    const updateCounterState = () => {
+        if (count <= 1) {
+            counterBtnMinus.disabled = true;
+            counterBtnMinus.style.opacity = '0.3';
+            counterBtnMinus.style.cursor = 'not-allowed';
+        } else {
+            counterBtnMinus.disabled = false;
+            counterBtnMinus.style.opacity = '1';
+            counterBtnMinus.style.cursor = 'pointer';
+        }
+        
+        if (count >= maxCount) {
+            counterBtnPlus.disabled = true;
+            counterBtnPlus.style.opacity = '0.3';
+            counterBtnPlus.style.cursor = 'not-allowed';
+        } else {
+            counterBtnPlus.disabled = false;
+            counterBtnPlus.style.opacity = '1';
+            counterBtnPlus.style.cursor = 'pointer';
+        }
+    };
+
+    // Inicializar estado de botones
+    updateCounterState();
     
     counterBtnMinus.addEventListener('click', () => {
         if (count > 1) {
             count--;
             counterValue.textContent = count;
+            updateCounterState();
         }
     });
     
     counterBtnPlus.addEventListener('click', () => {
-        if (count < 6) {
+        if (count < maxCount) {
             count++;
             counterValue.textContent = count;
+            updateCounterState();
         }
     });
 

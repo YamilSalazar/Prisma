@@ -1,30 +1,83 @@
 {% extends "core/base.html" %}
 
 {% block content %}
-<section class="account-layout">
-  <aside class="card profile-card">
-    <div class="avatar">MF</div>
-    <h2>María Fernanda González Ruiz</h2>
-    <p class="muted">mfgonzalez@correo.com</p>
-  </aside>
-  <div class="account-stack">
-    <section class="card">
-      <p class="eyebrow">Datos personales</p>
-      <div class="account-row"><span>Nombre(s)</span><strong>María Fernanda</strong><button>Editar</button></div>
-      <div class="account-row"><span>Apellidos</span><strong>González Ruiz</strong><button>Editar</button></div>
-      <div class="account-row"><span>Correo electrónico</span><strong>mfgonzalez@correo.com</strong><button>Editar</button></div>
-    </section>
-    <section class="card">
-      <p class="eyebrow">Acceso</p>
-      <a class="settings-link" href="{% url 'core:change_password' %}"><i class="ph ph-lock"></i><span>Cambiar contraseña<small>Actualizar tus credenciales de acceso</small></span><i class="ph ph-arrow-right"></i></a>
-    </section>
-    <section class="card">
-      <p class="eyebrow">General</p>
-      <a class="settings-link" href="#"><i class="ph ph-lifebuoy"></i><span>Soporte<small>¿Necesitas ayuda? Contáctanos</small></span><i class="ph ph-arrow-right"></i></a>
-      <a class="settings-link" href="#"><i class="ph ph-file-text"></i><span>Términos y condiciones<small>Lee las condiciones de uso del servicio</small></span><i class="ph ph-arrow-right"></i></a>
-      <a class="settings-link" href="#"><i class="ph ph-shield"></i><span>Política de privacidad<small>Cómo tratamos tu información</small></span><i class="ph ph-arrow-right"></i></a>
-    </section>
+<section class="account-page">
+  <header class="account-header">
+    <p class="eyebrow">Mi cuenta</p>
+    <h1>Hola, María Fernanda</h1>
+  </header>
+
+  <div class="account-layout">
+    <aside class="card profile-card">
+      <div class="avatar">MF</div>
+      <h2>María Fernanda González Ruiz</h2>
+      <p class="muted">mfgonzalez@correo.com</p>
+    </aside>
+
+    <div class="account-stack">
+      <section class="card account-card">
+        <p class="eyebrow">Datos personales</p>
+        <div class="account-row">
+          <div class="account-row__info">
+            <span>Nombre(s)</span>
+            <strong data-field-value>María Fernanda</strong>
+          </div>
+          <button class="account-row__edit-btn" data-field-edit aria-label="Editar nombre">
+            <i class="ph ph-pencil-simple" aria-hidden="true"></i> Editar
+          </button>
+        </div>
+        <div class="account-row">
+          <div class="account-row__info">
+            <span>Apellidos</span>
+            <strong data-field-value>González Ruiz</strong>
+          </div>
+          <button class="account-row__edit-btn" data-field-edit aria-label="Editar apellidos">
+            <i class="ph ph-pencil-simple" aria-hidden="true"></i> Editar
+          </button>
+        </div>
+        <div class="account-row">
+          <div class="account-row__info">
+            <span>Correo electrónico</span>
+            <strong data-field-value>mfgonzalez@correo.com</strong>
+          </div>
+          <button class="account-row__edit-btn" data-field-edit aria-label="Editar correo">
+            <i class="ph ph-pencil-simple" aria-hidden="true"></i> Editar
+          </button>
+        </div>
+      </section>
+
+      <section class="card account-card">
+        <p class="eyebrow">Acceso</p>
+        <a class="settings-link" href="{% url 'core:change_password' %}">
+          <i class="ph ph-lock-key"></i>
+          <span>Cambiar contraseña<small>Actualizar tus credenciales de acceso</small></span>
+          <i class="ph ph-arrow-right"></i>
+        </a>
+      </section>
+
+      <section class="card account-card">
+        <p class="eyebrow">General</p>
+        <a class="settings-link" href="#">
+          <i class="ph ph-lifebuoy"></i>
+          <span>Soporte<small>¿Necesitas ayuda? Contáctanos</small></span>
+          <i class="ph ph-arrow-right"></i>
+        </a>
+        <a class="settings-link" href="#">
+          <i class="ph ph-file-text"></i>
+          <span>Términos y condiciones<small>Lee las condiciones de uso del servicio</small></span>
+          <i class="ph ph-arrow-right"></i>
+        </a>
+        <a class="settings-link" href="#">
+          <i class="ph ph-shield"></i>
+          <span>Política de privacidad<small>Cómo tratamos tu información</small></span>
+          <i class="ph ph-arrow-right"></i>
+        </a>
+      </section>
+
+      <a class="button button--secondary account-logout" href="{% url 'core:logout' %}">
+        <i class="ph ph-sign-out" aria-hidden="true"></i> Cerrar sesión
+      </a>
+    </div>
   </div>
 </section>
 {% endblock %}
-

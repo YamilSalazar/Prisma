@@ -393,6 +393,12 @@ def logout_view(request):
 def password_reset(request):
     return render(request, "core/auth/password_reset.html", _context("password_reset"))
 
+def password_reset_sent(request):
+    return render(request, "core/auth/password_reset_sent.html", _context("login"))
+
+def password_reset_confirm(request):
+    return render(request, "core/auth/password_reset_confirm.html", _context("login"))
+
 
 def booking_details(request):
     return render(request, "core/booking/details.html", _context("booking"))

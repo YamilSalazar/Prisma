@@ -1502,6 +1502,12 @@ button, input, select { font: inherit; }
   font-size: 13px;
   font-weight: 800;
   letter-spacing: .12em;
+  transition: all 0.4s ease-in-out;
+}
+
+.text-link:hover {
+  color: #ffd54f;
+  text-shadow: 0 0 8px rgba(255, 213, 79, 0.8), 0 0 16px rgba(255, 179, 0, 0.5);
 }
 
 .rules--detail {

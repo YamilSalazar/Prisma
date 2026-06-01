@@ -1109,6 +1109,13 @@ button, input, select { font: inherit; }
   border: 1px solid var(--line-strong);
   border-radius: 2px;
   background: rgba(15, 26, 13, .18);
+  transition: all 0.4s ease-in-out;
+  cursor: pointer;
+}
+
+.radio-card:not(.is-disabled):hover {
+  border-color: rgba(200, 151, 90, 0.4);
+  box-shadow: 0 0 12px rgba(255, 213, 79, 0.1);
 }
 
 .radio-card span {
@@ -1117,6 +1124,7 @@ button, input, select { font: inherit; }
   margin-top: 2px;
   border: 1px solid var(--muted);
   border-radius: 50%;
+  transition: all 0.4s ease-in-out;
 }
 
 .radio-card strong {
@@ -1132,15 +1140,17 @@ button, input, select { font: inherit; }
 .radio-card.is-selected {
   border-color: var(--gold);
   background: rgba(200, 151, 90, .06);
+  box-shadow: 0 0 15px rgba(255, 213, 79, 0.15), inset 0 0 12px rgba(200, 151, 90, 0.15);
 }
 
 .radio-card.is-selected span {
   border-color: var(--gold);
-  box-shadow: inset 0 0 0 5px var(--deep), inset 0 0 0 9px var(--gold);
+  box-shadow: inset 0 0 0 5px var(--deep), inset 0 0 0 9px var(--gold), 0 0 8px var(--gold);
 }
 
 .radio-card.is-disabled {
   opacity: .45;
+  cursor: not-allowed;
 }
 
 .booking-notice {
@@ -1539,9 +1549,17 @@ button, input, select { font: inherit; }
   width: 44px;
   height: 44px;
   border: 1px solid var(--line-strong);
-  background: transparent;
+  background: rgba(240, 237, 229, 0.02);
   color: var(--muted);
   cursor: pointer;
+  transition: all 0.4s ease-in-out;
+}
+
+.gallery-controls button:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: 0 0 10px rgba(255, 213, 79, 0.3), inset 0 0 8px rgba(255, 179, 0, 0.2);
+  text-shadow: 0 0 8px rgba(255, 213, 79, 0.6);
 }
 
 .gallery-controls span {
@@ -1639,6 +1657,12 @@ button, input, select { font: inherit; }
   color: var(--muted);
 }
 
+.reviews-summary span b,
+.review-item h3 small {
+  color: var(--gold);
+  letter-spacing: 2px;
+}
+
 .review-list {
   display: grid;
   gap: 24px;
@@ -1683,6 +1707,12 @@ button, input, select { font: inherit; }
   font-size: 13px;
   font-weight: 800;
   letter-spacing: .12em;
+  transition: all 0.4s ease-in-out;
+}
+
+.text-link:hover {
+  color: #ffd54f;
+  text-shadow: 0 0 8px rgba(255, 213, 79, 0.8), 0 0 16px rgba(255, 179, 0, 0.5);
 }
 
 .rules--detail {
@@ -1815,6 +1845,21 @@ button, input, select { font: inherit; }
 .mini-pin--2 { left: 48%; top: 54%; }
 .mini-pin--3 { right: 27%; top: 24%; }
 .mini-pin--4 { right: 13%; top: 46%; }
+
+.mini-map__zoom button {
+  border: 1px solid var(--line-strong);
+  background: var(--night);
+  color: var(--cream);
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+}
+
+.mini-map__zoom button:hover {
+  border-color: var(--gold);
+  background: var(--deep);
+  color: var(--gold);
+  box-shadow: 0 0 12px rgba(255, 213, 79, 0.2);
+}
 
 .mini-map__zoom {
   right: 18px;
@@ -2179,11 +2224,28 @@ textarea,
 .mini-counter button,
 .mini-counter strong {
   height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  background: rgba(240, 237, 229, 0.02);
+  color: var(--cream);
   font-size: 18px;
+  transition: all 0.4s ease-in-out;
+}
+
+.mini-counter button {
+  cursor: pointer;
+}
+
+.mini-counter button:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: 0 0 10px rgba(255, 213, 79, 0.3), inset 0 0 8px rgba(255, 179, 0, 0.2);
 }
 
 .mini-counter strong {
   font-weight: 700;
+  background: transparent;
 }
 
 .booking-card--detail .radio-card strong {

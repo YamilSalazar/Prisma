@@ -146,6 +146,64 @@ import folium
 from django.urls import reverse
 from folium.features import DivIcon
 
+# CSS inyectado para que los estilos existan dentro del iframe de Folium
+FOLIUM_CUSTOM_CSS = """
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+.leaflet-container::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 400;
+    background: transparent;
+    pointer-events: none;
+}
+ 
+/* Estilos Bioluminiscentes para el Tooltip Nativo de Folium */
+.leaflet-tooltip {
+    background-color: #0f1a0d !important;
+    border: 1px solid #c8975a !important;
+    box-shadow: 0 6px 18px rgba(15, 26, 13, 0.72), 0 0 10px rgba(200, 151, 90, 0.18) !important;
+    color: #f0ede5 !important;
+    border-radius: 4px !important;
+    padding: 0 !important;
+}
+.leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before {
+    display: none !important;
+}
+ 
+.fp-pin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    margin-top: -66px;
+    margin-left: -18px;
+    width: 36px;
+    transition: transform 0.2s ease;
+}
+.fp-pin:hover { transform: translateY(-2px) scale(1.08); }
+.fp-price {
+    background-color: rgba(15, 26, 13, 0.9);
+    color: #d9aa6e;
+    border: 1px solid rgba(200, 151, 90, 0.45);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+.fp-pin svg path { fill: #B8552A; transition: fill 0.2s ease; }
+.fp-pin:hover .fp-price { background-color: #c8975a; color: #0f1a0d; }
+.fp-pin:hover svg path { fill: #d96838; }
+</style>
+"""
+
 def map_view(request):
     # Calcular centro promedio (Nanacamilpa)
     center_lat = sum(p["lat"] for p in PARKS) / len(PARKS)
@@ -166,64 +224,7 @@ def map_view(request):
     ]
     m.fit_bounds(bounds, padding=(48, 48))
 
-    # CSS inyectado para que los estilos existan dentro del iframe de Folium
-    custom_css = """
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
-
-    .leaflet-container::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: 400;
-        background: transparent;
-        pointer-events: none;
-    }
-     
-    /* Estilos Bioluminiscentes para el Tooltip Nativo de Folium */
-    .leaflet-tooltip {
-        background-color: #0f1a0d !important;
-        border: 1px solid #c8975a !important;
-        box-shadow: 0 6px 18px rgba(15, 26, 13, 0.72), 0 0 10px rgba(200, 151, 90, 0.18) !important;
-        color: #f0ede5 !important;
-        border-radius: 4px !important;
-        padding: 0 !important;
-    }
-    .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before {
-        display: none !important;
-    }
-     
-    .fp-pin {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        cursor: pointer;
-        font-family: 'Montserrat', sans-serif;
-        margin-top: -66px;
-        margin-left: -18px;
-        width: 36px;
-        transition: transform 0.2s ease;
-    }
-    .fp-pin:hover { transform: translateY(-2px) scale(1.08); }
-    .fp-price {
-        background-color: rgba(15, 26, 13, 0.9);
-        color: #d9aa6e;
-        border: 1px solid rgba(200, 151, 90, 0.45);
-        padding: 2px 6px;
-        border-radius: 4px;
-        font-size: 10px;
-        font-weight: bold;
-        margin-bottom: 4px;
-        white-space: nowrap;
-        transition: all 0.2s ease;
-    }
-    .fp-pin svg path { fill: #B8552A; transition: fill 0.2s ease; }
-    .fp-pin:hover .fp-price { background-color: #c8975a; color: #0f1a0d; }
-    .fp-pin:hover svg path { fill: #d96838; }
-    </style>
-    """
-    m.get_root().html.add_child(folium.Element(custom_css))
+    m.get_root().html.add_child(folium.Element(FOLIUM_CUSTOM_CSS))
 
     # Agregar marcadores interactivos bioluminiscentes
     for park in PARKS:
@@ -275,7 +276,40 @@ def park_list(request):
 
 def park_detail(request, slug):
     park = next((item for item in PARKS if item["slug"] == slug), PARKS[2])
-    return render(request, "core/park_detail.html", _context("park_list", selected_park=park))
+    
+    # Crear mini-mapa centrado en este parque específico
+    m = folium.Map(
+        location=[park["lat"], park["lng"]],
+        zoom_start=15,
+        tiles="OpenStreetMap",
+        zoom_control=True
+    )
+
+    # Inyectar estilos bioluminiscentes
+    m.get_root().html.add_child(folium.Element(FOLIUM_CUSTOM_CSS))
+
+    # Marcador único para el detalle (sin redirección clic ya que estamos en la página)
+    marker_html = f"""
+    <div class="fp-pin" style="cursor: default;">
+        <div class="fp-price">${park['price']}</div>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="42"
+             style="filter:drop-shadow(0 1px 2px rgba(0,0,0,0.32))">
+            <path fill-rule="evenodd"
+                  stroke="#0F1A0D" stroke-width="1.0" stroke-linejoin="round"
+                  d="M12,2C8.13,2 5,5.13 5,9c0,5.25 7,13 7,13s7-7.75 7-13C19,5.13 15.87,2 12,2Z M9.5,9a2.5,2.5 0 1,0 5,0a2.5,2.5 0 1,0-5,0Z"/>
+        </svg>
+    </div>
+    """
+    
+    folium.Marker(
+        location=[park["lat"], park["lng"]],
+        tooltip=park["name"],
+        icon=DivIcon(html=marker_html)
+    ).add_to(m)
+
+    map_html = m._repr_html_()
+
+    return render(request, "core/park_detail.html", _context("park_list", selected_park=park, map_html=map_html))
 
 
 def login_view(request):

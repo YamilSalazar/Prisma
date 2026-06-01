@@ -158,6 +158,7 @@ def map_view(request):
         tiles="OpenStreetMap",
         width="100%",
         height="100%",
+        min_zoom=12,
     )
     bounds = [
         [min(p["lat"] for p in PARKS), min(p["lng"] for p in PARKS)],
@@ -171,9 +172,6 @@ def map_view(request):
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
 
-    .leaflet-tile {
-        filter: brightness(0.78) contrast(1.12) saturate(0.68);
-    }
     .leaflet-container::after {
         content: "";
         position: absolute;
@@ -187,7 +185,7 @@ def map_view(request):
     .leaflet-tooltip {
         background-color: #0f1a0d !important;
         border: 1px solid #c8975a !important;
-        box-shadow: 0 8px 24px rgba(15, 26, 13, 0.9), 0 0 14px rgba(255, 213, 79, 0.25), inset 0 0 12px rgba(200, 151, 90, 0.15) !important;
+        box-shadow: 0 6px 18px rgba(15, 26, 13, 0.72), 0 0 10px rgba(200, 151, 90, 0.18) !important;
         color: #f0ede5 !important;
         border-radius: 4px !important;
         padding: 0 !important;
@@ -196,35 +194,6 @@ def map_view(request):
         display: none !important;
     }
      
-    .map-compass {
-        position: absolute;
-        left: 22px;
-        bottom: 22px;
-        z-index: 999;
-        width: 72px;
-        height: 72px;
-        display: grid;
-        place-items: center;
-        align-content: center;
-        gap: 3px;
-        background: #0f1a0d;
-        border: 1px solid rgba(240, 237, 229, 0.14);
-        color: #8a9a8c;
-        font-family: 'Montserrat', sans-serif;
-        pointer-events: none;
-    }
-    .map-compass strong {
-        color: #c8975a;
-        font-size: 14px;
-        line-height: 1;
-        letter-spacing: .12em;
-    }
-    .map-compass span {
-        color: #8a9a8c;
-        font-size: 19px;
-        line-height: 1;
-    }
-
     .fp-pin {
         display: flex;
         flex-direction: column;
@@ -236,7 +205,7 @@ def map_view(request):
         width: 36px;
         transition: transform 0.2s ease;
     }
-    .fp-pin:hover { transform: translateY(-3px) scale(1.15); }
+    .fp-pin:hover { transform: translateY(-2px) scale(1.08); }
     .fp-price {
         background-color: rgba(15, 26, 13, 0.9);
         color: #d9aa6e;
@@ -253,7 +222,6 @@ def map_view(request):
     .fp-pin:hover .fp-price { background-color: #c8975a; color: #0f1a0d; }
     .fp-pin:hover svg path { fill: #d96838; }
     </style>
-    <div class="map-compass" aria-hidden="true"><strong>N</strong><span>↑</span></div>
     """
     m.get_root().html.add_child(folium.Element(custom_css))
 
@@ -276,14 +244,14 @@ def map_view(request):
         
         # Mini-tarjeta de detalles para el Tooltip al pasar el cursor
         tooltip_html = f"""
-        <div style="font-family: 'Montserrat', sans-serif; padding: 6px 8px; min-width: 170px;">
-            <div style="font-weight: 800; font-size: 14px; color: #f0ede5; margin-bottom: 6px;">{park['name']}</div>
-            <div style="font-size: 12px; color: rgba(240, 237, 229, 0.8); line-height: 1.5;">
+        <div style="font-family: 'Montserrat', sans-serif; padding: 6px 8px; min-width: 220px; max-width: 280px;">
+            <div style="font-weight: 800; font-size: 13px; color: #f0ede5; margin-bottom: 5px;">{park['name']}</div>
+            <div style="font-size: 11px; color: rgba(240, 237, 229, 0.8); line-height: 1.45;">
                 <span style="color: #c8975a; font-weight: bold;"><i class="ph-fill ph-star"></i> {park['rating']}</span> 
                 <span style="color: #8a9a8c;">({park['reviews']} reseñas)</span><br>
                 <b>{park['type']}</b> • <i class="ph ph-person" style="color:#f0ede5; font-size:13px; vertical-align:middle;"></i> {park['capacity'].split()[0]}<br>
                 <div style="margin-top: 4px; font-size: 10px; color: #8a9a8c; display: flex; align-items: flex-start; gap: 4px;">
-                    <i class="ph ph-map-trifold" style="font-size: 14px; margin-top: 1px;"></i> <span>{park['address']}</span>
+                    <i class="ph ph-map-trifold" style="font-size: 12px; margin-top: 1px; flex: 0 0 auto;"></i> <span style="white-space: normal;">{park['address']}</span>
                 </div>
             </div>
         </div>
@@ -298,7 +266,7 @@ def map_view(request):
     # Obtener representación HTML del mapa
     map_html = m._repr_html_()
 
-    return render(request, "core/map.html", _context("map", map_html=map_html, hide_footer=True))
+    return render(request, "core/map.html", _context("map", map_html=map_html, hide_footer=True, full_bleed=True))
 
 
 def park_list(request):

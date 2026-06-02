@@ -1,4 +1,5 @@
 {% extends "core/base.html" %}
+{% load static %}
 
 {% block content %}
 <section class="section reservations-page">
@@ -13,7 +14,7 @@
   <div class="reservation-panel is-active" data-reservation-panel="active">
     <div class="reservation-grid">
       <article class="card reservation-card reservation-card--full">
-        <div class="photo-placeholder reservation-card__photo"><span>Foto &middot; Santuario Santa Clara</span></div>
+        <img src="{% static 'core/assets/parks/santa_clara/imagen1.jpg' %}" alt="Santuario Santa Clara" class="reservation-card__photo">
         <div class="reservation-card__body">
           <div class="reservation-card__head">
             <div>
@@ -37,7 +38,7 @@
       </article>
 
       <article class="card reservation-card reservation-card--full">
-        <div class="photo-placeholder reservation-card__photo"><span>Foto &middot; Bosque M&aacute;gico</span></div>
+        <img src="{% static 'core/assets/parks/bosque_magico/imagen1.jpg' %}" alt="Bosque M&aacute;gico" class="reservation-card__photo">
         <div class="reservation-card__body">
           <div class="reservation-card__head">
             <div>
@@ -65,7 +66,7 @@
   <div class="reservation-panel" data-reservation-panel="history" hidden>
     <div class="reservation-grid">
       <article class="card reservation-card reservation-card--full">
-        <div class="photo-placeholder reservation-card__photo"><span>Foto &middot; Canto del Bosque</span></div>
+        <img src="{% static 'core/assets/parks/canto_del_bosque/imagen1.jpg' %}" alt="Canto del Bosque" class="reservation-card__photo">
         <div class="reservation-card__body">
           <div class="reservation-card__head">
             <div>
@@ -88,7 +89,7 @@
       </article>
 
       <article class="card reservation-card reservation-card--full is-muted">
-        <div class="photo-placeholder reservation-card__photo"><span>Foto &middot; Santuario Santa Clara</span></div>
+        <img src="{% static 'core/assets/parks/santa_clara/imagen1.jpg' %}" alt="Santuario Santa Clara" class="reservation-card__photo">
         <div class="reservation-card__body">
           <div class="reservation-card__head">
             <div>
@@ -109,7 +110,7 @@
       </article>
 
       <article class="card reservation-card reservation-card--full">
-        <div class="photo-placeholder reservation-card__photo"><span>Foto &middot; Santuario Piedra Canteada</span></div>
+        <img src="{% static 'core/assets/parks/santuario_piedra_canteada/imagen1.jpg' %}" alt="Santuario Piedra Canteada" class="reservation-card__photo">
         <div class="reservation-card__body">
           <div class="reservation-card__head">
             <div>

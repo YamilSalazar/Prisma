@@ -2,7 +2,7 @@
 
 {% block content %}
 <section class="list-layout">
-  <aside class="filters-panel">
+  <aside class="filters-panel filters-panel--desktop">
     <p class="eyebrow">Filtros</p>
     <h3>Tipo de hospedaje</h3>
     <label><input type="radio" name="type" checked> Todos</label>
@@ -27,8 +27,39 @@
       <input type="search" placeholder="Buscar por nombre de parque, hospedaje o amenidad...">
     </label>
 
+    <details class="filters-panel filters-panel--mobile">
+      <summary>
+        <span>Filtros</span>
+        <i class="ph ph-caret-down" aria-hidden="true"></i>
+      </summary>
+      <div class="mobile-filter-card">
+        <h3>Tipo de hospedaje</h3>
+        <div class="mobile-segmented" role="radiogroup" aria-label="Tipo de hospedaje">
+          <label><input type="radio" name="mobile_type" checked><span>Todos</span></label>
+          <label><input type="radio" name="mobile_type"><span>Caba&ntilde;a</span></label>
+          <label><input type="radio" name="mobile_type"><span>Camping</span></label>
+        </div>
+        <h3>Capacidad</h3>
+        <label class="mobile-select">
+          <span>Cualquiera</span>
+          <i class="ph ph-caret-down" aria-hidden="true"></i>
+          <select aria-label="Capacidad">
+            <option>Cualquiera</option>
+            <option>Hasta 2 personas</option>
+            <option>Hasta 4 personas</option>
+            <option>Hasta 6 personas</option>
+          </select>
+        </label>
+        <h3>Rango de precio</h3>
+        <div class="price-range">
+          <input value="0" aria-label="Precio m&iacute;nimo">
+          <input value="2000" aria-label="Precio m&aacute;ximo">
+        </div>
+      </div>
+    </details>
+
     <div class="list-toolbar">
-      <p class="muted">{{ parks|length }} parques &middot; ordenados por relevancia</p>
+      <p class="muted">{{ parks|length }} parques</p>
       <select class="select sort-select">
         <option>Ordenar: relevancia</option>
         <option>Precio menor a mayor</option>

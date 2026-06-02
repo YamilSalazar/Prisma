@@ -18,9 +18,14 @@
       {% if card_variant != 'featured' %}<span class="rating"><span class="rating__star">&#9733;</span> {{ park.rating }}</span>{% endif %}
     </div>
 
-    {% if card_variant == 'featured' %}
-      <p>{{ park.type }} &middot; {{ park.capacity }}</p>
-    {% endif %}
+    <p class="park-card__meta">
+      <span>{{ park.type }}</span>
+      <span aria-hidden="true">&middot;</span>
+      <span class="park-card__capacity">
+        <i class="ph ph-users" aria-hidden="true"></i>
+        {{ park.capacity|cut:" pers"|cut:" personas"|cut:" persona" }}
+      </span>
+    </p>
 
     <div class="chips park-card__chips">
       {% for amenity in park.amenity_items|slice:":3" %}

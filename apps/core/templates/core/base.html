@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
   <link rel="stylesheet" href="{% static 'core/css/festival.css' %}">
 </head>
-<body>
+<body class="{% if active == 'login' or active == 'register' or active == 'password_reset' %}page-auth-mobile{% endif %}">
   <div class="site-shell">
     {% include "core/partials/navbar.html" %}
     <main class="site-main {% if full_bleed %}site-main--flush{% endif %}">

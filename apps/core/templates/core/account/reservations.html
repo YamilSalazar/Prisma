@@ -135,7 +135,7 @@
 
 {# ── Modal P8a · Cancelar reservación ──────────────────────── #}
 <div id="modal-cancelar" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-cancelar-title">
-  <div class="modal">
+  <div class="modal modal--cancel">
     <button class="modal__close" type="button" data-close-modal="modal-cancelar" aria-label="Cerrar">
       <i class="ph ph-x"></i>
     </button>
@@ -163,15 +163,15 @@
     </div>
     <p class="modal-note">Est&aacute;s a m&aacute;s de 7 d&iacute;as de la fecha, por lo que se har&aacute; un <strong>reembolso completo</strong> al m&eacute;todo de pago original en 5&nbsp;&mdash;&nbsp;7 d&iacute;as h&aacute;biles. Esta acci&oacute;n no se puede deshacer.</p>
     <div class="modal-actions">
-      <button class="button button--secondary" type="button" data-close-modal="modal-cancelar">Volver</button>
       <button class="button button--destructive" type="button" data-close-modal="modal-cancelar">Confirmar cancelaci&oacute;n</button>
+      <button class="button button--secondary" type="button" data-close-modal="modal-cancelar">Volver</button>
     </div>
   </div>
 </div>
 
 {# ── Modal P8b · Calificar parque ───────────────────────────── #}
 <div id="modal-calificar" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-calificar-title">
-  <div class="modal modal--wide">
+  <div class="modal modal--wide modal--rating">
     <button class="modal__close" type="button" data-close-modal="modal-calificar" aria-label="Cerrar">
       <i class="ph ph-x"></i>
     </button>
@@ -182,11 +182,11 @@
     <div class="modal-rating-section">
       <p class="modal-rating-label">Tu calificaci&oacute;n</p>
       <div class="star-picker" id="star-picker" role="group" aria-label="Calificaci&oacute;n de 1 a 5 estrellas">
-        <button class="star-picker__btn" type="button" data-star="1" aria-label="1 estrella">&#9733;</button>
-        <button class="star-picker__btn" type="button" data-star="2" aria-label="2 estrellas">&#9733;</button>
-        <button class="star-picker__btn" type="button" data-star="3" aria-label="3 estrellas">&#9733;</button>
-        <button class="star-picker__btn" type="button" data-star="4" aria-label="4 estrellas">&#9733;</button>
-        <button class="star-picker__btn" type="button" data-star="5" aria-label="5 estrellas">&#9733;</button>
+        <button class="star-picker__btn" type="button" data-star="1" aria-label="1 estrella">&#9734;</button>
+        <button class="star-picker__btn" type="button" data-star="2" aria-label="2 estrellas">&#9734;</button>
+        <button class="star-picker__btn" type="button" data-star="3" aria-label="3 estrellas">&#9734;</button>
+        <button class="star-picker__btn" type="button" data-star="4" aria-label="4 estrellas">&#9734;</button>
+        <button class="star-picker__btn" type="button" data-star="5" aria-label="5 estrellas">&#9734;</button>
       </div>
       <p class="star-hint" id="star-hint">Selecciona estrellas para activar el env&iacute;o.</p>
     </div>
@@ -197,8 +197,8 @@
     </label>
 
     <div class="modal-actions">
-      <button class="button button--secondary" type="button" data-close-modal="modal-calificar">Cancelar</button>
       <button class="button button--primary" id="btn-enviar-resena" type="button" disabled data-close-modal="modal-calificar">Enviar rese&ntilde;a</button>
+      <button class="button button--secondary" type="button" data-close-modal="modal-calificar">Cancelar</button>
     </div>
   </div>
 </div>

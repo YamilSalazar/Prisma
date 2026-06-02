@@ -33,7 +33,7 @@
           <strong>{{ selected_park.rating }}</strong>
           <span>&middot; {{ selected_park.reviews }} rese&ntilde;as</span>
           <span>&middot;</span>
-          <span>{{ selected_park.type }} &middot; <i class="ph ph-person"></i> {{ selected_park.capacity.split.0 }}</span>
+          <span>{{ selected_park.type }} &middot; <i class="ph ph-users"></i> {{ selected_park.capacity.split.0 }}</span>
         </div>
       </div>
       <span class="seal"><i class="ph ph-shield-check"></i>Oficial</span>
@@ -131,6 +131,11 @@
     <a class="text-link" href="{% url 'core:map' %}">Ver en el mapa <i class="ph ph-arrow-right"></i></a>
     </section>
   </aside>
+
+  <div class="booking-bar--mobile">
+    <div class="booking-bar__price"><strong>${{ selected_park.price }}</strong><span>/ noche</span></div>
+    <a class="button button--primary" href="{% url 'core:booking_details' %}">Reservar</a>
+  </div>
 </section>
 
 <script>

@@ -39,6 +39,42 @@ document.querySelectorAll("[data-reservation-tab]").forEach((tab) => {
   });
 });
 
+const mobileMenuPanel = document.querySelector("[data-mobile-menu-panel]");
+const openMobileMenu = () => {
+  if (!mobileMenuPanel) return;
+  mobileMenuPanel.classList.add("is-open");
+  mobileMenuPanel.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+};
+const closeMobileMenu = () => {
+  if (!mobileMenuPanel) return;
+  mobileMenuPanel.classList.remove("is-open");
+  mobileMenuPanel.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+};
+
+document.querySelectorAll("[data-mobile-menu-open]").forEach((button) => {
+  button.addEventListener("click", openMobileMenu);
+});
+
+document.querySelectorAll("[data-mobile-menu-close]").forEach((button) => {
+  button.addEventListener("click", closeMobileMenu);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeMobileMenu();
+});
+
+// Toda la tarjeta del parque abre la ficha.
+document.querySelectorAll(".park-card").forEach((card) => {
+  card.addEventListener("click", (event) => {
+    if (event.target.closest("a, button, input, select, textarea")) return;
+
+    const link = card.querySelector(".park-card__photo");
+    if (link?.href) window.location.href = link.href;
+  });
+});
+
 // Modales
 document.addEventListener("click", (e) => {
   const openBtn = e.target.closest("[data-open-modal]");
@@ -98,7 +134,8 @@ document.addEventListener("click", (e) => {
     const editBtn = document.createElement("button");
     editBtn.className = "account-row__edit-btn";
     editBtn.setAttribute("data-field-edit", "");
-    editBtn.innerHTML = `<i class="ph ph-pencil-simple" aria-hidden="true"></i> Editar`;
+    editBtn.setAttribute("aria-label", "Editar");
+    editBtn.innerHTML = `<i class="ph ph-pencil-simple" aria-hidden="true"></i>`;
     saveBtn.closest(".account-row__save-actions").replaceWith(editBtn);
     return;
   }
@@ -117,7 +154,8 @@ document.addEventListener("click", (e) => {
     const editBtn = document.createElement("button");
     editBtn.className = "account-row__edit-btn";
     editBtn.setAttribute("data-field-edit", "");
-    editBtn.innerHTML = `<i class="ph ph-pencil-simple" aria-hidden="true"></i> Editar`;
+    editBtn.setAttribute("aria-label", "Editar");
+    editBtn.innerHTML = `<i class="ph ph-pencil-simple" aria-hidden="true"></i>`;
     cancelBtn.closest(".account-row__save-actions").replaceWith(editBtn);
     return;
   }
@@ -149,7 +187,11 @@ if (starPicker) {
   let selected = 0;
 
   const highlight = (upTo) => {
-    buttons.forEach((b) => b.classList.toggle("is-active", parseInt(b.dataset.star) <= upTo));
+    buttons.forEach((b) => {
+      const active = parseInt(b.dataset.star) <= upTo;
+      b.classList.toggle("is-active", active);
+      b.textContent = active ? "★" : "☆";
+    });
   };
 
   buttons.forEach((btn) => {

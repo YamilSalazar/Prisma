@@ -42,7 +42,7 @@
   </div>
   <div class="hero__content">
     <p class="eyebrow">Edición 2026 · Sitio oficial</p>
-    <h1>Festival Internacional<br>de las <strong>Luciérnagas</strong> 2026</h1>
+    <h1 class="hero-title"><span>Festival Internacional</span><span>de las <strong>Luci&eacute;rnagas</strong></span><span>2026</span></h1>
     <div class="hero__chips">
       <span class="info-chip"><i class="ph ph-calendar-blank"></i>12 Jun — 18 Ago</span>
       <span class="info-chip"><i class="ph ph-tree-evergreen"></i>6 parques</span>
@@ -50,17 +50,21 @@
       <span class="info-chip"><i class="ph ph-clock"></i>19:30 — 23:00</span>
       <span class="seal"><i class="ph ph-shield-check"></i>Oficial</span>
     </div>
-    <a class="button button--primary hero__button" href="{% url 'core:map' %}">
+    <a class="button button--primary hero__button hero__button--desktop" href="{% url 'core:map' %}">
       <i class="ph ph-map-pin"></i> Ver mapa
     </a>
   </div>
 </section>
 
+<a class="button button--primary hero__button hero__button--mobile" href="{% url 'core:map' %}">
+  <i class="ph ph-map-pin"></i> Ver mapa
+</a>
+
 <section class="section">
   <div class="section__header">
     <div>
       <p class="eyebrow">Hospedajes destacados</p>
-      <h2>Tres opciones que <strong>se llenan primero</strong></h2>
+      <h2 class="featured-title">Tres opciones que <strong>se llenan primero</strong></h2>
     </div>
     <a class="button button--secondary" href="{% url 'core:park_list' %}">Ver todos →</a>
   </div>
@@ -69,6 +73,7 @@
       {% include "core/partials/park_card.html" with card_variant="featured" %}
     {% endfor %}
   </div>
+  <a class="button button--secondary section__mobile-button" href="{% url 'core:park_list' %}">Ver todos &rarr;</a>
 </section>
 {% endblock %}
 

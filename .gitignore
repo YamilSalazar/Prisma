@@ -1,5 +1,6 @@
 __pycache__/
 *.pyc
+staticfiles/
 .env
 .agents
 skills-lock.json

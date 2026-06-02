@@ -1,7 +1,8 @@
 {% extends "core/base.html" %}
+{% load static %}
 
 {% block content %}
-<section class="section reservations-page">
+<section class="reservations-page">
   <p class="eyebrow">Mi cuenta</p>
   <h1 class="page-title">Mis reservaciones</h1>
 
@@ -13,12 +14,12 @@
   <div class="reservation-panel is-active" data-reservation-panel="active">
     <div class="reservation-grid">
       <article class="card reservation-card reservation-card--full">
-        <div class="photo-placeholder reservation-card__photo"><span>Foto &middot; Mirador de las Estrellas</span></div>
+        <img src="{% static 'core/assets/parks/santa_clara/imagen1.jpg' %}" alt="Santuario Santa Clara" class="reservation-card__photo">
         <div class="reservation-card__body">
           <div class="reservation-card__head">
             <div>
-              <h2>Mirador de las Estrellas</h2>
-              <p>Caba&ntilde;a &middot; 2 adultos</p>
+              <h2>Santuario Santa Clara</h2>
+              <p>Caba&ntilde;a &middot; <i class="ph ph-person"></i> 2 </p>
             </div>
             <span class="reservation-status reservation-status--active"><i></i> Activa</span>
           </div>
@@ -27,7 +28,7 @@
             <p><span>Folio</span><strong>FIL-2026-08471</strong></p>
           </div>
           <div class="reservation-card__footer">
-            <strong class="reservation-price">$3,456</strong>
+            <strong class="reservation-price">$1,420</strong>
             <div class="reservation-actions">
               <a class="button button--secondary" href="#"><i class="ph ph-download-simple"></i> PDF</a>
               <button class="reservation-cancel" type="button" data-open-modal="modal-cancelar">Cancelar</button>
@@ -37,12 +38,12 @@
       </article>
 
       <article class="card reservation-card reservation-card--full">
-        <div class="photo-placeholder reservation-card__photo"><span>Foto &middot; Caba&ntilde;as del Bosque</span></div>
+        <img src="{% static 'core/assets/parks/bosque_magico/imagen1.jpg' %}" alt="Bosque M&aacute;gico" class="reservation-card__photo">
         <div class="reservation-card__body">
           <div class="reservation-card__head">
             <div>
-              <h2>Caba&ntilde;as del Bosque</h2>
-              <p>Caba&ntilde;a &middot; 4 adultos</p>
+              <h2>Bosque M&aacute;gico</h2>
+              <p>Caba&ntilde;a &middot; <i class="ph ph-person"></i> 4 </p>
             </div>
             <span class="reservation-status reservation-status--active"><i></i> Activa</span>
           </div>
@@ -51,7 +52,7 @@
             <p><span>Folio</span><strong>FIL-2026-09112</strong></p>
           </div>
           <div class="reservation-card__footer">
-            <strong class="reservation-price">$3,750</strong>
+            <strong class="reservation-price">$1,200</strong>
             <div class="reservation-actions">
               <a class="button button--secondary" href="#"><i class="ph ph-download-simple"></i> PDF</a>
               <button class="reservation-cancel" type="button" data-open-modal="modal-cancelar">Cancelar</button>
@@ -65,12 +66,12 @@
   <div class="reservation-panel" data-reservation-panel="history" hidden>
     <div class="reservation-grid">
       <article class="card reservation-card reservation-card--full">
-        <div class="photo-placeholder reservation-card__photo"><span>Foto &middot; Camping R&iacute;o Verde</span></div>
+        <img src="{% static 'core/assets/parks/canto_del_bosque/imagen1.jpg' %}" alt="Canto del Bosque" class="reservation-card__photo">
         <div class="reservation-card__body">
           <div class="reservation-card__head">
             <div>
-              <h2>Camping R&iacute;o Verde</h2>
-              <p>Camping &middot; 6 personas</p>
+              <h2>Canto del Bosque</h2>
+              <p>Camping &middot; <i class="ph ph-person"></i> 6 </p>
             </div>
             <span class="reservation-status reservation-status--completed"><i></i> Completada</span>
           </div>
@@ -79,7 +80,7 @@
             <p><span>Folio</span><strong>FIL-2025-04210</strong></p>
           </div>
           <div class="reservation-card__footer">
-            <strong class="reservation-price reservation-price--muted">$1,360</strong>
+            <strong class="reservation-price reservation-price--muted">$750</strong>
             <div class="reservation-actions">
               <button class="button button--secondary" type="button" data-open-modal="modal-calificar"><i class="ph ph-star"></i> Calificar parque</button>
             </div>
@@ -88,12 +89,12 @@
       </article>
 
       <article class="card reservation-card reservation-card--full is-muted">
-        <div class="photo-placeholder reservation-card__photo"><span>Foto &middot; Refugio Luci&eacute;rnaga</span></div>
+        <img src="{% static 'core/assets/parks/santa_clara/imagen1.jpg' %}" alt="Santuario Santa Clara" class="reservation-card__photo">
         <div class="reservation-card__body">
           <div class="reservation-card__head">
             <div>
-              <h2>Refugio Luci&eacute;rnaga</h2>
-              <p>Caba&ntilde;a &middot; 2 personas</p>
+              <h2>Santuario Santa Clara</h2>
+              <p>Caba&ntilde;a &middot; <i class="ph ph-person"></i> 2 </p>
             </div>
             <span class="reservation-status reservation-status--cancelled"><i></i> Cancelada</span>
           </div>
@@ -102,19 +103,19 @@
             <p><span>Folio</span><strong>FIL-2025-03877</strong></p>
           </div>
           <div class="reservation-card__footer">
-            <strong class="reservation-price reservation-price--muted">$4,740</strong>
+            <strong class="reservation-price reservation-price--muted">$1,420</strong>
             <em>Sin acciones</em>
           </div>
         </div>
       </article>
 
       <article class="card reservation-card reservation-card--full">
-        <div class="photo-placeholder reservation-card__photo"><span>Foto &middot; Caba&ntilde;as del Bosque</span></div>
+        <img src="{% static 'core/assets/parks/santuario_piedra_canteada/imagen1.jpg' %}" alt="Santuario Piedra Canteada" class="reservation-card__photo">
         <div class="reservation-card__body">
           <div class="reservation-card__head">
             <div>
-              <h2>Caba&ntilde;as del Bosque</h2>
-              <p>Caba&ntilde;a &middot; 4 personas</p>
+              <h2>Santuario Piedra Canteada</h2>
+              <p>Caba&ntilde;a &middot; <i class="ph ph-person"></i> 4 </p>
             </div>
             <span class="reservation-status reservation-status--completed"><i></i> Completada</span>
           </div>
@@ -123,7 +124,7 @@
             <p><span>Folio</span><strong>FIL-2025-02118</strong></p>
           </div>
           <div class="reservation-card__footer">
-            <strong class="reservation-price reservation-price--muted">$3,750</strong>
+            <strong class="reservation-price reservation-price--muted">$1,850</strong>
             <span class="reservation-rated"><span>&starf;&starf;&starf;&starf;&starf;</span> Calificado</span>
           </div>
         </div>
@@ -145,7 +146,7 @@
     <div class="modal-detail-grid">
       <div class="modal-pair">
         <span class="modal-pair__label">Parque</span>
-        <span class="modal-pair__value">Mirador de las Estrellas</span>
+        <span class="modal-pair__value">Santuario Santa Clara</span>
       </div>
       <div class="modal-pair">
         <span class="modal-pair__label">Folio</span>
@@ -157,7 +158,7 @@
       </div>
       <div class="modal-pair">
         <span class="modal-pair__label">Total</span>
-        <span class="modal-pair__value">$3,456 MXN</span>
+        <span class="modal-pair__value">$1,420 MXN</span>
       </div>
     </div>
     <p class="modal-note">Est&aacute;s a m&aacute;s de 7 d&iacute;as de la fecha, por lo que se har&aacute; un <strong>reembolso completo</strong> al m&eacute;todo de pago original en 5&nbsp;&mdash;&nbsp;7 d&iacute;as h&aacute;biles. Esta acci&oacute;n no se puede deshacer.</p>
@@ -175,7 +176,7 @@
       <i class="ph ph-x"></i>
     </button>
     <p class="eyebrow" style="margin-bottom:8px;">Califica tu estancia</p>
-    <h2 id="modal-calificar-title" style="margin:0 0 8px; font-size:22px; font-weight:700;">Camping R&iacute;o Verde</h2>
+    <h2 id="modal-calificar-title" style="margin:0 0 8px; font-size:22px; font-weight:700;">Canto del Bosque</h2>
     <p style="color:var(--muted); font-size:12.5px; margin:0 0 24px;">Estancia 08 &mdash; 09 Ago 2025</p>
 
     <div class="modal-rating-section">

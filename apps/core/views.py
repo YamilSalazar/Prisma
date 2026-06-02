@@ -18,6 +18,7 @@ PARKS = [
         "address": "Camino a San Felipe Hidalgo Km 4.5, Nanacamilpa",
         "lat": 19.462312,
         "lng": -98.568421,
+        "images": [f"core/assets/parks/santuario_piedra_canteada/imagen{i}.jpg" for i in range(1, 6)],
     },
     {
         "slug": "canto-del-bosque",
@@ -31,19 +32,21 @@ PARKS = [
         "address": "San Felipe Hidalgo s/n, Nanacamilpa, Tlaxcala",
         "lat": 19.458045,
         "lng": -98.542012,
+        "images": [f"core/assets/parks/canto_del_bosque/imagen{i}.jpg" for i in range(1, 6)],
     },
     {
-        "slug": "santuario-el-salto",
-        "name": "Santuario El Salto",
+        "slug": "santuario-santa-clara",
+        "name": "Santuario Santa Clara",
         "type": "Cabaña",
         "price": 1420,
         "capacity": "2 pers",
         "rating": 4.8,
         "reviews": 128,
         "amenities": ["Vista panorámica", "Baño privado", "Desayuno"],
-        "address": "Zona Boscosa San Felipe Hidalgo, Lote 12",
-        "lat": 19.481234,
-        "lng": -98.529876,
+        "address": "Camino al Bosque de Santa Clara s/n, Nanacamilpa",
+        "lat": 19.459012,
+        "lng": -98.535678,
+        "images": [f"core/assets/parks/santa_clara/imagen{i}.jpg" for i in range(1, 6)],
     },
     {
         "slug": "bosque-magico",
@@ -57,6 +60,7 @@ PARKS = [
         "address": "Camino Forestal Nanacamilpa, Sendero 4",
         "lat": 19.445089,
         "lng": -98.551045,
+        "images": [f"core/assets/parks/bosque_magico/imagen{i}.jpg" for i in range(1, 6)],
     },
     {
         "slug": "santuario-las-minas",
@@ -70,6 +74,7 @@ PARKS = [
         "address": "Antigua Zona Minera, San Felipe Hidalgo",
         "lat": 19.492567,
         "lng": -98.538012,
+        "images": [f"core/assets/parks/santuario_las_minas/imagen{i}.jpg" for i in range(1, 6)],
     },
     {
         "slug": "rancho-el-ciervo",
@@ -83,6 +88,7 @@ PARKS = [
         "address": "Km 8 Carretera Nanacamilpa-Mazapa",
         "lat": 19.470512,
         "lng": -98.555567,
+        "images": [f"core/assets/parks/rancho_el_ciervo/imagen{i}.jpg" for i in range(1, 6)],
     },
 ]
 

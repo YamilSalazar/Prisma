@@ -1,4 +1,5 @@
 {% extends "core/base.html" %}
+{% load static %}
 
 {% block content %}
 <nav class="breadcrumb breadcrumb--detail">
@@ -11,8 +12,12 @@
 
 <section class="park-detail-layout">
   <article class="park-detail-main">
-    <section class="gallery-block" aria-label="Galer&iacute;a de fotos">
-      <div class="photo-placeholder photo-placeholder--gallery"><span>Foto principal &middot; {{ selected_park.name }}</span></div>
+    <section class="gallery-block" aria-label="Galería de fotos">
+      <div class="gallery-main">
+        {% with selected_park.images|first as first_image %}
+          <img src="{% static first_image %}" alt="{{ selected_park.name }}" class="gallery-img">
+        {% endwith %}
+      </div>
       <div class="gallery-controls">
         <button type="button" aria-label="Foto anterior"><i class="ph ph-caret-left"></i></button>
         <span>1 / 5</span>
@@ -198,28 +203,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const galleryCount = document.querySelector('.gallery-controls span');
     const galleryPrev = document.querySelector('.gallery-controls button[aria-label="Foto anterior"]');
     const galleryNext = document.querySelector('.gallery-controls button[aria-label="Foto siguiente"]');
-    const galleryPlaceholder = document.querySelector('.photo-placeholder--gallery');
+    const galleryImg = document.querySelector('.gallery-img');
     
-    let currentPhoto = 1;
-    const totalPhotos = 5;
+    // Lista de imágenes desde Django
+    const images = [
+        {% for img in selected_park.images %}
+            "{% static img %}"{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    let currentIndex = 0;
+    const totalPhotos = images.length;
     
     const updateGallery = () => {
-        galleryCount.textContent = `${currentPhoto} / ${totalPhotos}`;
+        galleryCount.textContent = `${currentIndex + 1} / ${totalPhotos}`;
+        
         // Micro-animación de destello bioluminiscente al cambiar foto
-        galleryPlaceholder.style.transition = 'opacity 0.2s ease-out';
-        galleryPlaceholder.style.opacity = '0.4';
+        galleryImg.style.transition = 'opacity 0.2s ease-out';
+        galleryImg.style.opacity = '0.3';
+        
         setTimeout(() => {
-            galleryPlaceholder.style.opacity = '1';
+            galleryImg.src = images[currentIndex];
+            galleryImg.style.opacity = '1';
         }, 200);
     };
 
     galleryPrev.addEventListener('click', () => {
-        currentPhoto = currentPhoto > 1 ? currentPhoto - 1 : totalPhotos;
+        currentIndex = (currentIndex > 0) ? currentIndex - 1 : totalPhotos - 1;
         updateGallery();
     });
     
     galleryNext.addEventListener('click', () => {
-        currentPhoto = currentPhoto < totalPhotos ? currentPhoto + 1 : 1;
+        currentIndex = (currentIndex < totalPhotos - 1) ? currentIndex + 1 : 0;
         updateGallery();
     });
 });

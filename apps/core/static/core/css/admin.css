@@ -977,6 +977,16 @@
       grid-template-columns: 1fr 1fr;
     }
 
+    /* Evita que los inputs (p. ej. "Zonas de camping") se desborden del modal:
+       en un grid 1fr 1fr el item no encoge por debajo de su tamaño intrínseco
+       (min-width:auto) y el input numérico no tenía ancho definido. */
+    .modal .field input,
+    .modal .field select,
+    .modal .field textarea {
+      width: 100%;
+      min-width: 0;
+    }
+
     .modal-avail-info {
       padding: 12px 16px;
       background: var(--deep-2);
@@ -1058,6 +1068,22 @@
 
     .contact-row i { color: var(--muted); font-size: 18px; }
     .contact-row span { font-size: 14px; color: var(--cream); }
+
+    /* Input editable que conserva el aspecto "boxeado" de la fila de contacto */
+    .contact-input {
+      width: 100%;
+      min-width: 0;
+      border: 0;
+      background: transparent;
+      color: var(--cream);
+      font-size: 14px;
+      font-family: inherit;
+      padding: 4px 0;
+      border-bottom: 1px solid transparent;
+      transition: border-color .12s;
+    }
+    .contact-input:focus { outline: none; border-bottom-color: var(--gold); }
+    .contact-input::placeholder { color: rgba(138,154,140,.65); }
 
     .social-grid { display: grid; gap: 8px; }
 

@@ -27,8 +27,10 @@ urlpatterns = [
 
     # ── Cuenta de usuario ─────────────────────────────────────────
     path("mis-reservaciones/", views.reservations, name="reservations"),
+    path("mis-reservaciones/<str:folio>/cancelar/", views.cancelar_reservacion, name="cancelar_reservacion"),
     path("mi-cuenta/", views.account, name="account"),
     path("cambiar-password/", views.change_password, name="change_password"),
+    path("resenas/crear/", views.crear_resena, name="crear_resena"),
 
     # ── Panel admin (requiere is_staff=True) ──────────────────────
     path("fila-admin/", views.admin_panel, name="admin_panel"),
@@ -41,4 +43,7 @@ urlpatterns = [
     path("fila-admin/disponibilidad/", views.admin_disponibilidad, name="admin_disponibilidad"),
     path("fila-admin/contacto/", views.admin_contacto, name="admin_contacto"),
     path("logout/", views.logout_view, name="logout"),
+
+    # ── Idioma (ES/EN) ────────────────────────────────────────────
+    path("idioma/<str:code>/", views.set_idioma, name="set_idioma"),
 ]

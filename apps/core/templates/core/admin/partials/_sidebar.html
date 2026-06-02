@@ -20,21 +20,21 @@
   </div>
   <p class="sidebar__section-label">Módulos</p>
   <nav class="sidebar__nav">
-    <button class="sidebar__link {% if active_section == 'panel' %}is-active{% endif %}" onclick="showScreen('panel')">
+    <a class="sidebar__link {% if active_section == 'panel' %}is-active{% endif %}" href="{% url 'core:admin_panel' %}">
       <i class="ph ph-squares-four"></i> Panel
-    </button>
-    <button class="sidebar__link {% if active_section == 'parques' %}is-active{% endif %}" onclick="showScreen('parques')">
+    </a>
+    <a class="sidebar__link {% if active_section == 'parques' or active_section == 'agregar' or active_section == 'editar' or active_section == 'eliminar' %}is-active{% endif %}" href="{% url 'core:admin_parques' %}">
       <i class="ph ph-tree"></i> Parques
-    </button>
-    <button class="sidebar__link {% if active_section == 'reservaciones' %}is-active{% endif %}" onclick="showScreen('reservaciones')">
+    </a>
+    <a class="sidebar__link {% if active_section == 'reservaciones' or active_section == 'detalle' %}is-active{% endif %}" href="{% url 'core:admin_reservaciones' %}">
       <i class="ph ph-ticket"></i> Reservaciones
-    </button>
-    <button class="sidebar__link {% if active_section == 'disponibilidad' %}is-active{% endif %}" onclick="showScreen('disponibilidad')">
+    </a>
+    <a class="sidebar__link {% if active_section == 'disponibilidad' %}is-active{% endif %}" href="{% url 'core:admin_disponibilidad' %}">
       <i class="ph ph-calendar-dots"></i> Disponibilidad
-    </button>
-    <button class="sidebar__link {% if active_section == 'contacto' %}is-active{% endif %}" onclick="showScreen('contacto')">
+    </a>
+    <a class="sidebar__link {% if active_section == 'contacto' %}is-active{% endif %}" href="{% url 'core:admin_contacto' %}">
       <i class="ph ph-envelope"></i> Contacto
-    </button>
+    </a>
   </nav>
   <div class="sidebar__spacer"></div>
   <div class="sidebar__user">

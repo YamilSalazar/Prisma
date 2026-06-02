@@ -4,6 +4,7 @@
 <section class="centered-panel">
   <form method="POST" class="card form-card form-card--auth form-card--login">
     {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.GET.next }}">
 
     <p class="eyebrow">Acceso &middot; Visitantes</p>
     <h1>Iniciar sesi&oacute;n</h1>

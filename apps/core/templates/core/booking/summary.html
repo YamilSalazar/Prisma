@@ -1,4 +1,5 @@
 {% extends "core/base.html" %}
+{% load humanize %}
 
 {% block content %}
 {% include "core/partials/step_indicator.html" with step=2 %}
@@ -8,12 +9,12 @@
       <p class="eyebrow">Tu reservaci&oacute;n</p>
       <h1>Revisa los datos antes de pagar</h1>
       <div class="summary-grid">
-        <p><span>Parque</span><strong>Mirador de las Estrellas</strong></p>
-        <p><span>Hospedaje</span><strong>Caba&ntilde;a &middot; 2 personas</strong></p>
-        <p><span>Entrada</span><strong>S&aacute;bado 14 Junio 2026 &middot; 15:00</strong></p>
-        <p><span>Salida</span><strong>Lunes 16 Junio 2026 &middot; 12:00</strong></p>
-        <p><span>Noches</span><strong>2 noches</strong></p>
-        <p><span>Hu&eacute;spedes</span><strong>2 adultos</strong></p>
+        <p><span>Parque</span><strong>{{ booking_parque.name }}</strong></p>
+        <p><span>Hospedaje</span><strong>{{ booking.tipo }} &middot; {{ booking.personas }} personas</strong></p>
+        <p><span>Entrada</span><strong>{{ entrada|date:"l j F Y"|capfirst }} &middot; 15:00</strong></p>
+        <p><span>Salida</span><strong>{{ salida|date:"l j F Y"|capfirst }} &middot; 12:00</strong></p>
+        <p><span>Noches</span><strong>{{ booking.noches }} noches</strong></p>
+        <p><span>Hu&eacute;spedes</span><strong>{{ booking.personas }} personas</strong></p>
       </div>
     </article>
 
@@ -23,10 +24,10 @@
         <i class="ph ph-caret-up accordion-card__caret"></i>
       </button>
       <div class="accordion-card__body cost-lines">
-        <p><span>$1,420 &times; 2 noches</span><strong>$2,840</strong></p>
-        <p><span>Servicio de plataforma</span><strong>$140</strong></p>
-        <p><span>Impuestos y hospedaje (16%)</span><strong>$476</strong></p>
-        <p class="cost-lines__total"><span>Total</span><strong>$3,456 MXN</strong></p>
+        <p><span>${{ booking_parque.precio|intcomma }} &times; {{ booking.noches }} noches</span><strong>${{ subtotal|intcomma }}</strong></p>
+        <p><span>Servicio de plataforma</span><strong>${{ servicio|intcomma }}</strong></p>
+        <p><span>Impuestos y hospedaje (16%)</span><strong>${{ impuestos|intcomma }}</strong></p>
+        <p class="cost-lines__total"><span>Total</span><strong>${{ total|intcomma }} MXN</strong></p>
       </div>
     </article>
 
@@ -44,19 +45,19 @@
 
   <aside class="card checkout-total checkout-total--summary">
     <header>
-      <h2>Mirador de las Estrellas</h2>
-      <p>14 &mdash; 16 Junio 2026 &middot; 2 personas</p>
+      <h2>{{ booking_parque.name }}</h2>
+      <p>{{ entrada|date:"j M" }} &mdash; {{ salida|date:"j M Y" }} &middot; {{ booking.personas }} personas</p>
     </header>
 
     <div class="checkout-total__lines">
-      <p><span>Subtotal</span><strong>$2,840</strong></p>
-      <p><span>Servicio</span><strong>$140</strong></p>
-      <p><span>Impuestos</span><strong>$476</strong></p>
+      <p><span>Subtotal</span><strong>${{ subtotal|intcomma }}</strong></p>
+      <p><span>Servicio</span><strong>${{ servicio|intcomma }}</strong></p>
+      <p><span>Impuestos</span><strong>${{ impuestos|intcomma }}</strong></p>
     </div>
 
     <div class="checkout-total__grand">
       <span>Total</span>
-      <strong>$3,456</strong>
+      <strong>${{ total|intcomma }}</strong>
       <small>MXN &middot; impuestos incluidos</small>
     </div>
 

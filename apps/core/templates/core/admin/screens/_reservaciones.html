@@ -1,33 +1,34 @@
+    {% load humanize %}
     <main class="admin-main">
       <div class="admin-page-header">
         <div>
           <p class="eyebrow">Administración</p>
           <h1>Gestión de reservaciones</h1>
         </div>
-        <span class="text-muted" style="font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase">Total · 248 reservaciones</span>
+        <span class="text-muted" style="font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase">Total · {{ stats.total }} reservaciones</span>
       </div>
 
       <!-- stat row -->
       <div class="stat-grid" style="grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:24px">
         <div class="stat-card">
           <p class="stat-card__label">Total</p>
-          <p class="stat-card__value" style="font-size:26px;font-weight:700">248</p>
+          <p class="stat-card__value" style="font-size:26px;font-weight:700">{{ stats.total }}</p>
           <p class="stat-card__sub">acumulado del festival</p>
         </div>
         <div class="stat-card">
           <p class="stat-card__label">Activas</p>
-          <p class="stat-card__value" style="font-size:26px;font-weight:700;color:#4f9560">186</p>
+          <p class="stat-card__value" style="font-size:26px;font-weight:700;color:#4f9560">{{ stats.activas }}</p>
           <p class="stat-card__sub">próximas o en curso</p>
         </div>
         <div class="stat-card">
           <p class="stat-card__label">Completadas</p>
-          <p class="stat-card__value" style="font-size:26px;font-weight:700;color:#8a9a8c">48</p>
+          <p class="stat-card__value" style="font-size:26px;font-weight:700;color:#8a9a8c">{{ stats.completadas }}</p>
           <p class="stat-card__sub">finalizadas</p>
         </div>
         <div class="stat-card">
           <p class="stat-card__label">Canceladas</p>
-          <p class="stat-card__value" style="font-size:26px;font-weight:700;color:var(--red)">14</p>
-          <p class="stat-card__sub">0 esta semana</p>
+          <p class="stat-card__value" style="font-size:26px;font-weight:700;color:var(--red)">{{ stats.canceladas }}</p>
+          <p class="stat-card__sub">acumulado</p>
         </div>
       </div>
 
@@ -58,92 +59,30 @@
             </tr>
           </thead>
           <tbody>
+            {% for r in reservaciones %}
             <tr>
-              <td>#FL-238104</td>
-              <td><div><strong style="font-weight:600;color:var(--cream)">María Hernández</strong><br><span class="text-muted" style="font-size:12px">maria.h@correo.mx</span></div></td>
-              <td>Cerro Pelón</td>
-              <td>14/07</td>
-              <td class="text-muted">Cabaña · 2p</td>
-              <td class="text-gold">$3,200</td>
-              <td><span class="status-pill status-pill--active"><i></i> Activa</span></td>
-              <td><button class="button button--secondary button--sm" onclick="showScreen('detalle')">Ver</button></td>
+              <td>{{ r.folio }}</td>
+              <td><div><strong style="font-weight:600;color:var(--cream)">{{ r.usuario.get_full_name|default:r.usuario.email }}</strong><br><span class="text-muted" style="font-size:12px">{{ r.usuario.email }}</span></div></td>
+              <td>{{ r.parque.nombre }}</td>
+              <td>{{ r.fecha_entrada|date:"d/m" }}</td>
+              <td class="text-muted">{{ r.tipo_hospedaje }} · {{ r.personas }}p</td>
+              <td class="text-gold">${{ r.total|intcomma }}</td>
+              <td>
+                {% if r.estado == 'activa' %}<span class="status-pill status-pill--active"><i></i> Activa</span>
+                {% elif r.estado == 'cancelada' %}<span class="status-pill status-pill--cancelled"><i></i> Cancelada</span>
+                {% else %}<span class="status-pill status-pill--done"><i></i> Completa</span>{% endif %}
+              </td>
+              <td><a class="button button--secondary button--sm" href="{% url 'core:admin_detalle_reservacion' r.folio %}">Ver</a></td>
             </tr>
-            <tr>
-              <td>#FL-238103</td>
-              <td><div><strong style="font-weight:600;color:var(--cream)">Daniel Ortega</strong><br><span class="text-muted" style="font-size:12px">d.ortega@correo.mx</span></div></td>
-              <td>El Rosario</td>
-              <td>14/07</td>
-              <td class="text-muted">Camping · 2p</td>
-              <td class="text-gold">$1,100</td>
-              <td><span class="status-pill status-pill--active"><i></i> Activa</span></td>
-              <td><button class="button button--secondary button--sm" onclick="showScreen('detalle')">Ver</button></td>
-            </tr>
-            <tr>
-              <td>#FL-238102</td>
-              <td><div><strong style="font-weight:600;color:var(--cream)">Liliana Vargas</strong><br><span class="text-muted" style="font-size:12px">lili.v@correo.mx</span></div></td>
-              <td>Sierra Chincua</td>
-              <td>14/07</td>
-              <td class="text-muted">Cabaña · 6p</td>
-              <td class="text-gold">$4,800</td>
-              <td><span class="status-pill status-pill--done"><i></i> Completa</span></td>
-              <td><button class="button button--secondary button--sm" onclick="showScreen('detalle')">Ver</button></td>
-            </tr>
-            <tr>
-              <td>#FL-238101</td>
-              <td><div><strong style="font-weight:600;color:var(--cream)">Roberto Cárdenas</strong><br><span class="text-muted" style="font-size:12px">r.cardenas@correo.mx</span></div></td>
-              <td>Piedra Herrada</td>
-              <td>13/07</td>
-              <td class="text-muted">Camping · 3p</td>
-              <td class="text-gold">$1,650</td>
-              <td><span class="status-pill status-pill--active"><i></i> Activa</span></td>
-              <td><button class="button button--secondary button--sm" onclick="showScreen('detalle')">Ver</button></td>
-            </tr>
-            <tr>
-              <td>#FL-238099</td>
-              <td><div><strong style="font-weight:600;color:var(--cream)">L. Pérez</strong><br><span class="text-muted" style="font-size:12px">l.perez@correo.mx</span></div></td>
-              <td>Sierra Chincua</td>
-              <td>13/07</td>
-              <td class="text-muted">Cabaña · 2p</td>
-              <td class="text-gold">$1,400</td>
-              <td><span class="status-pill status-pill--cancelled"><i></i> Cancelada</span></td>
-              <td><button class="button button--secondary button--sm" onclick="showScreen('detalle')">Ver</button></td>
-            </tr>
-            <tr>
-              <td>#FL-238094</td>
-              <td><div><strong style="font-weight:600;color:var(--cream)">Andrés Méndez</strong><br><span class="text-muted" style="font-size:12px">a.mendez@correo.mx</span></div></td>
-              <td>Piedra Herrada</td>
-              <td>13/07</td>
-              <td class="text-muted">Camping · 3p</td>
-              <td class="text-gold">$2,750</td>
-              <td><span class="status-pill status-pill--active"><i></i> Activa</span></td>
-              <td><button class="button button--secondary button--sm" onclick="showScreen('detalle')">Ver</button></td>
-            </tr>
-            <tr>
-              <td>#FL-238088</td>
-              <td><div><strong style="font-weight:600;color:var(--cream)">Sofía Reyes</strong><br><span class="text-muted" style="font-size:12px">s.reyes@correo.mx</span></div></td>
-              <td>Cerro Pelón</td>
-              <td>12/07</td>
-              <td class="text-muted">Cabaña · 2p</td>
-              <td class="text-gold">$1,600</td>
-              <td><span class="status-pill status-pill--done"><i></i> Completa</span></td>
-              <td><button class="button button--secondary button--sm" onclick="showScreen('detalle')">Ver</button></td>
-            </tr>
-            <tr>
-              <td>#FL-238085</td>
-              <td><div><strong style="font-weight:600;color:var(--cream)">Iván Domínguez</strong><br><span class="text-muted" style="font-size:12px">ivan.d@correo.mx</span></div></td>
-              <td>El Rosario</td>
-              <td>12/07</td>
-              <td class="text-muted">Camping · 2p</td>
-              <td class="text-gold">$3,200</td>
-              <td><span class="status-pill status-pill--active"><i></i> Activa</span></td>
-              <td><button class="button button--secondary button--sm" onclick="showScreen('detalle')">Ver</button></td>
-            </tr>
+            {% empty %}
+            <tr><td colspan="8" class="text-muted" style="padding:18px">No hay reservaciones registradas.</td></tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
 
       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px">
-        <span class="text-muted" style="font-size:12px">Mostrando 1–8 de 248</span>
+        <span class="text-muted" style="font-size:12px">Mostrando {{ reservaciones|length }} de {{ stats.total }}</span>
         <div class="pagination" style="margin-top:0">
           <button><i class="ph ph-caret-left"></i></button>
           <button class="is-active">1</button>

@@ -58,7 +58,7 @@
   <div class="screen {% if active_section == 'editar' %}is-active{% endif %}" id="screen-editar">
     <div class="admin-shell">
       {% include "core/admin/partials/_sidebar.html" with active_section=active_section %}
-      {% include "core/admin/screens/_editar.html" %}
+      {% if active_section == 'editar' %}{% include "core/admin/screens/_editar.html" %}{% endif %}
     </div>
   </div>
 
@@ -71,8 +71,8 @@
   <div class="screen {% if active_section == 'eliminar' %}is-active{% endif %}" id="screen-eliminar">
     <div class="admin-shell">
       {% include "core/admin/partials/_sidebar.html" with active_section=active_section %}
-      {% include "core/admin/screens/_eliminar.html" %}
-      {# _eliminar.html cierra </div> del admin-shell y contiene el modal de confirmación #}
+      {% if active_section == 'eliminar' %}{% include "core/admin/screens/_eliminar.html" %}{% endif %}
+    </div>
   </div>
 
 
@@ -93,7 +93,7 @@
   <div class="screen {% if active_section == 'detalle' %}is-active{% endif %}" id="screen-detalle">
     <div class="admin-shell">
       {% include "core/admin/partials/_sidebar.html" with active_section=active_section %}
-      {% include "core/admin/screens/_detalle.html" %}
+      {% if active_section == 'detalle' %}{% include "core/admin/screens/_detalle.html" %}{% endif %}
     </div>
   </div>
 

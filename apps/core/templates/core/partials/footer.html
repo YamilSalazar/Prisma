@@ -1,8 +1,50 @@
-<footer class="footer">
-  <a href="{% url 'core:home' %}">Acerca del festival</a>
-  <a href="#">Contacto</a>
-  <a href="#">Soporte</a>
-  <a href="#">Privacidad</a>
-  <a href="#">T&eacute;rminos</a>
-  <span class="footer__copy">&copy; 2026 &middot; Festival Internacional de las Luci&eacute;rnagas</span>
+<footer class="footer footer--rich">
+  <div class="footer__main">
+    <div class="footer__brand">
+      <strong class="footer__brand-name">Festival Internacional de las Luci&eacute;rnagas</strong>
+      <p class="footer__tagline">{{ t.footer_tagline }}</p>
+      {% if festival_contacto %}
+        <p class="footer__season">
+          <i class="ph ph-calendar-blank" aria-hidden="true"></i>
+          {{ t.footer_dates }}: {{ festival_contacto.fechas_festival }}
+        </p>
+      {% endif %}
+    </div>
+
+    <nav class="footer__col" aria-label="{{ t.footer_explore }}">
+      <p class="footer__col-title">{{ t.footer_explore }}</p>
+      <a href="{% url 'core:home' %}">{{ t.nav_inicio }}</a>
+      <a href="{% url 'core:park_list' %}">{{ t.nav_parques }}</a>
+      <a href="{% url 'core:map' %}">{{ t.nav_mapa }}</a>
+      <a href="{% url 'core:home' %}">{{ t.footer_about }}</a>
+    </nav>
+
+    {% if festival_contacto %}
+      <div class="footer__col">
+        <p class="footer__col-title">{{ t.footer_contact }}</p>
+        <a href="mailto:{{ festival_contacto.email }}"><i class="ph ph-envelope" aria-hidden="true"></i> {{ festival_contacto.email }}</a>
+        <a href="tel:{{ festival_contacto.telefono }}"><i class="ph ph-phone" aria-hidden="true"></i> {{ festival_contacto.telefono }}</a>
+        <span class="footer__static"><i class="ph ph-clock" aria-hidden="true"></i> {{ festival_contacto.horario }}</span>
+      </div>
+
+      <div class="footer__col">
+        <p class="footer__col-title">{{ t.footer_follow }}</p>
+        {% if festival_contacto.instagram %}<a href="#"><i class="ph ph-instagram-logo" aria-hidden="true"></i> {{ festival_contacto.instagram }}</a>{% endif %}
+        {% if festival_contacto.twitter %}<a href="#"><i class="ph ph-twitter-logo" aria-hidden="true"></i> {{ festival_contacto.twitter }}</a>{% endif %}
+        {% if festival_contacto.youtube %}<a href="#"><i class="ph ph-youtube-logo" aria-hidden="true"></i> {{ festival_contacto.youtube }}</a>{% endif %}
+        {% if festival_contacto.web %}<a href="#"><i class="ph ph-globe" aria-hidden="true"></i> {{ festival_contacto.web }}</a>{% endif %}
+      </div>
+    {% endif %}
+
+    <nav class="footer__col" aria-label="{{ t.footer_legal }}">
+      <p class="footer__col-title">{{ t.footer_legal }}</p>
+      <a href="#">{{ t.footer_privacy }}</a>
+      <a href="#">{{ t.footer_terms }}</a>
+      <a href="#">{{ t.footer_support }}</a>
+    </nav>
+  </div>
+
+  <div class="footer__bottom">
+    <span class="footer__copy">&copy; 2026 &middot; Festival Internacional de las Luci&eacute;rnagas &middot; {{ t.footer_rights }}</span>
+  </div>
 </footer>

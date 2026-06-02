@@ -1,134 +1,101 @@
 {% extends "core/base.html" %}
 {% load static %}
+{% load humanize %}
 
 {% block content %}
 <section class="reservations-page">
   <p class="eyebrow">Mi cuenta</p>
   <h1 class="page-title">Mis reservaciones</h1>
 
+  {% if messages %}
+    <div class="form-messages">
+      {% for message in messages %}
+        <p class="form-message form-message--{{ message.tags|default:'info' }}">{{ message }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
   <div class="reservation-tabs" role="tablist" aria-label="Reservaciones">
-    <button class="is-active" type="button" role="tab" aria-selected="true" data-reservation-tab="active">Activas <span>(2)</span></button>
-    <button type="button" role="tab" aria-selected="false" data-reservation-tab="history">Historial <span>(3)</span></button>
+    <button class="is-active" type="button" role="tab" aria-selected="true" data-reservation-tab="active">Activas <span>({{ activas|length }})</span></button>
+    <button type="button" role="tab" aria-selected="false" data-reservation-tab="history">Historial <span>({{ historial|length }})</span></button>
   </div>
 
   <div class="reservation-panel is-active" data-reservation-panel="active">
     <div class="reservation-grid">
+      {% for r in activas %}
       <article class="card reservation-card reservation-card--full">
-        <img src="{% static 'core/assets/parks/santa_clara/imagen1.jpg' %}" alt="Santuario Santa Clara" class="reservation-card__photo">
+        <img src="{% static r.parque.images.0 %}" alt="{{ r.parque.name }}" class="reservation-card__photo">
         <div class="reservation-card__body">
           <div class="reservation-card__head">
             <div>
-              <h2>Santuario Santa Clara</h2>
-              <p>Caba&ntilde;a &middot; <i class="ph ph-person"></i> 2 </p>
+              <h2>{{ r.parque.name }}</h2>
+              <p>{{ r.tipo_hospedaje }} &middot; <i class="ph ph-person"></i> {{ r.personas }} </p>
             </div>
             <span class="reservation-status reservation-status--active"><i></i> Activa</span>
           </div>
           <div class="reservation-card__meta">
-            <p><span>Fechas</span><strong>14 &mdash; 16 Jun 2026</strong></p>
-            <p><span>Folio</span><strong>FIL-2026-08471</strong></p>
+            <p><span>Fechas</span><strong>{{ r.fecha_entrada|date:"j" }} &mdash; {{ r.fecha_salida|date:"j M Y" }}</strong></p>
+            <p><span>Folio</span><strong>{{ r.folio }}</strong></p>
           </div>
           <div class="reservation-card__footer">
-            <strong class="reservation-price">$1,420</strong>
+            <strong class="reservation-price">${{ r.total|intcomma }}</strong>
             <div class="reservation-actions">
               <a class="button button--secondary" href="#"><i class="ph ph-download-simple"></i> PDF</a>
-              <button class="reservation-cancel" type="button" data-open-modal="modal-cancelar">Cancelar</button>
+              <button class="reservation-cancel" type="button" data-open-modal="modal-cancelar"
+                      data-folio="{{ r.folio }}" data-parque="{{ r.parque.name }}"
+                      data-fechas="{{ r.fecha_entrada|date:'j' }} — {{ r.fecha_salida|date:'j M Y' }}"
+                      data-total="${{ r.total|intcomma }} MXN"
+                      data-cancel-url="{% url 'core:cancelar_reservacion' r.folio %}">Cancelar</button>
             </div>
           </div>
         </div>
       </article>
-
-      <article class="card reservation-card reservation-card--full">
-        <img src="{% static 'core/assets/parks/bosque_magico/imagen1.jpg' %}" alt="Bosque M&aacute;gico" class="reservation-card__photo">
-        <div class="reservation-card__body">
-          <div class="reservation-card__head">
-            <div>
-              <h2>Bosque M&aacute;gico</h2>
-              <p>Caba&ntilde;a &middot; <i class="ph ph-person"></i> 4 </p>
-            </div>
-            <span class="reservation-status reservation-status--active"><i></i> Activa</span>
-          </div>
-          <div class="reservation-card__meta">
-            <p><span>Fechas</span><strong>23 &mdash; 25 Jul 2026</strong></p>
-            <p><span>Folio</span><strong>FIL-2026-09112</strong></p>
-          </div>
-          <div class="reservation-card__footer">
-            <strong class="reservation-price">$1,200</strong>
-            <div class="reservation-actions">
-              <a class="button button--secondary" href="#"><i class="ph ph-download-simple"></i> PDF</a>
-              <button class="reservation-cancel" type="button" data-open-modal="modal-cancelar">Cancelar</button>
-            </div>
-          </div>
-        </div>
-      </article>
+      {% empty %}
+        <p class="muted">No tienes reservaciones activas. <a class="text-link" href="{% url 'core:park_list' %}">Explora los parques →</a></p>
+      {% endfor %}
     </div>
   </div>
 
   <div class="reservation-panel" data-reservation-panel="history" hidden>
     <div class="reservation-grid">
-      <article class="card reservation-card reservation-card--full">
-        <img src="{% static 'core/assets/parks/canto_del_bosque/imagen1.jpg' %}" alt="Canto del Bosque" class="reservation-card__photo">
+      {% for r in historial %}
+      <article class="card reservation-card reservation-card--full {% if r.estado == 'cancelada' %}is-muted{% endif %}">
+        <img src="{% static r.parque.images.0 %}" alt="{{ r.parque.name }}" class="reservation-card__photo">
         <div class="reservation-card__body">
           <div class="reservation-card__head">
             <div>
-              <h2>Canto del Bosque</h2>
-              <p>Camping &middot; <i class="ph ph-person"></i> 6 </p>
+              <h2>{{ r.parque.name }}</h2>
+              <p>{{ r.tipo_hospedaje }} &middot; <i class="ph ph-person"></i> {{ r.personas }} </p>
             </div>
-            <span class="reservation-status reservation-status--completed"><i></i> Completada</span>
+            {% if r.estado == 'cancelada' %}
+              <span class="reservation-status reservation-status--cancelled"><i></i> Cancelada</span>
+            {% else %}
+              <span class="reservation-status reservation-status--completed"><i></i> Completada</span>
+            {% endif %}
           </div>
           <div class="reservation-card__meta">
-            <p><span>Fechas</span><strong>08 &mdash; 09 Ago 2025</strong></p>
-            <p><span>Folio</span><strong>FIL-2025-04210</strong></p>
+            <p><span>Fechas</span><strong>{{ r.fecha_entrada|date:"j" }} &mdash; {{ r.fecha_salida|date:"j M Y" }}</strong></p>
+            <p><span>Folio</span><strong>{{ r.folio }}</strong></p>
           </div>
           <div class="reservation-card__footer">
-            <strong class="reservation-price reservation-price--muted">$750</strong>
-            <div class="reservation-actions">
-              <button class="button button--secondary" type="button" data-open-modal="modal-calificar"><i class="ph ph-star"></i> Calificar parque</button>
-            </div>
+            <strong class="reservation-price reservation-price--muted">${{ r.total|intcomma }}</strong>
+            {% if r.estado == 'completada' %}
+              <div class="reservation-actions">
+                <button class="button button--secondary" type="button" data-open-modal="modal-calificar"
+                        data-parque-slug="{{ r.parque.slug }}" data-parque="{{ r.parque.name }}"
+                        data-estancia="Estancia {{ r.fecha_entrada|date:'j' }} — {{ r.fecha_salida|date:'j M Y' }}">
+                  <i class="ph ph-star"></i> Calificar parque
+                </button>
+              </div>
+            {% else %}
+              <em>Sin acciones</em>
+            {% endif %}
           </div>
         </div>
       </article>
-
-      <article class="card reservation-card reservation-card--full is-muted">
-        <img src="{% static 'core/assets/parks/santa_clara/imagen1.jpg' %}" alt="Santuario Santa Clara" class="reservation-card__photo">
-        <div class="reservation-card__body">
-          <div class="reservation-card__head">
-            <div>
-              <h2>Santuario Santa Clara</h2>
-              <p>Caba&ntilde;a &middot; <i class="ph ph-person"></i> 2 </p>
-            </div>
-            <span class="reservation-status reservation-status--cancelled"><i></i> Cancelada</span>
-          </div>
-          <div class="reservation-card__meta">
-            <p><span>Fechas</span><strong>17 &mdash; 19 Jul 2025</strong></p>
-            <p><span>Folio</span><strong>FIL-2025-03877</strong></p>
-          </div>
-          <div class="reservation-card__footer">
-            <strong class="reservation-price reservation-price--muted">$1,420</strong>
-            <em>Sin acciones</em>
-          </div>
-        </div>
-      </article>
-
-      <article class="card reservation-card reservation-card--full">
-        <img src="{% static 'core/assets/parks/santuario_piedra_canteada/imagen1.jpg' %}" alt="Santuario Piedra Canteada" class="reservation-card__photo">
-        <div class="reservation-card__body">
-          <div class="reservation-card__head">
-            <div>
-              <h2>Santuario Piedra Canteada</h2>
-              <p>Caba&ntilde;a &middot; <i class="ph ph-person"></i> 4 </p>
-            </div>
-            <span class="reservation-status reservation-status--completed"><i></i> Completada</span>
-          </div>
-          <div class="reservation-card__meta">
-            <p><span>Fechas</span><strong>04 &mdash; 06 Jun 2025</strong></p>
-            <p><span>Folio</span><strong>FIL-2025-02118</strong></p>
-          </div>
-          <div class="reservation-card__footer">
-            <strong class="reservation-price reservation-price--muted">$1,850</strong>
-            <span class="reservation-rated"><span>&starf;&starf;&starf;&starf;&starf;</span> Calificado</span>
-          </div>
-        </div>
-      </article>
+      {% empty %}
+        <p class="muted">Aún no tienes reservaciones en tu historial.</p>
+      {% endfor %}
     </div>
   </div>
 </section>
@@ -146,24 +113,27 @@
     <div class="modal-detail-grid">
       <div class="modal-pair">
         <span class="modal-pair__label">Parque</span>
-        <span class="modal-pair__value">Santuario Santa Clara</span>
+        <span class="modal-pair__value" data-cancel-parque>—</span>
       </div>
       <div class="modal-pair">
         <span class="modal-pair__label">Folio</span>
-        <span class="modal-pair__value" style="font-family:monospace; font-size:13px;">FIL-2026-08471</span>
+        <span class="modal-pair__value" data-cancel-folio style="font-family:monospace; font-size:13px;">—</span>
       </div>
       <div class="modal-pair">
         <span class="modal-pair__label">Fechas</span>
-        <span class="modal-pair__value">14 &mdash; 16 Jun 2026</span>
+        <span class="modal-pair__value" data-cancel-fechas>—</span>
       </div>
       <div class="modal-pair">
         <span class="modal-pair__label">Total</span>
-        <span class="modal-pair__value">$1,420 MXN</span>
+        <span class="modal-pair__value" data-cancel-total>—</span>
       </div>
     </div>
     <p class="modal-note">Est&aacute;s a m&aacute;s de 7 d&iacute;as de la fecha, por lo que se har&aacute; un <strong>reembolso completo</strong> al m&eacute;todo de pago original en 5&nbsp;&mdash;&nbsp;7 d&iacute;as h&aacute;biles. Esta acci&oacute;n no se puede deshacer.</p>
     <div class="modal-actions">
-      <button class="button button--destructive" type="button" data-close-modal="modal-cancelar">Confirmar cancelaci&oacute;n</button>
+      <form method="post" id="cancel-form" action="#" style="display:contents">
+        {% csrf_token %}
+        <button class="button button--destructive" type="submit">Confirmar cancelaci&oacute;n</button>
+      </form>
       <button class="button button--secondary" type="button" data-close-modal="modal-cancelar">Volver</button>
     </div>
   </div>
@@ -176,30 +146,36 @@
       <i class="ph ph-x"></i>
     </button>
     <p class="eyebrow" style="margin-bottom:8px;">Califica tu estancia</p>
-    <h2 id="modal-calificar-title" style="margin:0 0 8px; font-size:22px; font-weight:700;">Canto del Bosque</h2>
-    <p style="color:var(--muted); font-size:12.5px; margin:0 0 24px;">Estancia 08 &mdash; 09 Ago 2025</p>
+    <h2 id="modal-calificar-title" style="margin:0 0 8px; font-size:22px; font-weight:700;">—</h2>
+    <p id="modal-calificar-estancia" style="color:var(--muted); font-size:12.5px; margin:0 0 24px;">—</p>
 
-    <div class="modal-rating-section">
-      <p class="modal-rating-label">Tu calificaci&oacute;n</p>
-      <div class="star-picker" id="star-picker" role="group" aria-label="Calificaci&oacute;n de 1 a 5 estrellas">
-        <button class="star-picker__btn" type="button" data-star="1" aria-label="1 estrella">&#9734;</button>
-        <button class="star-picker__btn" type="button" data-star="2" aria-label="2 estrellas">&#9734;</button>
-        <button class="star-picker__btn" type="button" data-star="3" aria-label="3 estrellas">&#9734;</button>
-        <button class="star-picker__btn" type="button" data-star="4" aria-label="4 estrellas">&#9734;</button>
-        <button class="star-picker__btn" type="button" data-star="5" aria-label="5 estrellas">&#9734;</button>
+    <form method="post" action="{% url 'core:crear_resena' %}">
+      {% csrf_token %}
+      <input type="hidden" name="parque" id="resena-parque" value="">
+      <input type="hidden" name="rating" id="resena-rating" value="0">
+
+      <div class="modal-rating-section">
+        <p class="modal-rating-label">Tu calificaci&oacute;n</p>
+        <div class="star-picker" id="star-picker" role="group" aria-label="Calificaci&oacute;n de 1 a 5 estrellas">
+          <button class="star-picker__btn" type="button" data-star="1" aria-label="1 estrella">&#9734;</button>
+          <button class="star-picker__btn" type="button" data-star="2" aria-label="2 estrellas">&#9734;</button>
+          <button class="star-picker__btn" type="button" data-star="3" aria-label="3 estrellas">&#9734;</button>
+          <button class="star-picker__btn" type="button" data-star="4" aria-label="4 estrellas">&#9734;</button>
+          <button class="star-picker__btn" type="button" data-star="5" aria-label="5 estrellas">&#9734;</button>
+        </div>
+        <p class="star-hint" id="star-hint">Selecciona estrellas para activar el env&iacute;o.</p>
       </div>
-      <p class="star-hint" id="star-hint">Selecciona estrellas para activar el env&iacute;o.</p>
-    </div>
 
-    <label class="field" style="margin-bottom:24px;">
-      <span class="modal-rating-label" style="display:block; margin-bottom:8px;">Comentario (opcional)</span>
-      <textarea class="modal-textarea" rows="4" placeholder="Comparte qu&eacute; te gust&oacute;, qu&eacute; mejorar&iacute;as, recomendaciones para otros visitantes&hellip;"></textarea>
-    </label>
+      <label class="field" style="margin-bottom:24px;">
+        <span class="modal-rating-label" style="display:block; margin-bottom:8px;">Comentario (opcional)</span>
+        <textarea class="modal-textarea" name="comentario" rows="4" placeholder="Comparte qu&eacute; te gust&oacute;, qu&eacute; mejorar&iacute;as, recomendaciones para otros visitantes&hellip;"></textarea>
+      </label>
 
-    <div class="modal-actions">
-      <button class="button button--primary" id="btn-enviar-resena" type="button" disabled data-close-modal="modal-calificar">Enviar rese&ntilde;a</button>
-      <button class="button button--secondary" type="button" data-close-modal="modal-calificar">Cancelar</button>
-    </div>
+      <div class="modal-actions">
+        <button class="button button--primary" id="btn-enviar-resena" type="submit" disabled>Enviar rese&ntilde;a</button>
+        <button class="button button--secondary" type="button" data-close-modal="modal-calificar">Cancelar</button>
+      </div>
+    </form>
   </div>
 </div>
 {% endblock %}

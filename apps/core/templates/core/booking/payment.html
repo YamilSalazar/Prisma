@@ -1,9 +1,11 @@
 {% extends "core/base.html" %}
+{% load humanize %}
 
 {% block content %}
 {% include "core/partials/step_indicator.html" with step=3 %}
 <section class="checkout-layout checkout-layout--payment">
-  <form class="card payment-card">
+  <form class="card payment-card" method="post" action="{% url 'core:booking_payment' %}" id="payment-form">
+    {% csrf_token %}
     <header class="payment-card__head">
       <div>
         <p class="eyebrow"><i class="ph ph-lock-simple"></i> Pago seguro &middot; SSL</p>
@@ -19,50 +21,93 @@
     </div>
 
     <label class="field payment-field">N&uacute;mero de tarjeta
-      <span class="payment-input"><i class="ph ph-credit-card"></i><input inputmode="numeric" placeholder="0000 0000 0000 0000"></span>
+      <span class="payment-input"><i class="ph ph-credit-card"></i><input name="numero" id="card-number" inputmode="numeric" maxlength="19" placeholder="0000 0000 0000 0000" required></span>
     </label>
 
     <div class="form-grid payment-grid">
       <label class="field payment-field">Vencimiento (MM/AA)
-        <span class="payment-input"><input inputmode="numeric" placeholder="04/29"></span>
+        <span class="payment-input"><input name="vencimiento" id="card-exp" inputmode="numeric" maxlength="5" placeholder="04/29" required></span>
       </label>
       <label class="field payment-field">CVV
-        <span class="payment-input"><i class="ph ph-lock-simple"></i><input inputmode="numeric" placeholder="&bull;&bull;&bull;"></span>
+        <span class="payment-input"><i class="ph ph-lock-simple"></i><input name="cvv" id="card-cvv" inputmode="numeric" maxlength="4" placeholder="&bull;&bull;&bull;" required></span>
       </label>
     </div>
 
     <label class="field payment-field">Nombre del titular
-      <span class="payment-input"><input placeholder="Como aparece en la tarjeta"></span>
+      <span class="payment-input"><input name="titular" placeholder="Como aparece en la tarjeta" required></span>
     </label>
+
+    <p class="form-message form-message--error" id="card-error" hidden></p>
 
     <div class="secure-note">
       <i class="ph ph-shield-check"></i>
       <span>Tus datos viajan cifrados. No almacenamos el n&uacute;mero de tarjeta &mdash; solo los &uacute;ltimos 4 d&iacute;gitos para tu recibo.</span>
     </div>
 
-    <a class="button button--primary button--block" href="{% url 'core:booking_confirmation' %}">Confirmar y pagar $3,456 MXN</a>
+    <button type="submit" class="button button--primary button--block">Confirmar y pagar ${{ total|intcomma }} MXN</button>
     <a class="checkout-edit-link" href="{% url 'core:booking_summary' %}"><i class="ph ph-arrow-left"></i> Volver al resumen</a>
   </form>
 
   <aside class="card checkout-total checkout-total--payment">
     <p class="eyebrow">Resumen</p>
     <header>
-      <h2>Mirador de las Estrellas</h2>
-      <p>Caba&ntilde;a &middot; 2 personas</p>
-      <p>S&aacute;b 14 &mdash; Lun 16 Jun 2026</p>
-      <p>2 noches</p>
+      <h2>{{ booking_parque.name }}</h2>
+      <p>{{ booking.tipo }} &middot; {{ booking.personas }} personas</p>
+      <p>{{ entrada|date:"D j" }} &mdash; {{ salida|date:"D j M Y" }}</p>
+      <p>{{ booking.noches }} noches</p>
     </header>
 
     <div class="checkout-total__lines">
-      <p><span>Subtotal</span><strong>$2,840</strong></p>
-      <p><span>Servicio</span><strong>$140</strong></p>
-      <p><span>Impuestos</span><strong>$476</strong></p>
+      <p><span>Subtotal</span><strong>${{ subtotal|intcomma }}</strong></p>
+      <p><span>Servicio</span><strong>${{ servicio|intcomma }}</strong></p>
+      <p><span>Impuestos</span><strong>${{ impuestos|intcomma }}</strong></p>
     </div>
 
     <div class="checkout-total__grand">
       <span>Total</span>
-      <strong>$3,456</strong>
+      <strong>${{ total|intcomma }}</strong>
     </div>
   </aside>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const num = document.getElementById('card-number');
+  const exp = document.getElementById('card-exp');
+  const cvv = document.getElementById('card-cvv');
+  const form = document.getElementById('payment-form');
+  const error = document.getElementById('card-error');
+
+  // Formato del número de tarjeta en grupos de 4
+  num.addEventListener('input', () => {
+    let v = num.value.replace(/\D/g, '').slice(0, 16);
+    num.value = v.replace(/(.{4})/g, '$1 ').trim();
+  });
+
+  // Formato MM/AA
+  exp.addEventListener('input', () => {
+    let v = exp.value.replace(/\D/g, '').slice(0, 4);
+    exp.value = v.length > 2 ? v.slice(0, 2) + '/' + v.slice(2) : v;
+  });
+
+  cvv.addEventListener('input', () => {
+    cvv.value = cvv.value.replace(/\D/g, '').slice(0, 4);
+  });
+
+  form.addEventListener('submit', (e) => {
+    const digits = num.value.replace(/\D/g, '');
+    const [mm, aa] = exp.value.split('/');
+    let msg = '';
+    if (digits.length < 15) msg = 'El número de tarjeta no es válido.';
+    else if (!mm || !aa || +mm < 1 || +mm > 12) msg = 'La fecha de vencimiento no es válida.';
+    else if (cvv.value.length < 3) msg = 'El CVV no es válido.';
+
+    if (msg) {
+      e.preventDefault();
+      error.textContent = msg;
+      error.hidden = false;
+    }
+  });
+});
+</script>
 {% endblock %}

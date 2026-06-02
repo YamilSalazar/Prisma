@@ -1,5 +1,5 @@
     <main class="admin-main">
-      <button class="back-link" onclick="showScreen('parques')"><i class="ph ph-arrow-left"></i> Volver al listado de parques</button>
+      <a class="back-link" href="{% url 'core:admin_parques' %}"><i class="ph ph-arrow-left"></i> Volver al listado de parques</a>
 
       <div class="admin-page-header">
         <div>
@@ -8,31 +8,35 @@
         </div>
       </div>
 
-      <div class="card">
+      <form class="card" method="post" action="{% url 'core:admin_agregar_parque' %}">
+        {% csrf_token %}
         <h3 class="form-section-title">Información general</h3>
 
         <div class="field-group">
           <div class="field">
             <label>Nombre del parque</label>
-            <input type="text" placeholder="Ej. Parque Torre Alta">
+            <input type="text" name="nombre" placeholder="Ej. Santuario Torre Alta" required>
           </div>
         </div>
 
         <div class="field-group">
           <div class="field">
             <label>Dirección</label>
-            <input type="text" placeholder="Calle, número, municipio, estado">
+            <input type="text" name="direccion" placeholder="Calle, número, municipio, estado">
           </div>
         </div>
 
         <div class="field-group field-group--2">
           <div class="field">
-            <label>Horario de apertura</label>
-            <input type="text" placeholder="Ej. 06:00">
+            <label>Tipo de hospedaje</label>
+            <select name="tipo">
+              <option value="Cabaña">Cabaña</option>
+              <option value="Camping">Camping</option>
+            </select>
           </div>
           <div class="field">
-            <label>Horario de cierre</label>
-            <input type="text" placeholder="Ej. 22:00">
+            <label>Precio por noche (MXN)</label>
+            <input type="number" name="precio" placeholder="Ej. 1200" min="0">
           </div>
         </div>
 
@@ -41,43 +45,40 @@
         <p style="margin:0 0 14px;color:var(--muted);font-size:13px">Selecciona todos los que aplican.</p>
 
         <div class="checkbox-grid" style="margin-bottom:24px">
-          <label class="checkbox-item"><input type="checkbox" checked> Estacionamiento</label>
-          <label class="checkbox-item"><input type="checkbox"> Sanitarios</label>
-          <label class="checkbox-item"><input type="checkbox"> Luz eléctrica</label>
-          <label class="checkbox-item"><input type="checkbox" checked> Agua potable</label>
-          <label class="checkbox-item"><input type="checkbox"> Fogatas</label>
-          <label class="checkbox-item"><input type="checkbox"> Guía de campo</label>
-          <label class="checkbox-item"><input type="checkbox"> Renta de equipo</label>
-          <label class="checkbox-item"><input type="checkbox"> Comedor / Kiosco</label>
-          <label class="checkbox-item"><input type="checkbox"> Acceso wheelchair</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Estacionamiento" checked> Estacionamiento</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Baños comunes"> Sanitarios</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Chimenea"> Chimenea</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Baño privado"> Baño privado</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Fogata"> Fogatas</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Guía certificado"> Guía de campo</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Restaurante"> Comedor / Kiosco</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Vista panorámica"> Vista panorámica</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Desayuno"> Desayuno</label>
         </div>
 
         <hr class="divider">
         <h3 class="form-section-title">Capacidad</h3>
 
-        <div class="field-group field-group--2">
+        <div class="field-group field-group--3">
+          <div class="field">
+            <label>Personas por hospedaje</label>
+            <input type="number" name="capacidad_personas" value="4" min="1">
+          </div>
           <div class="field">
             <label>Lugares individuales (cab.)</label>
-            <input type="number" placeholder="0" min="0">
+            <input type="number" name="capacidad_cabanas" placeholder="0" min="0">
           </div>
           <div class="field">
             <label>Zonas de camping (tiendas)</label>
-            <input type="number" placeholder="0" min="0">
+            <input type="number" name="capacidad_camping" placeholder="0" min="0">
           </div>
         </div>
 
-        <hr class="divider">
-        <h3 class="form-section-title">Imagen principal</h3>
-
-        <div class="drop-zone" style="margin-bottom:0">
-          <i class="ph ph-upload-simple"></i>
-          <p>Arrastra o sube una imagen del parque</p>
-          <p style="font-size:11px;color:var(--muted);margin:0">JPG, PNG · máx. 5 MB</p>
-        </div>
+        <label class="checkbox-item" style="margin-bottom:8px"><input type="checkbox" name="activo" checked> Parque activo (visible al público)</label>
 
         <div class="form-actions">
-          <button class="button button--secondary" onclick="showScreen('parques')">Cancelar</button>
-          <button class="button button--primary" onclick="showScreen('parques')"><i class="ph ph-floppy-disk"></i> Guardar parque</button>
+          <a class="button button--secondary" href="{% url 'core:admin_parques' %}">Cancelar</a>
+          <button class="button button--primary" type="submit"><i class="ph ph-floppy-disk"></i> Guardar parque</button>
         </div>
-      </div>
+      </form>
     </main>

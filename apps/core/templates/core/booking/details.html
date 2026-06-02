@@ -3,37 +3,54 @@
 {% block content %}
 {% include "core/partials/step_indicator.html" with step=1 %}
 <section class="booking-panel-wrap">
-  <form class="card booking-details-card">
+  <form class="card booking-details-card" method="post" action="{% url 'core:booking_details' %}">
+    {% csrf_token %}
     <p class="eyebrow">Paso 1 de 4</p>
     <h1>Datos de tu estancia</h1>
 
+    {% if messages %}
+      <div class="form-messages">
+        {% for message in messages %}
+          <p class="form-message form-message--{{ message.tags|default:'info' }}">{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <input type="hidden" name="fecha_entrada" id="fecha-entrada" value="{{ sel_fecha }}">
+    <input type="hidden" name="noches" id="noches-input" value="{{ sel_noches }}">
+    <input type="hidden" name="personas" id="personas-input" value="{{ sel_personas }}">
+    <input type="hidden" name="tipo" id="tipo-input" value="{{ booking_parque.tipo }}">
+
     <label class="field">Parque y hospedaje
-      <select>
-        <option>Mirador de las Estrellas &middot; Caba&ntilde;a</option>
-        <option>Caba&ntilde;as del Bosque &middot; Caba&ntilde;a</option>
-        <option>Camping R&iacute;o Verde &middot; Camping</option>
-        <option>Caba&ntilde;a Ceiba Alta &middot; Caba&ntilde;a</option>
+      <select name="parque" onchange="location.href='?parque='+this.value">
+        {% for park in parks %}
+          <option value="{{ park.slug }}" {% if park.slug == booking_parque.slug %}selected{% endif %}>{{ park.name }} &middot; {{ park.type }}</option>
+        {% endfor %}
       </select>
     </label>
 
     <div class="booking-details-grid">
       <section class="calendar-field">
         <p class="field-label">Fecha de entrada</p>
-        <div class="calendar-widget" aria-label="Calendario Junio 2026">
+        <div class="calendar-widget" aria-label="Calendario {{ calendar_label }}">
           <div class="calendar-header">
-            <button type="button" aria-label="Mes anterior"><i class="ph ph-caret-left"></i></button>
-            <strong>Junio 2026</strong>
-            <button type="button" aria-label="Mes siguiente"><i class="ph ph-caret-right"></i></button>
+            <button type="button" aria-label="Mes anterior" {% if not mes_prev %}disabled style="opacity:.3;cursor:not-allowed"{% else %}onclick="location.href='?parque={{ booking_parque.slug }}&mes={{ mes_prev }}'"{% endif %}><i class="ph ph-caret-left"></i></button>
+            <strong>{{ calendar_label }}</strong>
+            <button type="button" aria-label="Mes siguiente" {% if not mes_next %}disabled style="opacity:.3;cursor:not-allowed"{% else %}onclick="location.href='?parque={{ booking_parque.slug }}&mes={{ mes_next }}'"{% endif %}><i class="ph ph-caret-right"></i></button>
           </div>
           <div class="calendar-days calendar-days--labels">
             <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
           </div>
-          <div class="calendar-days">
-            <span></span><span></span><span></span><span></span><span></span><span></span><button type="button">1</button>
-            <button type="button">2</button><button type="button" class="is-blocked">3</button><button type="button" class="is-blocked">4</button><button type="button">5</button><button type="button">6</button><button type="button">7</button><button type="button">8</button>
-            <button type="button">9</button><button type="button" class="is-blocked">10</button><button type="button" class="is-blocked">11</button><button type="button">12</button><button type="button">13</button><button type="button" class="is-selected">14</button><button type="button">15</button>
-            <button type="button">16</button><button type="button" class="is-blocked">17</button><button type="button" class="is-blocked">18</button><button type="button">19</button><button type="button">20</button><button type="button">21</button><button type="button">22</button>
-            <button type="button">23</button><button type="button" class="is-blocked">24</button><button type="button" class="is-blocked">25</button><button type="button">26</button><button type="button">27</button><button type="button">28</button><span></span>
+          <div class="calendar-days" data-calendar>
+            {% for cell in calendar_cells %}
+              {% if cell is None %}
+                <span></span>
+              {% elif cell.blocked %}
+                <button type="button" class="is-blocked" disabled aria-label="No disponible">{{ cell.day }}</button>
+              {% else %}
+                <button type="button" data-date="{{ cell.date }}" class="cal-day-pick {% if cell.selected %}is-selected{% endif %}">{{ cell.day }}</button>
+              {% endif %}
+            {% endfor %}
           </div>
           <div class="calendar-legend">
             <span><i class="legend-selected"></i>Seleccionado</span>
@@ -46,32 +63,32 @@
         <div class="counter-row">
           <div class="counter-field">
             <label class="field-label">Noches</label>
-            <div class="counter" aria-label="Noches">
-              <button type="button">&minus;</button>
-              <strong>2</strong>
-              <button type="button">+</button>
+            <div class="counter" aria-label="Noches" data-counter="noches" data-min="1" data-max="5">
+              <button type="button" data-step="-1">&minus;</button>
+              <strong>{{ sel_noches }}</strong>
+              <button type="button" data-step="1">+</button>
             </div>
           </div>
 
           <div class="counter-field">
             <label class="field-label">Personas</label>
-            <div class="counter" aria-label="Personas">
-              <button type="button">&minus;</button>
-              <strong>2</strong>
-              <button type="button" class="is-disabled">+</button>
+            <div class="counter" aria-label="Personas" data-counter="personas" data-min="1" data-max="{{ booking_parque.capacidad_personas }}">
+              <button type="button" data-step="-1">&minus;</button>
+              <strong>{{ sel_personas }}</strong>
+              <button type="button" data-step="1">+</button>
             </div>
           </div>
         </div>
 
         <p class="field-label">Tipo de hospedaje</p>
-        <label class="radio-card is-selected">
+        <label class="radio-card is-selected" data-tipo="{{ booking_parque.tipo }}">
           <span></span>
-          <strong>Caba&ntilde;a</strong>
-          <small>Privada &middot; 2 personas</small>
+          <strong>{{ booking_parque.type }}</strong>
+          <small>{{ booking_parque.capacity }} &middot; {{ booking_parque.amenity_items.0.label }}</small>
         </label>
         <label class="radio-card is-disabled">
           <span></span>
-          <strong>Camping</strong>
+          <strong>{% if booking_parque.type == 'Camping' %}Cabaña{% else %}Camping{% endif %}</strong>
           <small>No disponible para este parque</small>
         </label>
       </aside>
@@ -83,9 +100,57 @@
     </div>
 
     <div class="booking-actions">
-      <a class="back-link" href="{% url 'core:park_detail' 'mirador-de-las-estrellas' %}"><i class="ph ph-arrow-left"></i> Volver a la ficha</a>
-      <a class="button button--primary" href="{% url 'core:booking_summary' %}"><i class="ph ph-arrow-right"></i> Continuar</a>
+      <a class="back-link" href="{% url 'core:park_detail' booking_parque.slug %}"><i class="ph ph-arrow-left"></i> Volver a la ficha</a>
+      <button type="submit" class="button button--primary"><i class="ph ph-arrow-right"></i> Continuar</button>
     </div>
   </form>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const fechaInput = document.getElementById('fecha-entrada');
+
+  // Selección de día en el calendario
+  document.querySelectorAll('.cal-day-pick').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cal-day-pick').forEach(b => b.classList.remove('is-selected'));
+      btn.classList.add('is-selected');
+      fechaInput.value = btn.dataset.date;
+    });
+  });
+
+  // Contadores Noches / Personas
+  document.querySelectorAll('[data-counter]').forEach((counter) => {
+    const valueEl = counter.querySelector('strong');
+    const hidden = document.getElementById(counter.dataset.counter + '-input');
+    const min = parseInt(counter.dataset.min) || 1;
+    const max = parseInt(counter.dataset.max) || 9;
+    const sync = () => {
+      const v = parseInt(valueEl.textContent);
+      counter.querySelector('[data-step="-1"]').classList.toggle('is-disabled', v <= min);
+      counter.querySelector('[data-step="1"]').classList.toggle('is-disabled', v >= max);
+      if (hidden) hidden.value = v;
+    };
+    counter.querySelectorAll('button').forEach((b) => {
+      b.addEventListener('click', () => {
+        let v = parseInt(valueEl.textContent) + parseInt(b.dataset.step);
+        v = Math.max(min, Math.min(max, v));
+        valueEl.textContent = v;
+        sync();
+      });
+    });
+    sync();
+  });
+
+  // Selección de tipo de hospedaje
+  const tipoInput = document.getElementById('tipo-input');
+  document.querySelectorAll('.radio-card:not(.is-disabled)').forEach((card) => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.radio-card').forEach(c => c.classList.remove('is-selected'));
+      card.classList.add('is-selected');
+      if (card.dataset.tipo) tipoInput.value = card.dataset.tipo;
+    });
+  });
+});
+</script>
 {% endblock %}

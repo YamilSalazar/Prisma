@@ -1,12 +1,15 @@
+    {% load humanize %}
     <main class="admin-main">
-      <button class="back-link" onclick="showScreen('reservaciones')"><i class="ph ph-arrow-left"></i> Volver a gestión de reservaciones</button>
+      <a class="back-link" href="{% url 'core:admin_reservaciones' %}"><i class="ph ph-arrow-left"></i> Volver a gestión de reservaciones</a>
 
       <div class="admin-page-header" style="margin-bottom:24px">
         <div>
           <p class="eyebrow">Reservaciones</p>
           <h1>Detalle de reservación</h1>
         </div>
-        <span class="status-pill status-pill--active" style="font-size:13px;padding:8px 14px"><i></i> Activa</span>
+        {% if reserva.estado == 'activa' %}<span class="status-pill status-pill--active" style="font-size:13px;padding:8px 14px"><i></i> Activa</span>
+        {% elif reserva.estado == 'cancelada' %}<span class="status-pill status-pill--cancelled" style="font-size:13px;padding:8px 14px"><i></i> Cancelada</span>
+        {% else %}<span class="status-pill status-pill--done" style="font-size:13px;padding:8px 14px"><i></i> Completada</span>{% endif %}
       </div>
 
       <div class="detail-layout-admin">
@@ -16,39 +19,39 @@
             <div class="folio-header">
               <div>
                 <p style="margin:0 0 4px;color:var(--muted);font-size:10.5px;font-weight:700;letter-spacing:.2em;text-transform:uppercase">Folio · Parque</p>
-                <h2 style="margin:0;font-size:22px;font-weight:700;color:var(--gold)">#FL-238104 <span style="color:var(--muted);font-weight:400">·</span> <span style="color:var(--cream);font-weight:600">Cerro Pelón</span></h2>
-                <p style="margin:4px 0 0;color:var(--muted);font-size:12.5px">Creada 04/jul/2026 · 19:43</p>
+                <h2 style="margin:0;font-size:22px;font-weight:700;color:var(--gold)">{{ reserva.folio }} <span style="color:var(--muted);font-weight:400">·</span> <span style="color:var(--cream);font-weight:600">{{ reserva.parque.nombre }}</span></h2>
+                <p style="margin:4px 0 0;color:var(--muted);font-size:12.5px">Creada {{ reserva.creada|date:"d/M/Y · H:i" }}</p>
               </div>
               <div style="text-align:right">
                 <p style="margin:0 0 2px;color:var(--muted);font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase">Total pagado</p>
-                <p style="margin:0;font-size:26px;font-weight:700;color:var(--gold)">$3,200 <span style="font-size:14px;font-weight:400;color:var(--muted)">MXN</span></p>
+                <p style="margin:0;font-size:26px;font-weight:700;color:var(--gold)">${{ reserva.total|intcomma }} <span style="font-size:14px;font-weight:400;color:var(--muted)">MXN</span></p>
               </div>
             </div>
 
             <h3 style="margin:0 0 14px;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)">Cliente</h3>
             <div class="detail-meta-grid" style="margin-bottom:24px">
-              <p><span>Nombre completo</span><strong>María Hernández López</strong></p>
-              <p><span>Correo electrónico</span><strong>maria.h@correo.mx</strong></p>
-              <p><span>Teléfono</span><strong>+52 55 1234 5678</strong></p>
-              <p><span>Cuenta registrada</span><strong>Sí · desde mar/2025</strong></p>
+              <p><span>Nombre completo</span><strong>{{ reserva.usuario.get_full_name|default:reserva.usuario.email }}</strong></p>
+              <p><span>Correo electrónico</span><strong>{{ reserva.usuario.email }}</strong></p>
+              <p><span>Teléfono</span><strong>{{ reserva.usuario.telefono|default:"—" }}</strong></p>
+              <p><span>Cuenta registrada</span><strong>Sí · desde {{ reserva.usuario.date_joined|date:"M/Y" }}</strong></p>
             </div>
 
             <hr class="divider" style="margin:20px 0">
             <h3 style="margin:0 0 14px;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)">Reservación</h3>
             <div class="detail-meta-grid" style="margin-bottom:24px">
-              <p><span>Parque</span><strong>Parque Cerro Pelón</strong></p>
-              <p><span>Tipo de hospedaje</span><strong>Cabaña</strong></p>
-              <p><span>Fechas</span><strong>14/07/2026 – 16/07/2026</strong></p>
-              <p><span>Personas</span><strong>4</strong></p>
+              <p><span>Parque</span><strong>{{ reserva.parque.nombre }}</strong></p>
+              <p><span>Tipo de hospedaje</span><strong>{{ reserva.tipo_hospedaje }}</strong></p>
+              <p><span>Fechas</span><strong>{{ reserva.fecha_entrada|date:"d/m/Y" }} – {{ reserva.fecha_salida|date:"d/m/Y" }}</strong></p>
+              <p><span>Personas</span><strong>{{ reserva.personas }}</strong></p>
             </div>
 
             <hr class="divider" style="margin:20px 0">
             <h3 style="margin:0 0 14px;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)">Desglose del pago</h3>
             <div class="breakdown-list">
-              <p><span>Cabaña × 2 noches</span><strong>$2,800</strong></p>
-              <p><span>Cuota festival × 4</span><strong>$320</strong></p>
-              <p><span>Impuestos</span><strong>$80</strong></p>
-              <p class="total-line"><span style="font-weight:700;color:var(--cream)">Total</span><strong>$3,200 MXN</strong></p>
+              <p><span>{{ reserva.tipo_hospedaje }} × {{ reserva.noches }} noches</span><strong>${{ reserva.subtotal|intcomma }}</strong></p>
+              <p><span>Cuota festival</span><strong>${{ reserva.servicio|intcomma }}</strong></p>
+              <p><span>Impuestos</span><strong>${{ reserva.impuestos|intcomma }}</strong></p>
+              <p class="total-line"><span style="font-weight:700;color:var(--cream)">Total</span><strong>${{ reserva.total|intcomma }} MXN</strong></p>
             </div>
 
             <div style="display:flex;gap:10px;margin-top:28px">
@@ -63,8 +66,16 @@
           <!-- estado -->
           <div class="card side-card">
             <h3>Estado</h3>
-            <select class="admin-select" style="width:100%;margin-bottom:12px"><option selected>Activa</option><option>Completa</option><option>Cancelada</option></select>
-            <p style="margin:0;color:var(--muted);font-size:12.5px">Check-in en <strong style="color:var(--cream)">3 días</strong></p>
+            <form method="post" action="{% url 'core:admin_detalle_reservacion' reserva.folio %}">
+              {% csrf_token %}
+              <select class="admin-select" name="estado" style="width:100%;margin-bottom:12px" onchange="this.form.submit()">
+                <option value="activa" {% if reserva.estado == 'activa' %}selected{% endif %}>Activa</option>
+                <option value="completada" {% if reserva.estado == 'completada' %}selected{% endif %}>Completada</option>
+                <option value="cancelada" {% if reserva.estado == 'cancelada' %}selected{% endif %}>Cancelada</option>
+              </select>
+              <noscript><button class="button button--secondary button--sm" type="submit">Actualizar estado</button></noscript>
+            </form>
+            <p style="margin:0;color:var(--muted);font-size:12.5px">Entrada el <strong style="color:var(--cream)">{{ reserva.fecha_entrada|date:"d/m/Y" }}</strong></p>
           </div>
 
           <!-- timeline -->
@@ -73,23 +84,23 @@
             <div class="timeline">
               <div class="timeline-item">
                 <div class="timeline-dot timeline-dot--done"></div>
-                <div class="timeline-body"><strong>Reserva creada</strong><span>04/jul · 19:42</span></div>
+                <div class="timeline-body"><strong>Reserva creada</strong><span>{{ reserva.creada|date:"d/M · H:i" }}</span></div>
               </div>
               <div class="timeline-item">
                 <div class="timeline-dot timeline-dot--done"></div>
-                <div class="timeline-body"><strong>Pago confirmado</strong><span>04/jul · 19:45</span></div>
+                <div class="timeline-body"><strong>Pago confirmado</strong><span>{{ reserva.creada|date:"d/M · H:i" }}</span></div>
               </div>
               <div class="timeline-item">
                 <div class="timeline-dot timeline-dot--active"></div>
-                <div class="timeline-body"><strong>Correo de confirmación enviado</strong><span>04/jul · 19:45</span></div>
+                <div class="timeline-body"><strong>Correo de confirmación enviado</strong><span>{{ reserva.creada|date:"d/M · H:i" }}</span></div>
               </div>
               <div class="timeline-item">
                 <div class="timeline-dot"></div>
-                <div class="timeline-body"><strong style="color:var(--muted);font-weight:400">Check-in</strong><span>14/jul · pendiente</span></div>
+                <div class="timeline-body"><strong style="color:var(--muted);font-weight:400">Check-in</strong><span>{{ reserva.fecha_entrada|date:"d/M" }} · pendiente</span></div>
               </div>
               <div class="timeline-item">
                 <div class="timeline-dot"></div>
-                <div class="timeline-body"><strong style="color:var(--muted);font-weight:400">Check-out</strong><span>16/jul · pendiente</span></div>
+                <div class="timeline-body"><strong style="color:var(--muted);font-weight:400">Check-out</strong><span>{{ reserva.fecha_salida|date:"d/M" }} · pendiente</span></div>
               </div>
             </div>
           </div>
@@ -98,8 +109,16 @@
           <div class="card side-card">
             <h3>Acciones administrativas</h3>
             <div class="action-stack">
-              <button class="button button--secondary" style="justify-content:flex-start"><i class="ph ph-check-circle"></i> Marcar como completada</button>
-              <button class="button button--danger" style="justify-content:flex-start"><i class="ph ph-x-circle"></i> Cancelar reservación</button>
+              <form method="post" action="{% url 'core:admin_detalle_reservacion' reserva.folio %}" style="display:contents">
+                {% csrf_token %}
+                <input type="hidden" name="estado" value="completada">
+                <button class="button button--secondary" style="justify-content:flex-start" type="submit"><i class="ph ph-check-circle"></i> Marcar como completada</button>
+              </form>
+              <form method="post" action="{% url 'core:admin_detalle_reservacion' reserva.folio %}" style="display:contents">
+                {% csrf_token %}
+                <input type="hidden" name="estado" value="cancelada">
+                <button class="button button--danger" style="justify-content:flex-start" type="submit"><i class="ph ph-x-circle"></i> Cancelar reservación</button>
+              </form>
               <button class="button button--secondary" style="justify-content:flex-start"><i class="ph ph-note-pencil"></i> Notas internas</button>
             </div>
           </div>

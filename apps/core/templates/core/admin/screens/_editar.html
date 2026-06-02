@@ -1,39 +1,47 @@
     <main class="admin-main">
-      <button class="back-link" onclick="showScreen('parques')"><i class="ph ph-arrow-left"></i> Volver al listado de parques</button>
+      <a class="back-link" href="{% url 'core:admin_parques' %}"><i class="ph ph-arrow-left"></i> Volver al listado de parques</a>
 
       <div class="admin-page-header">
         <div>
           <p class="eyebrow">Parques · Editando</p>
-          <h1>Parque Cerro Pelón</h1>
+          <h1>{{ selected_park.nombre }}</h1>
         </div>
-        <span class="status-pill status-pill--active"><i></i> Activo</span>
+        {% if selected_park.activo %}
+          <span class="status-pill status-pill--active"><i></i> Activo</span>
+        {% else %}
+          <span class="status-pill status-pill--inactive"><i></i> Inactivo</span>
+        {% endif %}
       </div>
 
-      <div class="card">
+      <form class="card" method="post" action="{% url 'core:admin_editar_parque' selected_park.slug %}">
+        {% csrf_token %}
         <h3 class="form-section-title">Información general</h3>
 
         <div class="field-group">
           <div class="field">
             <label>Nombre del parque</label>
-            <input type="text" value="Parque Cerro Pelón">
+            <input type="text" name="nombre" value="{{ selected_park.nombre }}" required>
           </div>
         </div>
 
         <div class="field-group">
           <div class="field">
             <label>Dirección</label>
-            <input type="text" value="Donato Guerra, Estado de México, 51290">
+            <input type="text" name="direccion" value="{{ selected_park.direccion }}">
           </div>
         </div>
 
         <div class="field-group field-group--2">
           <div class="field">
-            <label>Horario de apertura</label>
-            <input type="text" value="07:00">
+            <label>Tipo de hospedaje</label>
+            <select name="tipo">
+              <option value="Cabaña" {% if selected_park.tipo == 'Cabaña' %}selected{% endif %}>Cabaña</option>
+              <option value="Camping" {% if selected_park.tipo == 'Camping' %}selected{% endif %}>Camping</option>
+            </select>
           </div>
           <div class="field">
-            <label>Horario de cierre</label>
-            <input type="text" value="19:00">
+            <label>Precio por noche (MXN)</label>
+            <input type="number" name="precio" value="{{ selected_park.precio }}" min="0">
           </div>
         </div>
 
@@ -41,43 +49,40 @@
         <h3 class="form-section-title">Servicios disponibles</h3>
 
         <div class="checkbox-grid" style="margin-bottom:24px">
-          <label class="checkbox-item"><input type="checkbox" checked> Estacionamiento</label>
-          <label class="checkbox-item"><input type="checkbox" checked> Sanitarios</label>
-          <label class="checkbox-item"><input type="checkbox"> Luz eléctrica</label>
-          <label class="checkbox-item"><input type="checkbox" checked> Agua potable</label>
-          <label class="checkbox-item"><input type="checkbox"> Fogatas</label>
-          <label class="checkbox-item"><input type="checkbox" checked> Guía de campo</label>
-          <label class="checkbox-item"><input type="checkbox"> Renta de equipo</label>
-          <label class="checkbox-item"><input type="checkbox"> Comedor / Kiosco</label>
-          <label class="checkbox-item"><input type="checkbox"> Acceso wheelchair</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Estacionamiento" {% if 'Estacionamiento' in selected_park.amenities %}checked{% endif %}> Estacionamiento</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Baños comunes" {% if 'Baños comunes' in selected_park.amenities %}checked{% endif %}> Sanitarios</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Chimenea" {% if 'Chimenea' in selected_park.amenities %}checked{% endif %}> Chimenea</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Baño privado" {% if 'Baño privado' in selected_park.amenities %}checked{% endif %}> Baño privado</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Fogata" {% if 'Fogata' in selected_park.amenities %}checked{% endif %}> Fogatas</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Guía certificado" {% if 'Guía certificado' in selected_park.amenities %}checked{% endif %}> Guía de campo</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Restaurante" {% if 'Restaurante' in selected_park.amenities %}checked{% endif %}> Comedor / Kiosco</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Vista panorámica" {% if 'Vista panorámica' in selected_park.amenities %}checked{% endif %}> Vista panorámica</label>
+          <label class="checkbox-item"><input type="checkbox" name="amenidades" value="Desayuno" {% if 'Desayuno' in selected_park.amenities %}checked{% endif %}> Desayuno</label>
         </div>
 
         <hr class="divider">
         <h3 class="form-section-title">Capacidad</h3>
 
-        <div class="field-group field-group--2">
+        <div class="field-group field-group--3">
+          <div class="field">
+            <label>Personas por hospedaje</label>
+            <input type="number" name="capacidad_personas" value="{{ selected_park.capacidad_personas }}" min="1">
+          </div>
           <div class="field">
             <label>Lugares individuales (cab.)</label>
-            <input type="number" value="22">
+            <input type="number" name="capacidad_cabanas" value="{{ selected_park.capacidad_cabanas }}" min="0">
           </div>
           <div class="field">
             <label>Zonas de camping (tiendas)</label>
-            <input type="number" value="24">
+            <input type="number" name="capacidad_camping" value="{{ selected_park.capacidad_camping }}" min="0">
           </div>
         </div>
 
-        <hr class="divider">
-        <h3 class="form-section-title">Imagen principal</h3>
-
-        <div class="drop-zone" style="margin-bottom:0">
-          <i class="ph ph-image"></i>
-          <p style="color:var(--cream)">cerro-pelon-principal.jpg</p>
-          <p style="font-size:11px;color:var(--muted);margin:0">Haz clic para reemplazar</p>
-        </div>
+        <label class="checkbox-item" style="margin-bottom:8px"><input type="checkbox" name="activo" {% if selected_park.activo %}checked{% endif %}> Parque activo (visible al público)</label>
 
         <div class="form-actions">
-          <button class="button button--secondary" onclick="showScreen('parques')">Cancelar</button>
-          <button class="button button--primary" onclick="showScreen('parques')"><i class="ph ph-floppy-disk"></i> Guardar cambios</button>
+          <a class="button button--secondary" href="{% url 'core:admin_parques' %}">Cancelar</a>
+          <button class="button button--primary" type="submit"><i class="ph ph-floppy-disk"></i> Guardar cambios</button>
         </div>
-      </div>
+      </form>
     </main>

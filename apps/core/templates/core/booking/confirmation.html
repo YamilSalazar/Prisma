@@ -1,4 +1,5 @@
 {% extends "core/base.html" %}
+{% load humanize %}
 
 {% block content %}
 <div class="confirmation-page">
@@ -7,20 +8,20 @@
   <article class="card confirmation-card">
     <div class="confirmation-card__icon"><i class="ph ph-check"></i></div>
     <h1>&iexcl;Reservaci&oacute;n confirmada!</h1>
-    <p class="confirmation-card__lead">Te enviamos los detalles a <strong>tucorreo@ejemplo.com</strong>.</p>
+    <p class="confirmation-card__lead">Te enviamos los detalles a <strong>{{ request.user.email }}</strong>.</p>
 
     <div class="reservation-folio">
       <span>Folio de reservaci&oacute;n</span>
-      <strong>FIL-2026-08471</strong>
+      <strong>{{ reserva.folio }}</strong>
     </div>
 
     <div class="confirmation-details">
-      <p><span>Parque</span><strong>Mirador de las Estrellas</strong></p>
-      <p><span>Hospedaje</span><strong>Caba&ntilde;a &middot; 2 personas</strong></p>
-      <p><span>Entrada</span><strong>S&aacute;b 14 Jun 2026 &middot; 15:00</strong></p>
-      <p><span>Salida</span><strong>Lun 16 Jun 2026 &middot; 12:00</strong></p>
-      <p><span>Total pagado</span><strong>$3,456 MXN</strong></p>
-      <p><span>M&eacute;todo</span><strong>Visa &bull;&bull;&bull;&bull; 4821</strong></p>
+      <p><span>Parque</span><strong>{{ reserva.parque.name }}</strong></p>
+      <p><span>Hospedaje</span><strong>{{ reserva.tipo_hospedaje }} &middot; {{ reserva.personas }} personas</strong></p>
+      <p><span>Entrada</span><strong>{{ reserva.fecha_entrada|date:"D j M Y" }} &middot; 15:00</strong></p>
+      <p><span>Salida</span><strong>{{ reserva.fecha_salida|date:"D j M Y" }} &middot; 12:00</strong></p>
+      <p><span>Total pagado</span><strong>${{ reserva.total|intcomma }} MXN</strong></p>
+      <p><span>M&eacute;todo</span><strong>{{ reserva.metodo_pago_marca }} &bull;&bull;&bull;&bull; {{ reserva.metodo_pago_last4 }}</strong></p>
     </div>
 
     <div class="confirmation-actions">

@@ -1215,6 +1215,28 @@ button,
   opacity: .45;
 }
 
+/* Mismo efecto bioluminiscente de iluminación que en .mini-counter (ficha del
+   parque) para los botones +/- del flujo de reservación. Excluye los botones
+   deshabilitados (mínimo / máximo). */
+.counter button {
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+}
+
+@media (hover: hover) {
+  .counter button:not(.is-disabled):hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    box-shadow: 0 0 10px rgba(255, 213, 79, 0.3), inset 0 0 8px rgba(255, 179, 0, 0.2);
+  }
+}
+
+.counter button:not(.is-disabled):active {
+  border-color: var(--gold);
+  color: var(--gold);
+  box-shadow: 0 0 10px rgba(255, 213, 79, 0.3), inset 0 0 8px rgba(255, 179, 0, 0.2);
+}
+
 .radio-card {
   display: grid;
   grid-template-columns: 24px 1fr;
@@ -1817,6 +1839,10 @@ button,
   gap: 20px;
   align-items: start;
 }
+
+/* Reseñas adicionales ocultas hasta expandir en la misma pantalla */
+.review-item--hidden { display: none; }
+.review-list.is-expanded .review-item--hidden { display: grid; }
 
 .review-avatar {
   width: 48px;
@@ -5487,5 +5513,129 @@ textarea,
 
   .modal--rating .modal-actions .button {
     min-height: 56px;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Footer enriquecido (datos reales del festival en columnas/listas).
+   Usa `.footer.footer--rich` para tener prioridad sobre las reglas
+   previas de `.footer` sin alterar el efecto de brillo de `.footer a`.
+   ════════════════════════════════════════════════════════════════ */
+.footer.footer--rich {
+  display: block;
+  padding: 0;
+  gap: 0;
+}
+
+.footer--rich .footer__main {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(4, 1fr);
+  gap: 32px 40px;
+  padding: 40px 40px 28px;
+}
+
+.footer--rich .footer__brand-name {
+  display: block;
+  color: var(--cream);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  margin-bottom: 12px;
+}
+
+.footer--rich .footer__tagline {
+  margin: 0 0 14px;
+  max-width: 34ch;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.footer--rich .footer__season {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--gold);
+  font-size: 11.5px;
+  letter-spacing: .04em;
+}
+
+.footer--rich .footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer--rich .footer__col-title {
+  margin: 0 0 4px;
+  color: var(--cream);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+
+.footer--rich .footer__col a,
+.footer--rich .footer__static {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.footer--rich .footer__col a i,
+.footer--rich .footer__static i {
+  color: var(--gold);
+  font-size: 14px;
+  flex: 0 0 auto;
+}
+
+.footer--rich .footer__bottom {
+  padding: 16px 40px;
+  border-top: 1px solid var(--line);
+}
+
+.footer--rich .footer__bottom .footer__copy {
+  margin: 0;
+  color: var(--muted);
+}
+
+/* Idioma dentro del menú móvil */
+.mobile-menu-panel__lang {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: .12em;
+}
+
+.mobile-menu-panel__lang strong { color: var(--cream); }
+.mobile-menu-panel__lang a { color: var(--muted); }
+
+@media (max-width: 1024px) {
+  .footer--rich .footer__main {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    padding: 32px 24px 24px;
+  }
+  .footer--rich .footer__brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .footer--rich .footer__main {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .footer--rich .footer__bottom {
+    padding: 16px 24px;
   }
 }

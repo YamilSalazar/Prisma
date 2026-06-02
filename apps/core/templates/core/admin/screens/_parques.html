@@ -5,7 +5,7 @@
           <h1>Parques oficiales</h1>
         </div>
         <div class="admin-page-actions">
-          <button class="button button--primary" onclick="showScreen('agregar')"><i class="ph ph-plus"></i> Agregar parque</button>
+          <a class="button button--primary" href="{% url 'core:admin_agregar_parque' %}"><i class="ph ph-plus"></i> Agregar parque</a>
         </div>
       </div>
 
@@ -25,7 +25,7 @@
           <option>Menor a mayor</option>
         </select>
         <div class="toolbar__spacer"></div>
-        <span class="toolbar__count">5 parques</span>
+        <span class="toolbar__count">{{ parks|length }} parques</span>
       </div>
 
       <div class="card" style="padding:0;overflow:hidden">
@@ -40,66 +40,25 @@
             </tr>
           </thead>
           <tbody>
+            {% for park in parks %}
             <tr>
-              <td>Parque Cerro Pelón</td>
-              <td><span style="color:var(--cream)">38/46</span> <span class="text-muted">ocupados / total</span></td>
-              <td><span class="status-pill status-pill--active"><i></i> Activo</span></td>
-              <td class="text-muted">10/jul · 14:22</td>
+              <td>{{ park.nombre }}</td>
+              <td><span style="color:var(--cream)">{{ park.capacidad_total }}</span> <span class="text-muted">lugares ({{ park.tipo }})</span></td>
+              <td>
+                {% if park.activo %}<span class="status-pill status-pill--active"><i></i> Activo</span>
+                {% else %}<span class="status-pill status-pill--inactive"><i></i> Inactivo</span>{% endif %}
+              </td>
+              <td class="text-muted">{{ park.ultima_edicion|date:"d/M · H:i" }}</td>
               <td>
                 <div style="display:flex;gap:8px">
-                  <button class="button button--secondary button--sm" onclick="showScreen('editar')">Editar</button>
-                  <button class="button button--danger button--sm" onclick="showScreen('eliminar')">Eliminar</button>
+                  <a class="button button--secondary button--sm" href="{% url 'core:admin_editar_parque' park.slug %}">Editar</a>
+                  <a class="button button--danger button--sm" href="{% url 'core:admin_eliminar_parque' park.slug %}">Eliminar</a>
                 </div>
               </td>
             </tr>
-            <tr>
-              <td>Parque El Rosario</td>
-              <td><span style="color:var(--cream)">52/80</span> <span class="text-muted">ocupados / total</span></td>
-              <td><span class="status-pill status-pill--active"><i></i> Activo</span></td>
-              <td class="text-muted">10/jul · 14:22</td>
-              <td>
-                <div style="display:flex;gap:8px">
-                  <button class="button button--secondary button--sm" onclick="showScreen('editar')">Editar</button>
-                  <button class="button button--danger button--sm" onclick="showScreen('eliminar')">Eliminar</button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Parque La Mosa</td>
-              <td><span style="color:var(--cream)">0/24</span> <span class="text-muted">ocupados / total</span></td>
-              <td><span class="status-pill status-pill--inactive"><i></i> Inactivo</span></td>
-              <td class="text-muted">10/jul · 14:22</td>
-              <td>
-                <div style="display:flex;gap:8px">
-                  <button class="button button--secondary button--sm" onclick="showScreen('editar')">Editar</button>
-                  <button class="button button--danger button--sm" onclick="showScreen('eliminar')">Eliminar</button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Parque Sierra Chincua</td>
-              <td><span style="color:var(--cream)">21/45</span> <span class="text-muted">ocupados / total</span></td>
-              <td><span class="status-pill status-pill--active"><i></i> Activo</span></td>
-              <td class="text-muted">10/jul · 14:22</td>
-              <td>
-                <div style="display:flex;gap:8px">
-                  <button class="button button--secondary button--sm" onclick="showScreen('editar')">Editar</button>
-                  <button class="button button--danger button--sm" onclick="showScreen('eliminar')">Eliminar</button>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>Parque Piedra Herrada</td>
-              <td><span style="color:var(--cream)">17/30</span> <span class="text-muted">ocupados / total</span></td>
-              <td><span class="status-pill status-pill--active"><i></i> Activo</span></td>
-              <td class="text-muted">10/jul · 14:22</td>
-              <td>
-                <div style="display:flex;gap:8px">
-                  <button class="button button--secondary button--sm" onclick="showScreen('editar')">Editar</button>
-                  <button class="button button--danger button--sm" onclick="showScreen('eliminar')">Eliminar</button>
-                </div>
-              </td>
-            </tr>
+            {% empty %}
+            <tr><td colspan="5" class="text-muted" style="padding:18px">No hay parques registrados.</td></tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>

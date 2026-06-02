@@ -1,23 +1,22 @@
     <main class="admin-main">
       <!-- same park list, modal overlays it -->
-      <button class="back-link" style="pointer-events:none;opacity:.4"><i class="ph ph-arrow-left"></i> Volver al listado de parques</button>
+      <a class="back-link" href="{% url 'core:admin_parques' %}" style="opacity:.6"><i class="ph ph-arrow-left"></i> Volver al listado de parques</a>
       <div class="admin-page-header">
         <div>
           <p class="eyebrow">Administración</p>
           <h1>Parques oficiales</h1>
         </div>
-        <button class="button button--primary"><i class="ph ph-plus"></i> Agregar parque</button>
+        <a class="button button--primary" href="{% url 'core:admin_agregar_parque' %}"><i class="ph ph-plus"></i> Agregar parque</a>
       </div>
       <div class="card" style="padding:0;overflow:hidden;opacity:.35;pointer-events:none">
         <table class="data-table">
           <thead><tr><th>Nombre</th><th>Capacidad</th><th>Estado</th><th>Última edición</th><th>Acciones</th></tr></thead>
           <tbody>
-            <tr><td>Parque Cerro Pelón</td><td>38/46 <span class="text-muted">total</span></td><td><span class="status-pill status-pill--active"><i></i> Activo</span></td><td class="text-muted">10/jul · 14:22</td><td><div style="display:flex;gap:8px"><button class="button button--secondary button--sm">Editar</button><button class="button button--danger button--sm">Eliminar</button></div></td></tr>
+            <tr><td>{{ selected_park.nombre }}</td><td>{{ selected_park.capacidad_total }} <span class="text-muted">lugares</span></td><td><span class="status-pill status-pill--active"><i></i> {% if selected_park.activo %}Activo{% else %}Inactivo{% endif %}</span></td><td class="text-muted">{{ selected_park.ultima_edicion|date:"d/M · H:i" }}</td><td><div style="display:flex;gap:8px"><button class="button button--secondary button--sm">Editar</button><button class="button button--danger button--sm">Eliminar</button></div></td></tr>
           </tbody>
         </table>
       </div>
     </main>
-  </div>
 
   <!-- modal -->
   <div class="modal-backdrop is-open" id="modal-delete">
@@ -26,13 +25,16 @@
       <h2>Eliminar parque</h2>
       <p style="color:var(--muted);font-size:14px;margin:6px 0 20px">Esta acción no se puede deshacer. Se eliminará permanentemente:</p>
       <div style="padding:14px 16px;border:1px solid var(--line-strong);background:var(--deep-2);margin-bottom:20px">
-        <strong style="font-size:16px">Parque La Mosa</strong>
-        <p style="margin:4px 0 0;color:var(--muted);font-size:13px">0 reservaciones activas · Inactivo</p>
+        <strong style="font-size:16px">{{ selected_park.nombre }}</strong>
+        <p style="margin:4px 0 0;color:var(--muted);font-size:13px">{{ selected_park.reservaciones.count }} reservaciones · {% if selected_park.activo %}Activo{% else %}Inactivo{% endif %}</p>
       </div>
       <p style="font-size:13px;color:rgba(240,237,229,.78);margin:0 0 20px">Las reservaciones históricas se conservarán en el sistema. No se podrán realizar nuevas reservaciones para este parque.</p>
       <div class="modal-actions">
-        <button class="button button--secondary" onclick="showScreen('parques')">Cancelar</button>
-        <button class="button button--danger" onclick="showScreen('parques')"><i class="ph ph-trash"></i> Eliminar parque</button>
+        <a class="button button--secondary" href="{% url 'core:admin_parques' %}">Cancelar</a>
+        <form method="post" action="{% url 'core:admin_eliminar_parque' selected_park.slug %}" style="display:contents">
+          {% csrf_token %}
+          <button class="button button--danger" type="submit"><i class="ph ph-trash"></i> Eliminar parque</button>
+        </form>
       </div>
     </div>
   </div>

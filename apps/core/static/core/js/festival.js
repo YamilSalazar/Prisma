@@ -178,13 +178,40 @@ if (filterClearBtn) {
   });
 }
 
-// Star picker
+// Expandir / contraer reseñas en la misma pantalla (ficha de parque)
+document.querySelectorAll("[data-reviews-toggle]").forEach((toggle) => {
+  const list = document.querySelector("[data-review-list]");
+  if (!list) return;
+
+  const labelEl = toggle.childNodes[0];
+  const setLabel = (text) => {
+    if (labelEl && labelEl.nodeType === Node.TEXT_NODE) {
+      labelEl.textContent = text + " ";
+    }
+  };
+
+  toggle.addEventListener("click", (event) => {
+    event.preventDefault();
+    const expanded = list.classList.toggle("is-expanded");
+    setLabel(expanded ? toggle.dataset.labelLess : toggle.dataset.labelMore);
+    const caret = toggle.querySelector("i");
+    if (caret) {
+      caret.classList.toggle("ph-arrow-right", !expanded);
+      caret.classList.toggle("ph-arrow-up", expanded);
+    }
+  });
+});
+
+// Star picker (la fuente de verdad es el input oculto #resena-rating, para
+// poder reiniciarlo al abrir el modal con otra reservación).
 const starPicker = document.getElementById("star-picker");
 if (starPicker) {
   const buttons = starPicker.querySelectorAll(".star-picker__btn");
   const hint = document.getElementById("star-hint");
   const submitBtn = document.getElementById("btn-enviar-resena");
-  let selected = 0;
+  const ratingInput = document.getElementById("resena-rating");
+
+  const current = () => parseInt(ratingInput && ratingInput.value) || 0;
 
   const highlight = (upTo) => {
     buttons.forEach((b) => {
@@ -194,15 +221,53 @@ if (starPicker) {
     });
   };
 
+  window.resetStarPicker = () => {
+    if (ratingInput) ratingInput.value = 0;
+    if (submitBtn) submitBtn.disabled = true;
+    if (hint) hint.textContent = "Selecciona estrellas para activar el envío.";
+    highlight(0);
+  };
+
   buttons.forEach((btn) => {
     btn.addEventListener("mouseenter", () => highlight(parseInt(btn.dataset.star)));
-    btn.addEventListener("mouseleave", () => highlight(selected));
+    btn.addEventListener("mouseleave", () => highlight(current()));
     btn.addEventListener("click", () => {
-      selected = parseInt(btn.dataset.star);
+      const selected = parseInt(btn.dataset.star);
+      if (ratingInput) ratingInput.value = selected;
       highlight(selected);
       if (hint) hint.textContent = `${selected} de 5 estrellas`;
       if (submitBtn) submitBtn.disabled = false;
     });
   });
+  highlight(current());
 }
+
+// Rellenar los modales de cancelar / calificar desde el botón que los abre
+document.addEventListener("click", (e) => {
+  const trigger = e.target.closest("[data-open-modal]");
+  if (!trigger) return;
+
+  if (trigger.dataset.openModal === "modal-cancelar") {
+    const set = (sel, val) => {
+      const el = document.querySelector(sel);
+      if (el) el.textContent = val;
+    };
+    set("[data-cancel-parque]", trigger.dataset.parque || "—");
+    set("[data-cancel-folio]", trigger.dataset.folio || "—");
+    set("[data-cancel-fechas]", trigger.dataset.fechas || "—");
+    set("[data-cancel-total]", trigger.dataset.total || "—");
+    const form = document.getElementById("cancel-form");
+    if (form && trigger.dataset.cancelUrl) form.action = trigger.dataset.cancelUrl;
+  }
+
+  if (trigger.dataset.openModal === "modal-calificar") {
+    const parqueInput = document.getElementById("resena-parque");
+    if (parqueInput) parqueInput.value = trigger.dataset.parqueSlug || "";
+    const title = document.getElementById("modal-calificar-title");
+    if (title) title.textContent = trigger.dataset.parque || "";
+    const estancia = document.getElementById("modal-calificar-estancia");
+    if (estancia) estancia.textContent = trigger.dataset.estancia || "";
+    if (typeof window.resetStarPicker === "function") window.resetStarPicker();
+  }
+});
 

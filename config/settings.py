@@ -12,20 +12,34 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 
+import environ
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# ── Configuración por entorno (.env) ──────────────────────────────
+# Los valores sensibles (clave secreta, DEBUG, hosts) se leen del archivo
+# .env, que NO se versiona. Ver .env.example para la plantilla.
+env = environ.Env(
+    DEBUG=(bool, True),
+    ALLOWED_HOSTS=(list, ["127.0.0.1", "localhost"]),
+)
+environ.Env.read_env(BASE_DIR / ".env")
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-i&29a46nk2ojtc-k#%udd%iq2+gz%17bxjia6z5f)i+=*=_p*s'
+SECRET_KEY = env(
+    "SECRET_KEY",
+    default="django-insecure-i&29a46nk2ojtc-k#%udd%iq2+gz%17bxjia6z5f)i+=*=_p*s",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env("ALLOWED_HOSTS")
 
 
 # Application definition
@@ -37,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'apps.core',
 ]
 
@@ -62,6 +77,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'apps.core.context_processors.i18n',
+                'apps.core.context_processors.festival',
             ],
         },
     },

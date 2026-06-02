@@ -26,8 +26,17 @@
     window.scrollTo(0, 0);
   }
 
-  function openModal(day) {
-    document.getElementById('modal-date-label').textContent = day + ' / 07 / 2026';
+  function openModal(cell) {
+    const d = cell.dataset;
+    const [y, m, day] = d.date.split('-');
+    document.getElementById('modal-date-label').textContent = day + ' / ' + m + ' / ' + y;
+    document.getElementById('modal-fecha').value = d.date;
+    document.getElementById('modal-cab').value = d.cab;
+    document.getElementById('modal-camp').value = d.camp;
+    document.getElementById('modal-bloquear').checked = d.blocked === '1';
+    document.getElementById('modal-avail-info').innerHTML =
+      'Reservadas: <strong>' + d.rescab + ' cab. · ' + d.rescamp + ' zonas</strong> &nbsp;·&nbsp; ' +
+      'Disponibles: <strong>' + d.dcab + ' cab. · ' + d.dcamp + ' zonas</strong>';
     document.getElementById('modal-disponibilidad').classList.add('is-open');
   }
 
@@ -36,7 +45,10 @@
   }
 
   // Cerrar modal al click en backdrop
-  document.getElementById('modal-disponibilidad').addEventListener('click', function(e) {
-    if (e.target === this) closeModal();
-  });
+  const dispModal = document.getElementById('modal-disponibilidad');
+  if (dispModal) {
+    dispModal.addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+  }
 </script>

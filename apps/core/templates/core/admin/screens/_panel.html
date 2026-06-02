@@ -1,3 +1,4 @@
+    {% load humanize %}
     <main class="admin-main">
       <div class="admin-page-header">
         <div>
@@ -10,22 +11,22 @@
       <div class="stat-grid">
         <div class="stat-card">
           <p class="stat-card__label">Reservas activas</p>
-          <p class="stat-card__value">248</p>
-          <p class="stat-card__sub">↑ 12 vs. semana anterior</p>
+          <p class="stat-card__value">{{ stats.activas }}</p>
+          <p class="stat-card__sub">próximas o en curso</p>
         </div>
         <div class="stat-card">
           <p class="stat-card__label">Ocupación promedio</p>
-          <p class="stat-card__value">62%</p>
+          <p class="stat-card__value">{{ stats.ocupacion }}%</p>
           <p class="stat-card__sub">Meta del festival: 75%</p>
         </div>
         <div class="stat-card">
           <p class="stat-card__label">Parques activos</p>
-          <p class="stat-card__value">4 <span style="font-size:22px;color:var(--muted);font-weight:300">/ 5</span></p>
-          <p class="stat-card__sub">1 en mantenimiento</p>
+          <p class="stat-card__value">{{ stats.parques_activos }} <span style="font-size:22px;color:var(--muted);font-weight:300">/ {{ stats.parques_total }}</span></p>
+          <p class="stat-card__sub">{{ stats.parques_inactivos }} en mantenimiento</p>
         </div>
         <div class="stat-card">
           <p class="stat-card__label">Ingresos totales</p>
-          <p class="stat-card__value"><strong>$1.4M</strong></p>
+          <p class="stat-card__value"><strong>${{ stats.ingresos|intcomma }}</strong></p>
           <p class="stat-card__sub">MXN · temporada actual</p>
         </div>
       </div>
@@ -33,14 +34,14 @@
       <!-- alert -->
       <div class="admin-alert">
         <i class="ph ph-warning"></i>
-        <p><strong>Disponibilidad baja</strong> — Parque El Rosario: quedan <strong>8 lugares</strong> disponibles para el fin de semana del 18 – 20 jul.</p>
-        <button class="button button--secondary button--sm" style="margin-left:auto;white-space:nowrap">Revisar</button>
+        <p><strong>Disponibilidad baja</strong> — revisa los días marcados en rojo o ámbar en la sección de disponibilidad antes del fin de semana.</p>
+        <a class="button button--secondary button--sm" style="margin-left:auto;white-space:nowrap" href="{% url 'core:admin_disponibilidad' %}">Revisar</a>
       </div>
 
       <!-- recent reservations -->
       <div class="section-label">
         <h2>Últimas reservaciones</h2>
-        <button class="button button--ghost" onclick="showScreen('reservaciones')">Ver todas →</button>
+        <a class="button button--ghost" href="{% url 'core:admin_reservaciones' %}">Ver todas →</a>
       </div>
 
       <div class="card" style="padding:0;overflow:hidden">
@@ -56,46 +57,22 @@
             </tr>
           </thead>
           <tbody>
+            {% for r in ultimas %}
             <tr>
-              <td>#FL-238104</td>
-              <td>María Hernández</td>
-              <td><span class="text-muted">Cerro Pelón</span></td>
-              <td>14/07</td>
-              <td>$3,200</td>
-              <td><span class="status-pill status-pill--active"><i></i> Activa</span></td>
+              <td>{{ r.folio }}</td>
+              <td>{{ r.usuario.get_full_name|default:r.usuario.email }}</td>
+              <td><span class="text-muted">{{ r.parque.nombre }}</span></td>
+              <td>{{ r.fecha_entrada|date:"d/m" }}</td>
+              <td>${{ r.total|intcomma }}</td>
+              <td>
+                {% if r.estado == 'activa' %}<span class="status-pill status-pill--active"><i></i> Activa</span>
+                {% elif r.estado == 'cancelada' %}<span class="status-pill status-pill--cancelled"><i></i> Cancelada</span>
+                {% else %}<span class="status-pill status-pill--done"><i></i> Completa</span>{% endif %}
+              </td>
             </tr>
-            <tr>
-              <td>#FL-238101</td>
-              <td>Daniel Ortega</td>
-              <td><span class="text-muted">El Rosario</span></td>
-              <td>14/07</td>
-              <td>$1,100</td>
-              <td><span class="status-pill status-pill--active"><i></i> Activa</span></td>
-            </tr>
-            <tr>
-              <td>#FL-238099</td>
-              <td>L. Pérez</td>
-              <td><span class="text-muted">Sierra Chincua</span></td>
-              <td>13/07</td>
-              <td>$2,600</td>
-              <td><span class="status-pill status-pill--cancelled"><i></i> Cancelada</span></td>
-            </tr>
-            <tr>
-              <td>#FL-238094</td>
-              <td>Andrés Méndez</td>
-              <td><span class="text-muted">Piedra Herrada</span></td>
-              <td>13/07</td>
-              <td>$4,800</td>
-              <td><span class="status-pill status-pill--active"><i></i> Activa</span></td>
-            </tr>
-            <tr>
-              <td>#FL-238088</td>
-              <td>Sofía Reyes</td>
-              <td><span class="text-muted">Cerro Pelón</span></td>
-              <td>12/07</td>
-              <td>$1,600</td>
-              <td><span class="status-pill status-pill--done"><i></i> Completa</span></td>
-            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-muted" style="padding:18px">Sin reservaciones todavía.</td></tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>

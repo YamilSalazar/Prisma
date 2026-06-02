@@ -4,14 +4,14 @@
 <section class="account-page">
   <header class="account-header">
     <p class="eyebrow">Mi cuenta</p>
-    <h1>Hola, María Fernanda</h1>
+    <h1>Hola, {{ request.user.first_name|default:request.user.email }}</h1>
   </header>
 
   <div class="account-layout">
     <aside class="card profile-card">
-      <div class="avatar">MF</div>
-      <h2>María Fernanda González Ruiz</h2>
-      <p class="muted">mfgonzalez@correo.com</p>
+      <div class="avatar">{{ request.user.first_name|slice:":1"|upper }}{{ request.user.last_name|slice:":1"|upper }}</div>
+      <h2>{{ request.user.get_full_name|default:request.user.email }}</h2>
+      <p class="muted">{{ request.user.email }}</p>
     </aside>
 
     <div class="account-stack">
@@ -20,7 +20,7 @@
         <div class="account-row">
           <div class="account-row__info">
             <span>Nombre(s)</span>
-            <strong data-field-value>María Fernanda</strong>
+            <strong data-field-value>{{ request.user.first_name }}</strong>
           </div>
           <button class="account-row__edit-btn" data-field-edit aria-label="Editar nombre">
             <i class="ph ph-pencil-simple" aria-hidden="true"></i> Editar
@@ -29,7 +29,7 @@
         <div class="account-row">
           <div class="account-row__info">
             <span>Apellidos</span>
-            <strong data-field-value>González Ruiz</strong>
+            <strong data-field-value>{{ request.user.last_name }}</strong>
           </div>
           <button class="account-row__edit-btn" data-field-edit aria-label="Editar apellidos">
             <i class="ph ph-pencil-simple" aria-hidden="true"></i> Editar
@@ -38,7 +38,7 @@
         <div class="account-row">
           <div class="account-row__info">
             <span>Correo electrónico</span>
-            <strong data-field-value>mfgonzalez@correo.com</strong>
+            <strong data-field-value>{{ request.user.email }}</strong>
           </div>
           <button class="account-row__edit-btn" data-field-edit aria-label="Editar correo">
             <i class="ph ph-pencil-simple" aria-hidden="true"></i> Editar

@@ -1,0 +1,17 @@
+# Blueprint de despliegue para Render.com
+# Render lee este archivo y crea el servicio web automáticamente.
+services:
+  - type: web
+    name: prisma-fila
+    runtime: python
+    plan: free
+    branch: Final
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate --no-input"
+    startCommand: "gunicorn config.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: PYTHON_VERSION
+        value: "3.12.8"

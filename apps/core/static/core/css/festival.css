@@ -422,6 +422,11 @@ button,
     transform: translateY(-4px);
   }
 }
+
+.park-card {
+  cursor: pointer;
+}
+
 .park-card:active {
   border-color: var(--gold);
   background: var(--deep);

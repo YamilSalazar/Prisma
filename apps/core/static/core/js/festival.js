@@ -65,6 +65,16 @@ document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") closeMobileMenu();
 });
 
+// Toda la tarjeta del parque abre la ficha.
+document.querySelectorAll(".park-card").forEach((card) => {
+  card.addEventListener("click", (event) => {
+    if (event.target.closest("a, button, input, select, textarea")) return;
+
+    const link = card.querySelector(".park-card__photo");
+    if (link?.href) window.location.href = link.href;
+  });
+});
+
 // Modales
 document.addEventListener("click", (e) => {
   const openBtn = e.target.closest("[data-open-modal]");

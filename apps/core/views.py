@@ -152,6 +152,19 @@ FOLIUM_CUSTOM_CSS = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
 
+html,
+body,
+.folium-map,
+.leaflet-container {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+}
+
+body {
+    margin: 0 !important;
+}
+
 .leaflet-container::after {
     content: "";
     position: absolute;
@@ -202,6 +215,20 @@ FOLIUM_CUSTOM_CSS = """
 .fp-pin:hover .fp-price { background-color: #c8975a; color: #0f1a0d; }
 .fp-pin:hover svg path { fill: #d96838; }
 </style>
+<script>
+window.addEventListener("load", function () {
+    function resizeFoliumMaps() {
+        Object.keys(window).forEach(function (key) {
+            if (key.indexOf("map_") === 0 && window[key] && window[key].invalidateSize) {
+                window[key].invalidateSize(true);
+            }
+        });
+    }
+    setTimeout(resizeFoliumMaps, 100);
+    setTimeout(resizeFoliumMaps, 450);
+    window.addEventListener("resize", resizeFoliumMaps);
+});
+</script>
 """
 
 def map_view(request):
